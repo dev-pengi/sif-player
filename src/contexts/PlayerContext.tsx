@@ -121,9 +121,11 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
 
   useHotkeys("right", () => {
     videoRef.current.currentTime += 10;
+    setCurrentTime((prev) => prev + 10);
   });
   useHotkeys("left", () => {
     videoRef.current.currentTime -= 10;
+    setCurrentTime((prev) => prev - 10);
   });
   useHotkeys("up", () => {
     videoRef.current.volume = Math.min(videoRef.current.volume + 0.05, 1);
@@ -141,6 +143,14 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   });
   useHotkeys("m", () => {
     videoRef.current.muted = !videoRef.current.muted;
+  });
+  useHotkeys("end", () => {
+    videoRef.current.currentTime = videoRef.current.duration;
+    setCurrentTime(videoRef.current.duration);
+  });
+  useHotkeys("home", () => {
+    videoRef.current.currentTime = 0;
+    setCurrentTime(0);
   });
 
   const value = {

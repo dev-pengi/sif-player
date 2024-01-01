@@ -1,13 +1,10 @@
-import { FC, useState } from "react";
-import { motion, LayoutGroup } from "framer-motion";
-import { PlayToggle, FullScreenButton, VolumeSlider } from "./Buttons";
-import { formatTime } from "../../utils";
-import { usePlayerContext } from "../../contexts/PlayerContext";
-import { BottomController, CenterController } from "./Sections";
+import { FC } from "react";
+import { BottomController, CenterController, TopController } from "./Sections";
 
 const MainController: FC = () => {
   return (
     <div className="absolute w-screen h-screen flex flex-col">
+      <TopController />
       <CenterController />
       <BottomController />
     </div>

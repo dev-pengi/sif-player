@@ -10,7 +10,7 @@ const BottomController: FC = () => {
     <div
       onMouseLeave={() => setIsPanelHovering(false)}
       onMouseEnter={() => setIsPanelHovering(true)}
-      className="flex w-full items-center px-12 py-5 justify-between"
+      className="flex w-full items-center px-12 h-[70px] justify-between"
     >
       <div className="flex items-center justify-center">
         <PlayToggle />
@@ -24,9 +24,7 @@ const BottomController: FC = () => {
         </LayoutGroup>
       </div>
       <div className="flex items-center justify-center">
-        <div className="w-[23px] h-[23px] ">
           <FullScreenButton />
-        </div>
       </div>
     </div>
   );
