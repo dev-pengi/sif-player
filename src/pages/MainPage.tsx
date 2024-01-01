@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
-import { VideoPicker } from "../../components";
-import { usePlayerContext } from "../PlayerContext";
+import { VideoPicker } from "../components";
+import { usePlayerContext } from "../contexts/PlayerContext";
 
 const MainPage: FC = () => {
   const { setVideoFile } = usePlayerContext();

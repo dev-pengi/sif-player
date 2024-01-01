@@ -1,16 +1,16 @@
 import { FC, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
-import { PauseIcon, PlayIcon } from "../../assets";
-import Button from "../General/Button";
+import { PauseIcon, PlayIcon } from "../../../assets";
+import Button from "./Button";
+import { usePlayerContext } from "../../../contexts/PlayerContext";
 
-interface PlayToggleProps {
-  isPlaying: boolean;
-  handleTogglePlay: () => void;
-}
+interface PlayToggleProps {}
 
-const PlayToggle: FC<PlayToggleProps> = ({ isPlaying, handleTogglePlay }) => {
+const PlayToggle: FC<PlayToggleProps> = ({}) => {
   const playController = useAnimation();
   const pauseController = useAnimation();
+
+  const { isPlaying, handleTogglePlay } = usePlayerContext();
 
   useEffect(() => {
     playController.start(isPlaying ? "hidden" : "visible");
@@ -18,9 +18,7 @@ const PlayToggle: FC<PlayToggleProps> = ({ isPlaying, handleTogglePlay }) => {
   }, [isPlaying]);
 
   return (
-    <Button
-      onClick={handleTogglePlay}
-    >
+    <Button onClick={handleTogglePlay}>
       <motion.div
         className="absolute left-0 right-0 top-0 bottom-0 h-max w-max m-auto"
         variants={{

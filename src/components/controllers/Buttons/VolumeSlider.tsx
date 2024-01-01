@@ -1,23 +1,19 @@
 import { FC, useEffect, useState } from "react";
-import { MaxSoundIcon } from "../../assets";
+import { MaxSoundIcon } from "../../../assets";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { motion, useAnimation } from "framer-motion";
-import Button from "../General/Button";
+import Button from "./Button";
+import { usePlayerContext } from "../../../contexts/PlayerContext";
 
-interface VolumeProps {
-  volume: number;
-  isPanelHovering: boolean;
-  onVolumeChange: (volume: number) => void;
+interface VolumeSliderProps {
 }
 
-const Volume: FC<VolumeProps> = ({
-  volume,
-  isPanelHovering,
-  onVolumeChange,
-}) => {
+const VolumeSlider: FC<VolumeSliderProps> = ({}) => {
   const sliderControls = useAnimation();
   const [isDragging, setIsDragging] = useState(false);
+
+  const { volume, isPanelHovering, handleVolumeChange } = usePlayerContext();
 
   useEffect(() => {
     if (!(isPanelHovering || isDragging)) sliderControls.start("hidden");
@@ -31,9 +27,7 @@ const Volume: FC<VolumeProps> = ({
       className="pl-2.5 pr-1.5 py-1.5"
       onMouseEnter={() => sliderControls.start("visible")}
     >
-      <div
-        className="relative flex items-center justify-start w-full text-[22px]"
-      >
+      <div className="relative flex items-center justify-start w-full text-[22px]">
         <div className="left-0">
           <MaxSoundIcon />
         </div>
@@ -57,8 +51,8 @@ const Volume: FC<VolumeProps> = ({
             value={volume}
             min={0}
             max={100}
-            onChange={(value) => {
-              onVolumeChange(value as number);
+            onChange={(value: number) => {
+              handleVolumeChange(value);
               setIsDragging(true);
             }}
             onChangeComplete={() => setIsDragging(false)}
@@ -83,4 +77,4 @@ const Volume: FC<VolumeProps> = ({
   );
 };
 
-export default Volume;
+export default VolumeSlider;
