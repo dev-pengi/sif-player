@@ -54,7 +54,6 @@ const Volume: FC<VolumeProps> = ({
         >
           <Slider
             step={1}
-            defaultValue={volume}
             value={volume}
             min={0}
             max={100}
@@ -63,6 +62,7 @@ const Volume: FC<VolumeProps> = ({
               setIsDragging(true);
             }}
             onChangeComplete={() => setIsDragging(false)}
+            keyboard={false}
             style={{ width: 60, marginLeft: 15, marginRight: 10 }}
             styles={{
               handle: {

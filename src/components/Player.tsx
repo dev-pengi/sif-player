@@ -4,6 +4,7 @@ import { LayoutGroup, motion } from "framer-motion";
 import PlayToggle from "./PlayButton/Toggle";
 import FullScreenButton from "./FullScreenButton/FullScreenToggle";
 import Volume from "./VolumeButton/Volume";
+import { useHotkeys } from "react-hotkeys-hook";
 
 interface PlayerProps {
   // Add your prop types here
@@ -110,6 +111,30 @@ const Player: FC<PlayerProps> = () => {
     setVolume(volume);
     videoRef.current.volume = volume / 100;
   };
+
+  useHotkeys("right", () => {
+    videoRef.current.currentTime += 10;
+  });
+  useHotkeys("left", () => {
+    videoRef.current.currentTime -= 10;
+  });
+  useHotkeys("up", () => {
+    videoRef.current.volume = Math.min(videoRef.current.volume + 0.05, 1);
+    setVolume((prev) => Math.min(prev + 5, 100));
+  });
+  useHotkeys("down", () => {
+    videoRef.current.volume = Math.max(videoRef.current.volume - 0.05, 0);
+    setVolume((prev) => Math.max(prev - 5, 0));
+  });
+  useHotkeys("space", () => {
+    handleTogglePlay();
+  });
+  useHotkeys("f", () => {
+    toggleScreenHandler();
+  });
+  useHotkeys("m", () => {
+    videoRef.current.muted = !videoRef.current.muted;
+  });
 
   return (
     <div className="w-screen h-screen flex items-center justify-center flex-1 bg-black">

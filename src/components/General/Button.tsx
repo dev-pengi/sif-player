@@ -8,6 +8,7 @@ interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 const Button: FC<ButtonProps> = ({ children, className, ...props }) => {
   return (
     <button
+      onKeyDown={(e) => e.preventDefault()}
       className={`relative p-4 w-max rounded-md duration-100 hover:bg-[#ffffff21] hover:shadow-md ${className}`}
       {...props}
     >
