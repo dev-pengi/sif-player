@@ -16,11 +16,11 @@ const VideoPicker: FC = () => {
       const reader = new FileReader();
       let blobUrl = "";
 
-      reader.onloadstart = () => {
-      };
+      reader.onloadstart = () => {};
 
       reader.onload = (event) => {
-        blobUrl = URL.createObjectURL(new Blob([event.target.result]));
+        const blob = new Blob([event.target.result], { type: "video/mp4" });
+        const blobUrl = URL.createObjectURL(blob);
         const extractedID = extractUUIDFromBlobUrl(blobUrl);
         navigate(`/player?src=${extractedID}&type=local`);
       };

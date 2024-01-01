@@ -1,7 +1,7 @@
-import { FC, useEffect, useRef, useState } from "react";
-import { play1, play2, pause1, pause2 } from "./paths";
-import { interpolate } from "flubber";
-import { motion, animate, useMotionValue, useTransform } from "framer-motion";
+import { FC, useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { PauseIcon, PlayIcon } from "../../assets";
+import Button from "../General/Button";
 
 interface PlayToggleProps {
   isPlaying: boolean;
@@ -9,43 +9,42 @@ interface PlayToggleProps {
 }
 
 const PlayToggle: FC<PlayToggleProps> = ({ isPlaying, handleTogglePlay }) => {
+  const playController = useAnimation();
+  const pauseController = useAnimation();
+
+  useEffect(() => {
+    playController.start(isPlaying ? "hidden" : "visible");
+    pauseController.start(isPlaying ? "visible" : "hidden");
+  }, [isPlaying]);
+
   return (
-    <button onClick={handleTogglePlay}>
-      <svg
-        id="pp-toggle"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 500 700"
-        width="auto"
-        height="100%"
-        preserveAspectRatio="xMidYMid meet"
+    <Button
+      onClick={handleTogglePlay}
+    >
+      <motion.div
+        className="absolute left-0 right-0 top-0 bottom-0 h-max w-max m-auto"
+        variants={{
+          visible: { opacity: 1, scale: 1 },
+          hidden: { opacity: 0, scale: 0.2 },
+        }}
+        initial="hidden"
+        animate={playController}
       >
-        <SVGMorph isPlaying={isPlaying} paths={[play1, pause1, play1]} />
-        <SVGMorph isPlaying={isPlaying} paths={[play2, pause2, play2]} />
-      </svg>
-    </button>
+        <PlayIcon />
+      </motion.div>
+      <motion.div
+        className="absolute text-[22px] left-0 right-0 top-0 bottom-0 h-max w-max m-auto"
+        variants={{
+          visible: { opacity: 1, scale: 1 },
+          hidden: { opacity: 0, scale: 0.2 },
+        }}
+        initial="visible"
+        animate={pauseController}
+      >
+        <PauseIcon />
+      </motion.div>
+    </Button>
   );
 };
 
 export default PlayToggle;
-
-function SVGMorph({ paths, isPlaying }) {
-  const [pathIndex, setPathIndex] = useState(1);
-  const progress = useMotionValue(0) as any;
-  const getIndex = paths.map((_: string, i: number) => i);
-  const path = useTransform(progress, getIndex, paths, {
-    mixer: (a, b) => interpolate(a, b, { maxSegmentLength: 4 }),
-  });
-
-  useEffect(() => {
-    if (isPlaying) {
-      animate(progress, pathIndex, {
-        duration: 0.2,
-      });
-    } else {
-      animate(progress, 0, {
-        duration: 0.2,
-      });}
-  }, [isPlaying]);
-
-  return <motion.path height={"100%"} d={path} fill="#ffffff" />;
-}

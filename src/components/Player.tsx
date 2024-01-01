@@ -1,9 +1,9 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
-import VolumeButton from "./VolumeButton";
+import { LayoutGroup, motion } from "framer-motion";
 import PlayToggle from "./PlayButton/Toggle";
-import FullScreenButton from "./FullScreenButton/Button";
+import FullScreenButton from "./FullScreenButton/FullScreenToggle";
+import Volume from "./VolumeButton/Volume";
 
 interface PlayerProps {
   // Add your prop types here
@@ -23,9 +23,11 @@ const Player: FC<PlayerProps> = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [volume, setVolume] = useState(100);
-  
+
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+
+  const [isPanelHovering, setIsPanelHovering] = useState(false);
 
   function formatTime(seconds) {
     const days = Math.floor(seconds / 86400);
@@ -78,9 +80,11 @@ const Player: FC<PlayerProps> = () => {
     setIsLoading(false);
   };
 
-  const handleError = () => {
+  const handleError = (error) => {
     setIsError(true);
+    console.error(error);
   };
+
   const handlePlay = () => {
     setIsPlaying(true);
   };
@@ -102,8 +106,13 @@ const Player: FC<PlayerProps> = () => {
     setCurrentTime(videoRef.current.currentTime);
   };
 
+  const handleVolumeChange = (volume) => {
+    setVolume(volume);
+    videoRef.current.volume = volume / 100;
+  };
+
   return (
-    <div className="w-screen h-screen flex items-center justify-center flex-1 bg-black" onDoubleClick={toggleScreenHandler}>
+    <div className="w-screen h-screen flex items-center justify-center flex-1 bg-black">
       {isError ? (
         <div className="flex flex-col items-center justify-center">
           <h1 className="text-2xl">
@@ -125,27 +134,36 @@ const Player: FC<PlayerProps> = () => {
             onLoadStart={handleLoadStart}
             onLoadedData={handleLoadEnd}
             onTimeUpdate={handleTimeUpdate}
-            onError={handleError}
+            // onError={handleError}
+            onInvalid={handleError}
             onPlay={handlePlay}
             onPause={handlePause}
             autoPlay
           ></video>
           <div className="absolute w-screen h-screen flex flex-col">
             <div className="flex-1 flex items-end">
-              <div className="flex w-full items-center px-12 py-5 justify-between">
+              <div
+                onMouseLeave={() => setIsPanelHovering(false)}
+                onMouseEnter={() => setIsPanelHovering(true)}
+                className="flex w-full items-center px-12 py-5 justify-between"
+              >
                 <div className="flex items-center justify-center">
-                  <div className="w-[23px] h-[23px]">
-                    <PlayToggle
-                      isPlaying={isPlaying}
-                      handleTogglePlay={handleTogglePlay}
-                    />
-                  </div>
-                  {/* <div className="ml-5"> */}
-                  {/* <VolumeButton/> */}
-                  {/* </div> */}
-                  <p className="drop-shadow-2xl ml-5">
-                    {formatTime(currentTime)} / {formatTime(duration)}
-                  </p>
+                  <PlayToggle
+                    isPlaying={isPlaying}
+                    handleTogglePlay={handleTogglePlay}
+                  />
+                  <LayoutGroup>
+                    <div className="ml-3">
+                      <Volume
+                        onVolumeChange={handleVolumeChange}
+                        volume={volume}
+                        isPanelHovering={isPanelHovering}
+                      />
+                    </div>
+                    <motion.p layout className="drop-shadow-2xl ml-3">
+                      {formatTime(currentTime)} / {formatTime(duration)}
+                    </motion.p>
+                  </LayoutGroup>
                 </div>
                 <div>
                   <div className="w-[23px] h-[23px] ">
