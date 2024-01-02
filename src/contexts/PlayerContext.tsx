@@ -7,6 +7,7 @@ import {
   SetStateAction,
   FC,
   useRef,
+  useEffect,
 } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +21,7 @@ interface PlayerContextProps {
   isPlaying: boolean;
   isFullScreen: boolean;
   volume: number;
+  isMuted: boolean;
   duration: number;
   currentTime: number;
   isPanelHovering: boolean;
@@ -29,6 +31,7 @@ interface PlayerContextProps {
   setIsPlaying: Dispatch<SetStateAction<boolean>>;
   setIsFullScreen: Dispatch<SetStateAction<boolean>>;
   setVolume: Dispatch<SetStateAction<number>>;
+  setIsMuted: Dispatch<SetStateAction<boolean>>;
   setDuration: Dispatch<SetStateAction<number>>;
   setCurrentTime: Dispatch<SetStateAction<number>>;
   setIsPanelHovering: Dispatch<SetStateAction<boolean>>;
@@ -40,6 +43,7 @@ interface PlayerContextProps {
   handlePause: () => void;
   handleTogglePlay: () => void;
   handleToggleScreen: () => void;
+  handleToggleMute: () => void;
   handleTimeUpdate: () => void;
   handleVolumeChange: (volume: number) => void;
   videoRef: any;
@@ -71,6 +75,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [volume, setVolume] = useState(100);
+  const [isMuted, setIsMuted] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isPanelHovering, setIsPanelHovering] = useState(false);
@@ -78,17 +83,31 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   const videoRef = useRef(null);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadTimeout = setTimeout(() => {
+      // if (!videoRef?.current?.readyState) handleError();
+    }, 30000);
+
+    return () => {
+      clearTimeout(loadTimeout);
+      setIsError(false);
+    };
+  }, [videoSrc]);
+
   const handleBack = () => {
     navigate("/");
   };
+
   const handleLoadStart = () => {
     setIsLoading(true);
   };
+
   const handleLoadEnd = () => {
     setIsLoading(false);
   };
 
-  const handleError = (error) => {
+  const handleError = (error?) => {
     setIsError(true);
     console.error(error);
   };
@@ -96,9 +115,11 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   const handlePlay = () => {
     setIsPlaying(true);
   };
+
   const handlePause = () => {
     setIsPlaying(false);
   };
+
   const handleTogglePlay = () => {
     isPlaying ? videoRef.current.pause() : videoRef.current.play();
     setIsPlaying((prev) => !prev);
@@ -110,40 +131,80 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
 
     setIsFullScreen((prev) => !prev);
   };
+  const handleToggleMute = () => {
+    setIsMuted((prev) => {
+      videoRef.current.muted = !prev;
+      return !prev;
+    });
+  };
   const handleTimeUpdate = () => {
     setCurrentTime(videoRef.current.currentTime);
   };
 
   const handleVolumeChange = (volume) => {
     setVolume(volume);
+    setIsMuted(false);
     videoRef.current.volume = volume / 100;
   };
 
+  // seeking with arrow keys
   useHotkeys("right", () => {
-    videoRef.current.currentTime += 10;
-    setCurrentTime((prev) => prev + 10);
+    videoRef.current.currentTime = Math.min(
+      videoRef.current.currentTime + 10,
+      videoRef.current.duration
+    );
+    setCurrentTime((prev) => Math.min(prev + 10, videoRef.current.duration));
   });
   useHotkeys("left", () => {
-    videoRef.current.currentTime -= 10;
-    setCurrentTime((prev) => prev - 10);
+    videoRef.current.currentTime = Math.max(
+      videoRef.current.currentTime - 10,
+      0
+    );
+    setCurrentTime((prev) => Math.max(prev - 10, 0));
   });
+
+  // seeking with ctrl+arrow keys
+  useHotkeys("ctrl+right", () => {
+    videoRef.current.currentTime = Math.min(
+      videoRef.current.currentTime + 60,
+      videoRef.current.duration
+    );
+    setCurrentTime((prev) => Math.min(prev + 60, videoRef.current.duration));
+  });
+  useHotkeys("ctrl+left", () => {
+    videoRef.current.currentTime = Math.max(
+      videoRef.current.currentTime - 60,
+      0
+    );
+    setCurrentTime((prev) => Math.max(prev - 60, 0));
+  });
+
+  // volume control with arrow keys
   useHotkeys("up", () => {
-    videoRef.current.volume = Math.min(videoRef.current.volume + 0.05, 1);
-    setVolume((prev) => Math.min(prev + 5, 100));
+    handleVolumeChange(videoRef.current.volume * 100 + 5);
   });
   useHotkeys("down", () => {
-    videoRef.current.volume = Math.max(videoRef.current.volume - 0.05, 0);
-    setVolume((prev) => Math.max(prev - 5, 0));
+    handleVolumeChange(videoRef.current.volume * 100 - 5);
   });
-  useHotkeys("space", () => {
-    handleTogglePlay();
+
+  // volume control with ctrl+arrow keys
+  useHotkeys("ctrl+up", () => {
+    handleVolumeChange(videoRef.current.volume * 100 + 20);
   });
-  useHotkeys("f", () => {
-    handleToggleScreen();
+  useHotkeys("ctrl+down", () => {
+    handleVolumeChange(videoRef.current.volume * 100 - 20);
   });
-  useHotkeys("m", () => {
-    videoRef.current.muted = !videoRef.current.muted;
-  });
+
+  // play/pause with space bar
+  useHotkeys("space, pause", handleTogglePlay);
+
+  // toggle fullscreen with f
+  useHotkeys("f", handleToggleScreen);
+
+  // mute/unmute with m
+  useHotkeys("m", handleToggleMute);
+
+  // seek to start/end with home/end
   useHotkeys("end", () => {
     videoRef.current.currentTime = videoRef.current.duration;
     setCurrentTime(videoRef.current.duration);
@@ -162,6 +223,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     isPlaying,
     isFullScreen,
     volume,
+    isMuted,
     duration,
     currentTime,
     isPanelHovering,
@@ -172,6 +234,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     setIsPlaying,
     setIsFullScreen,
     setVolume,
+    setIsMuted,
     setDuration,
     setCurrentTime,
     handleBack,
@@ -182,6 +245,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     handlePause,
     handleTogglePlay,
     handleToggleScreen,
+    handleToggleMute,
     handleTimeUpdate,
     handleVolumeChange,
     videoRef,

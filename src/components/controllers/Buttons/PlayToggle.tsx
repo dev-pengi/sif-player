@@ -9,6 +9,10 @@ interface PlayToggleProps {}
 const PlayToggle: FC<PlayToggleProps> = ({}) => {
   const playController = useAnimation();
   const pauseController = useAnimation();
+  const iconVariants = {
+    visible: { opacity: 1, scale: 1 },
+    hidden: { opacity: 0, scale: 0.2 },
+  };
 
   const { isPlaying, handleTogglePlay } = usePlayerContext();
 
@@ -21,10 +25,7 @@ const PlayToggle: FC<PlayToggleProps> = ({}) => {
     <Button onClick={handleTogglePlay}>
       <motion.div
         className="absolute left-0 right-0 top-0 bottom-0 h-max w-max m-auto"
-        variants={{
-          visible: { opacity: 1, scale: 1 },
-          hidden: { opacity: 0, scale: 0.2 },
-        }}
+        variants={iconVariants}
         initial="hidden"
         animate={playController}
       >
@@ -32,10 +33,7 @@ const PlayToggle: FC<PlayToggleProps> = ({}) => {
       </motion.div>
       <motion.div
         className="absolute text-[22px] left-0 right-0 top-0 bottom-0 h-max w-max m-auto"
-        variants={{
-          visible: { opacity: 1, scale: 1 },
-          hidden: { opacity: 0, scale: 0.2 },
-        }}
+        variants={iconVariants}
         initial="visible"
         animate={pauseController}
       >
