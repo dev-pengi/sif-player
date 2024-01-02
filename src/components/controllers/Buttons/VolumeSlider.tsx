@@ -11,8 +11,14 @@ interface VolumeSliderProps {}
 
 const VolumeSlider: FC<VolumeSliderProps> = ({}) => {
   const [isDragging, setIsDragging] = useState(false);
-  const { volume, isMuted, isPanelHovering, handleVolumeChange } =
-    usePlayerContext();
+  const [isButtonHovering, setIsButtonHovering] = useState(false);
+  const {
+    volume,
+    isMuted,
+    isPanelHovering,
+    handleVolumeChange,
+    handleToggleMute,
+  } = usePlayerContext();
   const [currentMaxVar, setCurrentMaxVar] = useState("visible");
   const [currentMinVar, setCurrentMinVar] = useState("hidden");
   const [currentMuteVar, setCurrentMuteVar] = useState("hidden");
@@ -63,7 +69,8 @@ const VolumeSlider: FC<VolumeSliderProps> = ({}) => {
 
   useEffect(() => {
     if (!(isPanelHovering || isDragging)) sliderControls.start("hidden");
-  }, [isPanelHovering, isDragging]);
+    else if (isButtonHovering) sliderControls.start("visible");
+  }, [isPanelHovering, isDragging, isButtonHovering]);
 
   return (
     <Button
@@ -71,10 +78,11 @@ const VolumeSlider: FC<VolumeSliderProps> = ({}) => {
         borderRadius: 6,
       }}
       className="pl-2.5 pr-1.5 py-1.5"
-      onMouseEnter={() => sliderControls.start("visible")}
+      onMouseEnter={() => setIsButtonHovering(true)}
+      onMouseLeave={() => setIsButtonHovering(false)}
     >
       <div className="flex items-center justify-start w-full h-[22px] text-[22px]">
-        <div className="w-[22px] h-[22px] relative">
+        <div className="w-[22px] h-[22px] relative" onClick={handleToggleMute}>
           <motion.div
             className="absolute left-0 right-0 top-0 bottom-0 h-max w-max m-auto"
             variants={iconVariants}
@@ -140,7 +148,7 @@ const VolumeSlider: FC<VolumeSliderProps> = ({}) => {
               handle: {
                 border: "none",
                 boxShadow: "none",
-                cursor:'pointer',
+                cursor: "pointer",
                 opacity: 1,
               },
               track: {

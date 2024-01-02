@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 
 interface PlayerContextProps {
   videoFile: any;
-  setVideoFile: Dispatch<SetStateAction<any>>;
   isLoading: boolean;
   isError: boolean;
   videoSrc: string;
@@ -27,6 +26,7 @@ interface PlayerContextProps {
   isPanelHovering: boolean;
   mediaData: any;
   currentSpeed: number;
+  setVideoFile: Dispatch<SetStateAction<any>>;
   setMediaData: Dispatch<SetStateAction<any>>;
   setVideoSrc: Dispatch<SetStateAction<string>>;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
@@ -38,6 +38,7 @@ interface PlayerContextProps {
   setDuration: Dispatch<SetStateAction<number>>;
   setCurrentTime: Dispatch<SetStateAction<number>>;
   setIsPanelHovering: Dispatch<SetStateAction<boolean>>;
+  setCurrentSpeed: Dispatch<SetStateAction<number>>;
   handleBack: () => void;
   handleLoadStart: () => void;
   handleLoadEnd: () => void;
@@ -50,7 +51,6 @@ interface PlayerContextProps {
   handleTimeUpdate: () => void;
   handlePlaybackSpeedUpdate: (speed: number) => void;
   handleVolumeChange: (volume: number) => void;
-  setCurrentSpeed: Dispatch<SetStateAction<number>>;
   videoRef: any;
 }
 
@@ -107,6 +107,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   };
 
   const handleLoadStart = () => {
+    console.log("load start");
     setIsLoading(true);
   };
 

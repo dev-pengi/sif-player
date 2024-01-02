@@ -5,7 +5,10 @@ import { usePlayerContext } from "../contexts/PlayerContext";
 import { useNavigate } from "react-router-dom";
 import { extractUUIDFromBlobUrl } from "../utils";
 
-const VideoPicker: FC = () => {
+interface VideoPickerProps {
+  handleLoadStart: () => void;
+}
+const VideoPicker: FC<VideoPickerProps> = ({ handleLoadStart }) => {
   const navigate = useNavigate();
   const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
   const [isDragOver, setDragOver] = useState(false);
@@ -26,6 +29,7 @@ const VideoPicker: FC = () => {
       };
 
       reader.readAsArrayBuffer(videoFile);
+      handleLoadStart();
     } else {
       navigate("/");
     }

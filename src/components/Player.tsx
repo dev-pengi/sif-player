@@ -6,16 +6,39 @@ import { VideoPlayer } from "./players";
 
 const useVideoSrc = () => {
   const location = useLocation();
-  const { setVideoSrc } = usePlayerContext();
+  const { setVideoSrc, setMediaData } = usePlayerContext();
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const blobID = queryParams.get("src");
+    const handleVideoSrc = async () => {
+      const queryParams = new URLSearchParams(location.search);
+      const src = queryParams.get("src");
+      const type = queryParams.get("type");
 
-    const { protocol, host } = window.location;
+      const { protocol, host } = window.location;
+      if (type === "local") {
+        const blobUrl = `blob:${protocol}//${host}/${src}`;
+        setVideoSrc(blobUrl);
+      } else {
+        setVideoSrc(src);
+        const controller = new AbortController();
+        const signal = controller.signal;
 
-    const blobUrl = `blob:${protocol}//${host}/${blobID}`;
-    setVideoSrc(blobUrl);
+        const mediaData = await fetch(src, { signal });
+        const name = mediaData.headers
+          .get("Content-Disposition")
+          .split(";")[1]
+          .trim()
+          .split("=")[1]
+          .replace(/"/g, "");
+        const size = mediaData.headers.get("content-length");
+        const type = mediaData.headers.get("content-type");
+
+        setMediaData({ name, size, type });
+        controller.abort();
+      }
+    };
+
+    handleVideoSrc();
   }, []);
 };
 
@@ -26,6 +49,7 @@ const useVideoMetadata = () => {
     if (videoRef.current) {
       const handleMetadataLoaded = () => {
         setDuration(videoRef.current.duration);
+        console.log(videoRef.current);
       };
 
       videoRef.current.addEventListener("loadedmetadata", handleMetadataLoaded);

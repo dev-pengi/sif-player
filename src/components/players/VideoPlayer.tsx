@@ -28,7 +28,10 @@ const VideoPlayer: FC = () => {
           ref={videoRef}
           className="object-contain w-screen h-screen"
           src={videoSrc}
+          onError={handleLoadStart}
           onLoadStart={handleLoadStart}
+          onWaiting={handleLoadStart}
+          onPlaying={handleLoadEnd}
           onLoadedData={handleLoadEnd}
           onTimeUpdate={handleTimeUpdate}
           onPlay={handlePlay}

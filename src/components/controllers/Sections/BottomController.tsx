@@ -9,10 +9,20 @@ import {
 import { formatTime } from "../../../utils";
 import { usePlayerContext } from "../../../contexts/PlayerContext";
 
-const BottomController: FC = () => {
+interface BottomControllerProps {
+  showControllers: boolean;
+}
+
+const BottomController: FC<BottomControllerProps> = ({ showControllers }) => {
   const { duration, currentTime, setIsPanelHovering } = usePlayerContext();
   return (
-    <div
+    <motion.div
+      variants={{
+        visible: { opacity: 1 },
+        hidden: { opacity: 0 },
+      }}
+      initial="visible"
+      animate={showControllers ? "visible" : "hidden"}
       onMouseLeave={() => setIsPanelHovering(false)}
       onMouseEnter={() => setIsPanelHovering(true)}
       className="relative flex w-full items-center px-12 h-[70px] justify-between"
@@ -23,7 +33,7 @@ const BottomController: FC = () => {
           <div className="ml-3">
             <VolumeSlider />
           </div>
-          <motion.p layout className="drop-shadow-2xl ml-3">
+          <motion.p layout className="drop-shadow-2xl ml-4">
             {formatTime(currentTime)} / {formatTime(duration)}
           </motion.p>
         </LayoutGroup>
@@ -34,7 +44,7 @@ const BottomController: FC = () => {
           <FullScreenButton />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
