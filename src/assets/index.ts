@@ -7,5 +7,6 @@ import MuteSoundIcon from "./MuteSoundIcon";
 import BackIcon from "./BackIcon";
 import PlaybackSpeedIcon from "./PlaybackSpeedIcon";
 import CheckIcon from './CheckIcon'
+import LinkIcon from "./LinkIcon";
 
-export { PlayIcon, PauseIcon, MaximizeIcon, MaxSoundIcon, MinSoundIcon, MuteSoundIcon, BackIcon, PlaybackSpeedIcon, CheckIcon }
+export { PlayIcon, PauseIcon, MaximizeIcon, MaxSoundIcon, MinSoundIcon, MuteSoundIcon, BackIcon, PlaybackSpeedIcon, CheckIcon, LinkIcon };
