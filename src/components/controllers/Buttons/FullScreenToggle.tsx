@@ -3,9 +3,8 @@ import Button from "./Button";
 import { MaximizeIcon } from "../../../assets";
 import { usePlayerContext } from "../../../contexts/PlayerContext";
 
-interface FullScreenButtonProps {}
 
-const FullScreenButton: FC<FullScreenButtonProps> = () => {
+const FullScreenButton: FC = () => {
   const { handleToggleScreen } = usePlayerContext();
 
   return (

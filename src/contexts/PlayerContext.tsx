@@ -25,6 +25,9 @@ interface PlayerContextProps {
   duration: number;
   currentTime: number;
   isPanelHovering: boolean;
+  mediaData: any;
+  currentSpeed: number;
+  setMediaData: Dispatch<SetStateAction<any>>;
   setVideoSrc: Dispatch<SetStateAction<string>>;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
   setIsError: Dispatch<SetStateAction<boolean>>;
@@ -45,7 +48,9 @@ interface PlayerContextProps {
   handleToggleScreen: () => void;
   handleToggleMute: () => void;
   handleTimeUpdate: () => void;
+  handlePlaybackSpeedUpdate: (speed: number) => void;
   handleVolumeChange: (volume: number) => void;
+  setCurrentSpeed: Dispatch<SetStateAction<number>>;
   videoRef: any;
 }
 
@@ -68,6 +73,7 @@ interface PlayerContextProviderProps {
 const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   children,
 }) => {
+  const [mediaData, setMediaData] = useState({});
   const [videoFile, setVideoFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -79,14 +85,15 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isPanelHovering, setIsPanelHovering] = useState(false);
+  const [currentSpeed, setCurrentSpeed] = useState(1);
 
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const loadTimeout = setTimeout(() => {
-      // if (!videoRef?.current?.readyState) handleError();
+      if (!videoRef?.current?.readyState) handleError();
     }, 30000);
 
     return () => {
@@ -120,6 +127,10 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     setIsPlaying(false);
   };
 
+  const handlePlaybackSpeedUpdate = (speed: number) => {
+    setCurrentSpeed(speed);
+  };
+
   const handleTogglePlay = () => {
     isPlaying ? videoRef.current.pause() : videoRef.current.play();
     setIsPlaying((prev) => !prev);
@@ -141,10 +152,11 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     setCurrentTime(videoRef.current.currentTime);
   };
 
-  const handleVolumeChange = (volume) => {
-    setVolume(volume);
+  const handleVolumeChange = (volume: number) => {
+    const newVolume = Math.max(0, Math.min(volume, 100));
+    setVolume(newVolume);
     setIsMuted(false);
-    videoRef.current.volume = volume / 100;
+    videoRef.current.volume = newVolume / 100;
   };
 
   // seeking with arrow keys
@@ -216,7 +228,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
 
   const value = {
     videoFile,
-    setVideoFile,
+    mediaData,
     isLoading,
     isError,
     videoSrc,
@@ -227,6 +239,9 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     duration,
     currentTime,
     isPanelHovering,
+    currentSpeed,
+    setVideoFile,
+    setMediaData,
     setIsPanelHovering,
     setVideoSrc,
     setIsLoading,
@@ -248,6 +263,8 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     handleToggleMute,
     handleTimeUpdate,
     handleVolumeChange,
+    handlePlaybackSpeedUpdate,
+    setCurrentSpeed,
     videoRef,
   };
 

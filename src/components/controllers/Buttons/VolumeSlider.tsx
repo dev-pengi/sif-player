@@ -1,12 +1,11 @@
 import { FC, useEffect, useState } from "react";
-import { MaxSoundIcon } from "../../../assets";
-import Slider from "rc-slider";
-import "rc-slider/assets/index.css";
 import { motion, useAnimation } from "framer-motion";
-import Button from "./Button";
+import Slider from "rc-slider";
+
 import { usePlayerContext } from "../../../contexts/PlayerContext";
-import MinSoundIcon from "../../../assets/MinSoundIcon";
-import MuteSoundIcon from "../../../assets/MuteSoundIcon";
+import Button from "./Button";
+import { MaxSoundIcon, MinSoundIcon, MuteSoundIcon } from "../../../assets";
+import "rc-slider/assets/index.css";
 
 interface VolumeSliderProps {}
 
@@ -14,6 +13,9 @@ const VolumeSlider: FC<VolumeSliderProps> = ({}) => {
   const [isDragging, setIsDragging] = useState(false);
   const { volume, isMuted, isPanelHovering, handleVolumeChange } =
     usePlayerContext();
+  const [currentMaxVar, setCurrentMaxVar] = useState("visible");
+  const [currentMinVar, setCurrentMinVar] = useState("hidden");
+  const [currentMuteVar, setCurrentMuteVar] = useState("hidden");
 
   const iconVariants = {
     visible: { opacity: 1, scale: 1 },
@@ -27,25 +29,37 @@ const VolumeSlider: FC<VolumeSliderProps> = ({}) => {
 
   useEffect(() => {
     if (isMuted) {
-      maxSoundControls.start("hidden");
-      minSoundControls.start("hidden");
-      muteSoundControls.start("visible");
+      currentMaxVar !== "hidden" && maxSoundControls.start("hidden");
+      currentMinVar !== "hidden" && minSoundControls.start("hidden");
+      currentMuteVar !== "visible" && muteSoundControls.start("visible");
+      setCurrentMaxVar("hidden");
+      setCurrentMinVar("hidden");
+      setCurrentMuteVar("visible");
       return;
     }
     if (volume > 50) {
-      maxSoundControls.start("visible");
-      minSoundControls.start("hidden");
-      muteSoundControls.start("hidden");
+      currentMaxVar !== "visible" && maxSoundControls.start("visible");
+      currentMinVar !== "hidden" && minSoundControls.start("hidden");
+      currentMuteVar !== "hidden" && muteSoundControls.start("hidden");
+      setCurrentMaxVar("visible");
+      setCurrentMinVar("hidden");
+      setCurrentMuteVar("hidden");
     } else if (volume <= 50 && volume > 0) {
-      maxSoundControls.start("hidden");
-      minSoundControls.start("visible");
-      muteSoundControls.start("hidden");
+      currentMaxVar !== "hidden" && maxSoundControls.start("hidden");
+      currentMinVar !== "visible" && minSoundControls.start("visible");
+      currentMuteVar !== "hidden" && muteSoundControls.start("hidden");
+      setCurrentMaxVar("hidden");
+      setCurrentMinVar("visible");
+      setCurrentMuteVar("hidden");
     } else if (volume === 0) {
-      maxSoundControls.start("hidden");
-      minSoundControls.start("hidden");
-      muteSoundControls.start("visible");
+      currentMaxVar !== "hidden" && maxSoundControls.start("hidden");
+      currentMinVar !== "hidden" && minSoundControls.start("hidden");
+      currentMuteVar !== "visible" && muteSoundControls.start("visible");
+      setCurrentMaxVar("hidden");
+      setCurrentMinVar("hidden");
+      setCurrentMuteVar("visible");
     }
-  }, [volume, isMuted]);
+  }, [volume, isMuted, currentMaxVar, currentMinVar, currentMuteVar]);
 
   useEffect(() => {
     if (!(isPanelHovering || isDragging)) sliderControls.start("hidden");
@@ -64,7 +78,7 @@ const VolumeSlider: FC<VolumeSliderProps> = ({}) => {
           <motion.div
             className="absolute left-0 right-0 top-0 bottom-0 h-max w-max m-auto"
             variants={iconVariants}
-            initial="hidden"
+            initial="visible"
             animate={maxSoundControls}
             transition={{
               duration: 0.1,
@@ -126,6 +140,7 @@ const VolumeSlider: FC<VolumeSliderProps> = ({}) => {
               handle: {
                 border: "none",
                 boxShadow: "none",
+                cursor:'pointer',
                 opacity: 1,
               },
               track: {
