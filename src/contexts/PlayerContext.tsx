@@ -129,6 +129,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
 
   const handlePlaybackSpeedUpdate = (speed: number) => {
     setCurrentSpeed(speed);
+    videoRef.current.playbackRate = speed;
   };
 
   const handleTogglePlay = () => {

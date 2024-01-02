@@ -27,7 +27,7 @@ const MainPage: FC = () => {
             />
           </div>
           <div className="flex">
-            <button className="py-2 px-9 mt-4 text-[14px] border-[2px] border-primary text-white bg-primary hover:opacity-80 duration-200 border-solid rounded-[4px]">
+            <button className="py-2 px-9 mt-4 text-[14px] border-[2px] border-primary text-white bg-primary hover:opacity-90 duration-200 border-solid rounded-[4px]">
               Play Video
             </button>
           </div>
