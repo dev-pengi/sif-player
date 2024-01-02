@@ -5,6 +5,7 @@
 @tailwind utilities;
 
 :root {
+  /* main theme */
   --primary: #9e35e8;
   --dark: #101010;
   --white: #ffffff;
@@ -16,6 +17,16 @@
   --gray-3: #5e6064;
   --gray-4: #3f4145;
   --gray-5: #2e3033;
+  /* contexify theme */
+  --contexify-menu-bgColor: #000000cb;
+  --contexify-separator-color: #666666;
+  --contexify-item-color: #ffffff;
+  --contexify-activeItem-color: #fff;
+  --contexify-activeItem-bgColor: #4d4d4d96;
+  --contexify-rightSlot-color: #6f6e77;
+  --contexify-activeRightSlot-color: #fff;
+  --contexify-arrow-color: #ffffff;
+  --contexify-activeArrow-color: #fff;
 }
 
 * {
@@ -111,4 +122,54 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--light-3);
+}
+
+.top-shadow {
+  background: rgb(0, 0, 0);
+  background: -moz-linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.8016456582633054) 0%,
+    rgba(0, 0, 0, 0.38988095238095233) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  background: -webkit-linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.8016456582633054) 0%,
+    rgba(0, 0, 0, 0.38988095238095233) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.8016456582633054) 0%,
+    rgba(0, 0, 0, 0.38988095238095233) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#000000",GradientType=1);
+}
+
+.bottom-shadow {
+  background: rgb(0, 0, 0);
+  background: -moz-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.8016456582633054) 0%,
+    rgba(0, 0, 0, 0.38988095238095233) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  background: -webkit-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.8016456582633054) 0%,
+    rgba(0, 0, 0, 0.38988095238095233) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.8016456582633054) 0%,
+    rgba(0, 0, 0, 0.38988095238095233) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#000000",GradientType=1);
+}
+
+.contexify {
+  border: rgba(184, 184, 184, 0.322) 1px solid;
 }
