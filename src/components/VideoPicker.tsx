@@ -68,7 +68,7 @@ const VideoPicker: FC = () => {
     <div
       className={`border-2 border-dashed  ${
         isDragOver ? "border-primary text-primary" : "border-neutral-600"
-      } duration-100 capitalize w-max px-16 py-9 rounded-md flex items-center justify-center flex-col`}
+      } duration-100 capitalize w-max px-16 py-9 rounded-lg flex items-center justify-center flex-col`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
