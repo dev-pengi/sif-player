@@ -9,7 +9,7 @@ const VideoPicker: FC = () => {
   const navigate = useNavigate();
   const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
   const [isDragOver, setDragOver] = useState(false);
-  const { videoFile, setVideoFile } = usePlayerContext();
+  const { videoFile, setVideoFile, setMediaData } = usePlayerContext();
 
   useEffect(() => {
     if (videoFile) {
@@ -40,6 +40,7 @@ const VideoPicker: FC = () => {
 
   const handleSelectedFiles = async (files: FileList) => {
     const fileData = files[0];
+    setMediaData(fileData);
     setVideoFile(fileData);
   };
 
