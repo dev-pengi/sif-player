@@ -114,7 +114,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     setIsLoading(false);
   };
 
-  const handleError = (error?) => {
+  const handleError = (error?: any) => {
     setIsError(true);
     console.error(error);
   };
