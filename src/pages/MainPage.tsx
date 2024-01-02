@@ -1,13 +1,19 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { VideoPicker } from "../components";
 import { usePlayerContext } from "../contexts/PlayerContext";
 import { LinkIcon } from "../assets";
+import { useNavigate } from "react-router-dom";
 
 const MainPage: FC = () => {
-  const { setVideoFile } = usePlayerContext();
-  useEffect(() => {
-    setVideoFile(null);
-  }, []);
+  const navigate = useNavigate();
+
+  const [URl, setURL] = useState("");
+
+  const handleUrlSubmit = (e: any) => {
+    e.preventDefault();
+    navigate(`/player?src=${URl}&type=url`);
+  };
+
   return (
     <div className="flex h-screen justify-center items-center">
       <div className="backdrop-blur-2xl border-[1px] flex items-center w-full max-w-[1000px] rounded-md border-solid border-neutral-800 bg-zinc-800/30 from-inherit px-2 py-2">
@@ -21,13 +27,18 @@ const MainPage: FC = () => {
               <LinkIcon />
             </div>
             <input
+              onChange={(e) => setURL(e.target.value)}
+              value={URl}
               type="text"
               id="media-url"
               className="px-6 py-3 pl-[46px] w-full h-max bg-transparent rounded-md border-neutral-600 border-solid border-[1px]"
             />
           </div>
           <div className="flex">
-            <button className="py-2 px-9 mt-4 text-[14px] border-[2px] border-primary text-white bg-primary hover:opacity-90 duration-200 border-solid rounded-[4px]">
+            <button
+              onClick={handleUrlSubmit}
+              className="py-2 px-9 mt-4 text-[14px] border-[2px] border-primary text-white bg-primary hover:opacity-90 duration-200 border-solid rounded-[4px]"
+            >
               Play Video
             </button>
           </div>
