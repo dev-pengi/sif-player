@@ -49,6 +49,7 @@ interface PlayerContextProps {
   handleToggleScreen: () => void;
   handleToggleMute: () => void;
   handleTimeUpdate: () => void;
+  handleReset: () => void;
   handlePlaybackSpeedUpdate: (speed: number) => void;
   handleVolumeChange: (volume: number) => void;
   videoRef: any;
@@ -113,6 +114,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
 
   const handleLoadEnd = () => {
     setIsLoading(false);
+    setDuration(videoRef.current.duration);
   };
 
   const handleError = (error?: any) => {
@@ -141,9 +143,20 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   const handleToggleScreen = () => {
     if (isFullScreen) document.exitFullscreen();
     else document.body.requestFullscreen();
-
-    setIsFullScreen((prev) => !prev);
   };
+
+  useEffect(() => {
+    const handleFullScreenChange = () => {
+      setIsFullScreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullScreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullScreenChange);
+    };
+  }, []);
+
   const handleToggleMute = () => {
     setIsMuted((prev) => {
       videoRef.current.muted = !prev;
@@ -159,6 +172,22 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     setVolume(newVolume);
     setIsMuted(false);
     videoRef.current.volume = newVolume / 100;
+  };
+
+  const handleReset = () => {
+    setVideoFile(null);
+    setMediaData(null);
+    setVideoSrc("");
+    setIsLoading(true);
+    setIsError(false);
+    setIsPlaying(false);
+    setIsFullScreen(false);
+    setVolume(100);
+    setIsMuted(false);
+    setDuration(0);
+    setCurrentTime(0);
+    setIsPanelHovering(false);
+    setCurrentSpeed(1);
   };
 
   // seeking with arrow keys
@@ -227,6 +256,9 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     videoRef.current.currentTime = 0;
     setCurrentTime(0);
   });
+  useHotkeys("ctrl+alt+e", () => {
+    handleBack();
+  });
 
   const value = {
     videoFile,
@@ -266,6 +298,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     handleTimeUpdate,
     handleVolumeChange,
     handlePlaybackSpeedUpdate,
+    handleReset,
     setCurrentSpeed,
     videoRef,
   };

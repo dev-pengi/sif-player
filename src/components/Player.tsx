@@ -41,33 +41,9 @@ const useVideoSrc = () => {
     handleVideoSrc();
   }, []);
 };
-
-const useVideoMetadata = () => {
-  const { setDuration, videoRef, videoSrc } = usePlayerContext();
-
-  useEffect(() => {
-    if (videoRef.current) {
-      const handleMetadataLoaded = () => {
-        setDuration(videoRef.current.duration);
-        console.log(videoRef.current);
-      };
-
-      videoRef.current.addEventListener("loadedmetadata", handleMetadataLoaded);
-
-      return () => {
-        videoRef?.current?.removeEventListener(
-          "loadedmetadata",
-          handleMetadataLoaded
-        );
-      };
-    }
-  }, [videoSrc]);
-};
-
 const Player: FC = () => {
   const { isError } = usePlayerContext();
   useVideoSrc();
-  useVideoMetadata();
 
   return (
     <div className="w-screen h-screen flex items-center justify-center flex-1 bg-black">

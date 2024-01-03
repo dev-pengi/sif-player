@@ -10,43 +10,22 @@ const MainPage: FC = () => {
   const navigate = useNavigate();
   const [isVideoUploading, setIsVideoUploading] = useState(false);
 
-  const {
-    setVideoFile,
-    setMediaData,
-    setVideoSrc,
-    setIsLoading,
-    setIsError,
-    setIsPlaying,
-    setIsFullScreen,
-    setVolume,
-    setIsMuted,
-    setDuration,
-    setCurrentTime,
-    setIsPanelHovering,
-    setCurrentSpeed,
-  } = usePlayerContext();
-
   useEffect(() => {
-    setVideoFile(null);
-    setMediaData(null);
-    setVideoSrc("");
-    setIsLoading(true);
-    setIsError(false);
-    setIsPlaying(false);
-    setIsFullScreen(false);
-    setVolume(100);
-    setIsMuted(false);
-    setDuration(0);
-    setCurrentTime(0);
-    setIsPanelHovering(false);
-    setCurrentSpeed(1);
+    document.title = `Sif Player | Web Player`;
   }, []);
 
-  const [URl, setURL] = useState("");
+  const { handleReset } = usePlayerContext();
 
+  useEffect(() => {
+    handleReset();
+  }, []);
+
+  const [url, setUrl] = useState("");
+  const [isInvalidUrl, setIsInvalidUrl] = useState(false);
   const handleUrlSubmit = (e: any) => {
     e.preventDefault();
-    navigate(`/player?src=${URl}&type=url`);
+    if (!url?.trim()?.length) return setIsInvalidUrl(true);
+    navigate(`/player?src=${url}&type=url`);
   };
 
   return (
@@ -56,12 +35,19 @@ const MainPage: FC = () => {
         style={{
           borderRadius: 6,
         }}
+        transition={{
+          duration: 0.15,
+        }}
         className="backdrop-blur-2xl border-[1px] flex items-center justify-center w-max border-solid border-neutral-800 bg-zinc-800/30 from-inherit px-2 py-2"
       >
         {isVideoUploading ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            transition={{
+              delay: 0.16,
+              duration: 0.2,
+            }}
             layout
             className="w-[200px] h-[200px] flex justify-center items-center flex-col"
           >
@@ -80,12 +66,17 @@ const MainPage: FC = () => {
                   <LinkIcon />
                 </div>
                 <input
-                  onChange={(e) => setURL(e.target.value)}
-                  value={URl}
+                  onChange={(e) => {
+                    setIsInvalidUrl(false);
+                    setUrl(e.target.value);
+                  }}
+                  value={url}
                   type="text"
                   placeholder="Enter URL"
                   id="media-url"
-                  className="px-6 py-3 w-[600px] pl-[46px] w-full h-max bg-transparent rounded-md border-neutral-600 border-solid border-[1px]"
+                  className={`px-6 py-3 w-[600px] pl-[46px] h-max bg-transparent rounded-md ${
+                    isInvalidUrl ? "border-red-400" : "border-neutral-600"
+                  } border-solid border-[1px]`}
                 />
               </div>
               <div className="flex">

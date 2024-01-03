@@ -26,7 +26,7 @@ const PlayBackSpeed: FC = () => {
           <PlaybackSpeedIcon />
         </div>
       </Button>
-      <Menu animation={false} id={MENU_ID} className="b-[200px]">
+      <Menu animation={"fade"} id={MENU_ID} className="b-[200px]">
         {SPEEDS.map((_s, index) => {
           const speed = index * 0.25;
           return (

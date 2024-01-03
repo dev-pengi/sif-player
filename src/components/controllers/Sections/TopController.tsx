@@ -1,7 +1,7 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { usePlayerContext } from "../../../contexts/PlayerContext";
-import { BackButton } from "../Buttons";
-import { motion } from "framer-motion";
+import { BackButton, MenuButton } from "../Buttons";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface TopControllerProps {
   showControllers: boolean;
@@ -9,21 +9,35 @@ interface TopControllerProps {
 
 const TopController: FC<TopControllerProps> = ({ showControllers }) => {
   const { mediaData } = usePlayerContext();
+  const videoName = mediaData?.name ?? "Untitled Video";
+
+  useEffect(() => {
+    document.title = `Sif Player | ${videoName}`;
+  }, [mediaData]);
+
   return (
-    <motion.div
-      variants={{
-        visible: { opacity: 1 },
-        hidden: { opacity: 0 },
-      }}
-      initial="visible"
-      animate={showControllers ? "visible" : "hidden"}
-      className="relative flex z-1 w-full items-center overflow-visible px-12 h-[70px] justify-between"
-    >
-      <div className="relative flex items-center justify-center">
-        <BackButton />
-        <p className="ml-3">{mediaData?.name ?? "Untitled Media"}</p>
-      </div>
-    </motion.div>
+    <AnimatePresence>
+      {showControllers && (
+        <motion.div
+          variants={{
+            visible: { opacity: 1 },
+            hidden: { opacity: 0 },
+          }}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          className="relative flex z-1 w-full items-center overflow-visible px-12 h-[70px] justify-between"
+        >
+          <div className="relative flex items-center justify-center">
+            <BackButton />
+            <p className="ml-3">{videoName}</p>
+          </div>
+          <div className="relative flex items-center justify-center">
+            <MenuButton />
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
