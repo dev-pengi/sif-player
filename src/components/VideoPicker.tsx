@@ -17,13 +17,15 @@ const VideoPicker: FC<VideoPickerProps> = ({ handleLoadStart }) => {
   useEffect(() => {
     if (videoFile) {
       const reader = new FileReader();
-      let blobUrl = "";
 
       reader.onloadstart = () => {};
 
       reader.onload = (event) => {
+        console.log(event.target.result);
         const blob = new Blob([event.target.result], { type: "video/mp4" });
+        console.log(blob);
         const blobUrl = URL.createObjectURL(blob);
+        console.log(blobUrl);
         const extractedID = extractUUIDFromBlobUrl(blobUrl);
         navigate(`/player?src=${extractedID}&type=local`);
       };
