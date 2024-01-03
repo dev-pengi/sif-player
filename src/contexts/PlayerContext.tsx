@@ -242,12 +242,19 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     setIsPiP(false);
   };
 
-  const useConditionalHotkeys = (key, callback) => {
-    useHotkeys(key, () => {
-      if (shortcutsEnabled) {
-        callback();
+  const useConditionalHotkeys = (key, callback, once = false) => {
+    useHotkeys(
+      key,
+      () => {
+        if (shortcutsEnabled) {
+          callback();
+        }
+      },
+      {
+        keydown: !once,
+        keyup: once,
       }
-    });
+    );
   };
 
   // seeking with arrow keys
@@ -299,32 +306,48 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   });
 
   // play/pause with space bar
-  useConditionalHotkeys("space, pause", handleTogglePlay);
+  useConditionalHotkeys("space, pause", handleTogglePlay, true);
 
   // toggle fullscreen with f
-  useConditionalHotkeys("f", handleToggleScreen);
+  useConditionalHotkeys("f", handleToggleScreen, true);
   useConditionalHotkeys("r", () => {
     setIsLoop((prev) => !prev);
   });
-  useConditionalHotkeys("l", () => {
-    setIsLocked((prev) => !prev);
-  });
+  useConditionalHotkeys(
+    "l",
+    () => {
+      setIsLocked((prev) => !prev);
+    },
+    true
+  );
 
   // mute/unmute with m
-  useConditionalHotkeys("m", handleToggleMute);
+  useConditionalHotkeys("m", handleToggleMute, true);
 
   // seek to start/end with home/end
-  useConditionalHotkeys("end", () => {
-    videoRef.current.currentTime = videoRef.current.duration;
-    setCurrentTime(videoRef.current.duration);
-  });
-  useConditionalHotkeys("home", () => {
-    videoRef.current.currentTime = 0;
-    setCurrentTime(0);
-  });
-  useConditionalHotkeys("ctrl+alt+e", () => {
-    handleBack();
-  });
+  useConditionalHotkeys(
+    "end",
+    () => {
+      videoRef.current.currentTime = videoRef.current.duration;
+      setCurrentTime(videoRef.current.duration);
+    },
+    true
+  );
+  useConditionalHotkeys(
+    "home",
+    () => {
+      videoRef.current.currentTime = 0;
+      setCurrentTime(0);
+    },
+    true
+  );
+  useConditionalHotkeys(
+    "ctrl+alt+e",
+    () => {
+      handleBack();
+    },
+    true
+  );
 
   const value = {
     videoFile,
