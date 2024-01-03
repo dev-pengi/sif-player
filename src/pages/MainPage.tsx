@@ -4,7 +4,7 @@ import { usePlayerContext } from "../contexts/PlayerContext";
 import { LinkIcon } from "../assets";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ActivityIndicator } from "../components/loaders";
+import { ActivityIndicator } from "../components/spins";
 
 const MainPage: FC = () => {
   const navigate = useNavigate();

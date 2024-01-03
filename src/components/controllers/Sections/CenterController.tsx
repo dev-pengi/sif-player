@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { usePlayerContext } from "../../../contexts/PlayerContext";
-import { ActivityIndicator } from "../../loaders";
+import { ActivityIndicator } from "../../spins";
 import { AnimatePresence, motion } from "framer-motion";
 
 const CenterController: FC = () => {
