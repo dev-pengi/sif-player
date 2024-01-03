@@ -12,6 +12,7 @@ const VideoPlayer: FC = () => {
     handlePlay,
     handleError,
     handlePause,
+    handleVideoEnd,
   } = usePlayerContext();
 
   useEffect(() => {
@@ -36,6 +37,7 @@ const VideoPlayer: FC = () => {
           onTimeUpdate={handleTimeUpdate}
           onPlay={handlePlay}
           onPause={handlePause}
+          onEnded={handleVideoEnd}
           autoPlay
         ></video>
       )}

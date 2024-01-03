@@ -9,16 +9,18 @@ import {
 import { formatTime } from "../../../utils";
 import { usePlayerContext } from "../../../contexts/PlayerContext";
 import TrackSlider from "../Track/TrackSlider";
+import LockButton from "../Buttons/LockButton";
 
 interface BottomControllerProps {
   showControllers: boolean;
 }
 
 const BottomController: FC<BottomControllerProps> = ({ showControllers }) => {
-  const { duration, currentTime, setIsPanelHovering } = usePlayerContext();
+  const { duration, currentTime, isLocked, setIsPanelHovering } =
+    usePlayerContext();
   return (
     <AnimatePresence>
-      {showControllers && (
+      {showControllers && !isLocked && (
         <motion.div
           variants={{
             visible: { opacity: 1 },
@@ -35,6 +37,9 @@ const BottomController: FC<BottomControllerProps> = ({ showControllers }) => {
           <div className="flex justify-between w-full mt-2">
             <div className="relative flex items-center justify-center">
               <PlayToggle />
+              <div className="ml-[14px]">
+                <LockButton />
+              </div>
               <LayoutGroup>
                 <div className="ml-3">
                   <VolumeSlider />

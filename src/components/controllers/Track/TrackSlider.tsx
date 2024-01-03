@@ -7,6 +7,7 @@ const TrackSlider: FC = () => {
   const {
     isPlaying,
     handlePause,
+    handlePlay,
     videoRef,
     duration,
     currentTime,
@@ -82,9 +83,7 @@ const TrackSlider: FC = () => {
   }, [currentTime]);
 
   useEffect(() => {
-    if (isDragging && isPlaying) {
-      handlePause();
-    }
+    console.log(isDragging)
   }, [isDragging]);
 
   return (
@@ -120,32 +119,34 @@ const TrackSlider: FC = () => {
         <Indicator
           indicatorPercentage={bufferedPercentage}
           backgroundColor="#ffffff40"
-          animate={true}
+          animate={false}
         />
         <Indicator
           indicatorPercentage={hoverPoint}
           backgroundColor="#ffffff7d"
-          animate={true}
+          animate={false}
         />
         <Indicator
           indicatorPercentage={timePercentage}
           backgroundColor="#ff00fb"
-          animate={!isDragging}
+          animate={false}
         />
       </motion.div>
       <motion.div
         style={{
           borderRadius: "50%",
-          width: 13,
-          height: 13,
         }}
         initial={{
           left: 0,
           opacity: 0,
+          width: 0,
+          height: 0,
         }}
         animate={{
           left: timePercentage * 100 + "%",
           opacity: isHovering ? 1 : 0,
+          width: isHovering ? 13 : 0,
+          height: isHovering ? 13 : 0,
         }}
         transition={{
           type: "tween",

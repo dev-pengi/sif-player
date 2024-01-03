@@ -21,13 +21,15 @@ const PlayBackSpeed: FC = () => {
             </Button>
           </div>
         </DropdownMenu.Trigger>
-        <DropdownMenu.Content
-        >
+        <DropdownMenu.Content>
           {SPEEDS.map((_s, index) => {
             const speed = index * 0.25;
             return (
               <DropdownMenu.Item
-                onClick={() => handlePlaybackSpeedUpdate(speed)}
+                onSelect={(e) => {
+                  e.preventDefault();
+                  handlePlaybackSpeedUpdate(speed);
+                }}
                 key={`pb-speed-${index}`}
               >
                 <div className="flex items-center">

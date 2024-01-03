@@ -26,6 +26,14 @@ interface PlayerContextProps {
   isPanelHovering: boolean;
   mediaData: any;
   currentSpeed: number;
+  isLocked: boolean;
+  isLoop: boolean;
+  shortcutsEnabled: boolean;
+  isPiP: boolean;
+  setIsPiP: Dispatch<SetStateAction<boolean>>;
+  setShortcutsEnabled: Dispatch<SetStateAction<boolean>>;
+  setIsLoop: Dispatch<SetStateAction<boolean>>;
+  setIsLocked: Dispatch<SetStateAction<boolean>>;
   setVideoFile: Dispatch<SetStateAction<any>>;
   setMediaData: Dispatch<SetStateAction<any>>;
   setVideoSrc: Dispatch<SetStateAction<string>>;
@@ -52,6 +60,7 @@ interface PlayerContextProps {
   handleReset: () => void;
   handlePlaybackSpeedUpdate: (speed: number) => void;
   handleVolumeChange: (volume: number) => void;
+  handleVideoEnd: () => void;
   videoRef: any;
 }
 
@@ -87,6 +96,10 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [isPanelHovering, setIsPanelHovering] = useState(false);
   const [currentSpeed, setCurrentSpeed] = useState(1);
+  const [isLocked, setIsLocked] = useState(false);
+  const [isLoop, setIsLoop] = useState(false);
+  const [shortcutsEnabled, setShortcutsEnabled] = useState(true);
+  const [isPiP, setIsPiP] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -103,6 +116,30 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     };
   }, [videoSrc]);
 
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (!videoElement) return;
+    if (isPiP) videoElement.requestPictureInPicture();
+    else document.exitPictureInPicture();
+
+    const enterPiPHandler = () => setIsPiP(true);
+    const leavePiPHandler = () => setIsPiP(false);
+
+    videoElement.addEventListener("enterpictureinpicture", enterPiPHandler);
+    videoElement.addEventListener("leavepictureinpicture", leavePiPHandler);
+
+    return () => {
+      videoElement.removeEventListener(
+        "enterpictureinpicture",
+        enterPiPHandler
+      );
+      videoElement.removeEventListener(
+        "leavepictureinpicture",
+        leavePiPHandler
+      );
+    };
+  }, [isPiP]);
+
   const handleBack = () => {
     navigate("/");
   };
@@ -115,6 +152,14 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   const handleLoadEnd = () => {
     setIsLoading(false);
     setDuration(videoRef.current.duration);
+  };
+
+  const handleVideoEnd = () => {
+    if (isLoop) {
+      videoRef.current.currentTime = 0;
+      setCurrentTime(0);
+      videoRef.current.play();
+    }
   };
 
   const handleError = (error?: any) => {
@@ -131,7 +176,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     setIsPlaying(false);
     videoRef?.current?.pause();
   };
-  
+
   const handleTogglePlay = () => {
     setIsPlaying((prev) => !prev);
 
@@ -191,17 +236,29 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     setCurrentTime(0);
     setIsPanelHovering(false);
     setCurrentSpeed(1);
+    setIsLocked(false);
+    setIsLoop(false);
+    setShortcutsEnabled(true);
+    setIsPiP(false);
+  };
+
+  const useConditionalHotkeys = (key, callback) => {
+    useHotkeys(key, () => {
+      if (shortcutsEnabled) {
+        callback();
+      }
+    });
   };
 
   // seeking with arrow keys
-  useHotkeys("right", () => {
+  useConditionalHotkeys("right", () => {
     videoRef.current.currentTime = Math.min(
       videoRef.current.currentTime + 10,
       videoRef.current.duration
     );
     setCurrentTime((prev) => Math.min(prev + 10, videoRef.current.duration));
   });
-  useHotkeys("left", () => {
+  useConditionalHotkeys("left", () => {
     videoRef.current.currentTime = Math.max(
       videoRef.current.currentTime - 10,
       0
@@ -210,14 +267,14 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   });
 
   // seeking with ctrl+arrow keys
-  useHotkeys("ctrl+right", () => {
+  useConditionalHotkeys("ctrl+right", () => {
     videoRef.current.currentTime = Math.min(
       videoRef.current.currentTime + 60,
       videoRef.current.duration
     );
     setCurrentTime((prev) => Math.min(prev + 60, videoRef.current.duration));
   });
-  useHotkeys("ctrl+left", () => {
+  useConditionalHotkeys("ctrl+left", () => {
     videoRef.current.currentTime = Math.max(
       videoRef.current.currentTime - 60,
       0
@@ -226,40 +283,46 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   });
 
   // volume control with arrow keys
-  useHotkeys("up", () => {
+  useConditionalHotkeys("up", () => {
     handleVolumeChange(videoRef.current.volume * 100 + 5);
   });
-  useHotkeys("down", () => {
+  useConditionalHotkeys("down", () => {
     handleVolumeChange(videoRef.current.volume * 100 - 5);
   });
 
   // volume control with ctrl+arrow keys
-  useHotkeys("ctrl+up", () => {
+  useConditionalHotkeys("ctrl+up", () => {
     handleVolumeChange(videoRef.current.volume * 100 + 20);
   });
-  useHotkeys("ctrl+down", () => {
+  useConditionalHotkeys("ctrl+down", () => {
     handleVolumeChange(videoRef.current.volume * 100 - 20);
   });
 
   // play/pause with space bar
-  useHotkeys("space, pause", handleTogglePlay);
+  useConditionalHotkeys("space, pause", handleTogglePlay);
 
   // toggle fullscreen with f
-  useHotkeys("f", handleToggleScreen);
+  useConditionalHotkeys("f", handleToggleScreen);
+  useConditionalHotkeys("r", () => {
+    setIsLoop((prev) => !prev);
+  });
+  useConditionalHotkeys("l", () => {
+    setIsLocked((prev) => !prev);
+  });
 
   // mute/unmute with m
-  useHotkeys("m", handleToggleMute);
+  useConditionalHotkeys("m", handleToggleMute);
 
   // seek to start/end with home/end
-  useHotkeys("end", () => {
+  useConditionalHotkeys("end", () => {
     videoRef.current.currentTime = videoRef.current.duration;
     setCurrentTime(videoRef.current.duration);
   });
-  useHotkeys("home", () => {
+  useConditionalHotkeys("home", () => {
     videoRef.current.currentTime = 0;
     setCurrentTime(0);
   });
-  useHotkeys("ctrl+alt+e", () => {
+  useConditionalHotkeys("ctrl+alt+e", () => {
     handleBack();
   });
 
@@ -277,6 +340,14 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     currentTime,
     isPanelHovering,
     currentSpeed,
+    isLocked,
+    isLoop,
+    shortcutsEnabled,
+    isPiP,
+    setIsPiP,
+    setShortcutsEnabled,
+    setIsLoop,
+    setIsLocked,
     setVideoFile,
     setMediaData,
     setIsPanelHovering,
@@ -302,6 +373,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     handleVolumeChange,
     handlePlaybackSpeedUpdate,
     handleReset,
+    handleVideoEnd,
     setCurrentSpeed,
     videoRef,
   };

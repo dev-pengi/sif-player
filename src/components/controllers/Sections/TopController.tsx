@@ -8,7 +8,7 @@ interface TopControllerProps {
 }
 
 const TopController: FC<TopControllerProps> = ({ showControllers }) => {
-  const { mediaData } = usePlayerContext();
+  const { mediaData, isLocked } = usePlayerContext();
   const videoName = mediaData?.name ?? "Untitled Video";
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const TopController: FC<TopControllerProps> = ({ showControllers }) => {
 
   return (
     <AnimatePresence>
-      {showControllers && (
+      {showControllers && !isLocked && (
         <motion.div
           variants={{
             visible: { opacity: 1 },
