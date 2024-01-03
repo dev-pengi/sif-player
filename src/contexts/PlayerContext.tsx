@@ -108,7 +108,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   useEffect(() => {
     const loadTimeout = setTimeout(() => {
       if (!videoRef?.current?.readyState) handleError();
-    }, 30000);
+    }, 180000);
 
     return () => {
       clearTimeout(loadTimeout);
