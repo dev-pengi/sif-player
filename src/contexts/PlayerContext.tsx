@@ -124,20 +124,23 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
 
   const handlePlay = () => {
     setIsPlaying(true);
+    videoRef?.current?.play();
   };
 
   const handlePause = () => {
     setIsPlaying(false);
+    videoRef?.current?.pause();
+  };
+  
+  const handleTogglePlay = () => {
+    setIsPlaying((prev) => !prev);
+
+    isPlaying ? videoRef?.current?.pause() : videoRef?.current?.play();
   };
 
   const handlePlaybackSpeedUpdate = (speed: number) => {
     setCurrentSpeed(speed);
     videoRef.current.playbackRate = speed;
-  };
-
-  const handleTogglePlay = () => {
-    isPlaying ? videoRef.current.pause() : videoRef.current.play();
-    setIsPlaying((prev) => !prev);
   };
 
   const handleToggleScreen = () => {

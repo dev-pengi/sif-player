@@ -6,7 +6,7 @@ import Indicator from "./Indicator";
 const TrackSlider: FC = () => {
   const {
     isPlaying,
-    setIsPlaying,
+    handlePause,
     videoRef,
     duration,
     currentTime,
@@ -83,7 +83,7 @@ const TrackSlider: FC = () => {
 
   useEffect(() => {
     if (isDragging && isPlaying) {
-      setIsPlaying(false);
+      handlePause();
     }
   }, [isDragging]);
 
