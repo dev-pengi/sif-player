@@ -6,7 +6,7 @@ import {
   VolumeSlider,
   PlayBackSpeed,
 } from "../Buttons";
-import { formatTime } from "../../../utilities";
+import { formatTime } from "../../../utils";
 import { usePlayerContext } from "../../../contexts/PlayerContext";
 import TrackSlider from "../Track/TrackSlider";
 import LockButton from "../Buttons/LockButton";

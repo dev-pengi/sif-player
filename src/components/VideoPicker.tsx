@@ -3,7 +3,7 @@ import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePlayerContext } from "../contexts/PlayerContext";
 import { useNavigate } from "react-router-dom";
-import { extractUUIDFromBlobUrl } from "../utilities";
+import { extractUUIDFromBlobUrl } from "../utils";
 
 interface VideoPickerProps {
   handleLoadStart: () => void;
