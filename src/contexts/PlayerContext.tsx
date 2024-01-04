@@ -1,3 +1,5 @@
+// yeah, right, that's the black magic powering the web app, enjoy this complete mess, or feel free to contribute and make it more readable :)
+
 import {
   createContext,
   useContext,
