@@ -43,7 +43,7 @@ const MainPage: FC = () => {
           </DropdownMenu.Trigger>
           <DropdownMenu.Content>
             <a href="https://instagram.com/_sif.js">
-              <DropdownMenu.Item style={{}}>Instagram</DropdownMenu.Item>
+              <DropdownMenu.Item>Instagram</DropdownMenu.Item>
             </a>
             <a href="https://t.me/sifjs">
               <DropdownMenu.Item>Telegram</DropdownMenu.Item>
