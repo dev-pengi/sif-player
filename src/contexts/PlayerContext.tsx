@@ -30,6 +30,8 @@ interface PlayerContextProps {
   isLoop: boolean;
   shortcutsEnabled: boolean;
   isPiP: boolean;
+  controllersDeps: string[];
+  setControllersDeps: Dispatch<SetStateAction<string[]>>;
   setIsPiP: Dispatch<SetStateAction<boolean>>;
   setShortcutsEnabled: Dispatch<SetStateAction<boolean>>;
   setIsLoop: Dispatch<SetStateAction<boolean>>;
@@ -61,6 +63,8 @@ interface PlayerContextProps {
   handlePlaybackSpeedUpdate: (speed: number) => void;
   handleVolumeChange: (volume: number) => void;
   handleVideoEnd: () => void;
+  handleAddDep: (dep: string) => void;
+  handleRemoveDep: (dep: string) => void;
   videoRef: any;
 }
 
@@ -100,6 +104,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   const [isLoop, setIsLoop] = useState(false);
   const [shortcutsEnabled, setShortcutsEnabled] = useState(true);
   const [isPiP, setIsPiP] = useState(false);
+  const [controllersDeps, setControllersDeps] = useState([]);
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -139,6 +144,17 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
       );
     };
   }, [isPiP]);
+
+  const handleAddDep = (dep: string) => {
+    if (controllersDeps.includes(dep)) return;
+    setControllersDeps((prev) => [
+      ...prev.filter((prevDep: string) => prevDep !== dep),
+      dep,
+    ]);
+  };
+  const handleRemoveDep = (dep: string) => {
+    setControllersDeps((prev) => prev.filter((prevDep) => prevDep !== dep));
+  };
 
   const handleBack = () => {
     navigate("/");
@@ -221,7 +237,6 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     setIsMuted(false);
     videoRef.current.volume = newVolume / 100;
   };
-
   const handleReset = () => {
     setVideoFile(null);
     setMediaData(null);
@@ -230,17 +245,28 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     setIsError(false);
     setIsPlaying(false);
     setIsFullScreen(false);
-    setVolume(100);
-    setIsMuted(false);
     setDuration(0);
     setCurrentTime(0);
     setIsPanelHovering(false);
-    setCurrentSpeed(1);
-    setIsLocked(false);
-    setIsLoop(false);
-    setShortcutsEnabled(true);
     setIsPiP(false);
+    setVolume(Number(localStorage.getItem("volume")) || 100);
+    setIsMuted(localStorage.getItem("isMuted") === "true" || false);
+    setCurrentSpeed(Number(localStorage.getItem("currentSpeed")) || 1);
+    setIsLocked(localStorage.getItem("isLocked") === "true" || false);
+    setIsLoop(localStorage.getItem("isLoop") === "true" || false);
+    setShortcutsEnabled(
+      localStorage.getItem("shortcutsEnabled") === "true" || true
+    );
   };
+
+  useEffect(() => {
+    localStorage.setItem("volume", String(volume));
+    localStorage.setItem("isMuted", String(isMuted));
+    localStorage.setItem("currentSpeed", String(currentSpeed));
+    localStorage.setItem("isLocked", String(isLocked));
+    localStorage.setItem("isLoop", String(isLoop));
+    localStorage.setItem("shortcutsEnabled", String(shortcutsEnabled));
+  }, [volume, isMuted, currentSpeed, isLocked, isLoop, shortcutsEnabled]);
 
   const useConditionalHotkeys = (key, callback, once = false) => {
     useHotkeys(
@@ -367,6 +393,10 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
     isLoop,
     shortcutsEnabled,
     isPiP,
+    controllersDeps,
+    handleAddDep,
+    handleRemoveDep,
+    setControllersDeps,
     setIsPiP,
     setShortcutsEnabled,
     setIsLoop,

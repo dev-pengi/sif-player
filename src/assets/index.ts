@@ -12,5 +12,6 @@ import LinkIcon from "./LinkIcon";
 import MenuIcon from "./MenuIcon";
 import LockIcon from "./LockIcon";
 import UnlockIcon from "./UnlockIcon";
+import CloseIcon from "./CloseIcon";
 
-export { PlayIcon, PauseIcon, MaximizeIcon, MinimizeIcon, MaxSoundIcon, MinSoundIcon, MuteSoundIcon, BackIcon, PlaybackSpeedIcon, CheckIcon, LinkIcon, MenuIcon, LockIcon, UnlockIcon };
+export { PlayIcon, PauseIcon, MaximizeIcon, MinimizeIcon, MaxSoundIcon, MinSoundIcon, MuteSoundIcon, BackIcon, PlaybackSpeedIcon, CheckIcon, LinkIcon, MenuIcon, LockIcon, UnlockIcon, CloseIcon };

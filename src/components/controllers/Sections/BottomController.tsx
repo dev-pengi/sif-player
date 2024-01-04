@@ -11,16 +11,12 @@ import { usePlayerContext } from "../../../contexts/PlayerContext";
 import TrackSlider from "../Track/TrackSlider";
 import LockButton from "../Buttons/LockButton";
 
-interface BottomControllerProps {
-  showControllers: boolean;
-}
-
-const BottomController: FC<BottomControllerProps> = ({ showControllers }) => {
-  const { duration, currentTime, isLocked, setIsPanelHovering } =
+const BottomController: FC = () => {
+  const { controllersDeps,duration, currentTime, isLocked, setIsPanelHovering } =
     usePlayerContext();
   return (
     <AnimatePresence>
-      {showControllers && !isLocked && (
+      {controllersDeps.length && !isLocked && (
         <motion.div
           variants={{
             visible: { opacity: 1 },

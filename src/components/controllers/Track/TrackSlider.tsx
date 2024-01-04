@@ -2,17 +2,12 @@ import { FC, useEffect, useState, useRef } from "react";
 import { usePlayerContext } from "../../../contexts/PlayerContext";
 import { motion } from "framer-motion";
 import Indicator from "./Indicator";
+import { useSettingsContext } from "../../../contexts/SettingsContext";
 
 const TrackSlider: FC = () => {
-  const {
-    isPlaying,
-    handlePause,
-    handlePlay,
-    videoRef,
-    duration,
-    currentTime,
-    setCurrentTime,
-  } = usePlayerContext();
+  const { videoRef, duration, currentTime, setCurrentTime } =
+    usePlayerContext();
+  const { primaryColor } = useSettingsContext();
   const [timePercentage, setTimePercentage] = useState(0);
   const [hoverPoint, setHoverPoint] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
@@ -83,7 +78,7 @@ const TrackSlider: FC = () => {
   }, [currentTime]);
 
   useEffect(() => {
-    console.log(isDragging)
+    console.log(isDragging);
   }, [isDragging]);
 
   return (
@@ -128,13 +123,14 @@ const TrackSlider: FC = () => {
         />
         <Indicator
           indicatorPercentage={timePercentage}
-          backgroundColor="#ff00fb"
+          backgroundColor={primaryColor}
           animate={false}
         />
       </motion.div>
       <motion.div
         style={{
           borderRadius: "50%",
+          backgroundColor: primaryColor,
         }}
         initial={{
           left: 0,
@@ -152,7 +148,7 @@ const TrackSlider: FC = () => {
           type: "tween",
           duration: isDragging ? 0 : 0.1,
         }}
-        className="bottom-0 top-0 m-auto bg-primary absolute transform -translate-x-1/2 pointer-events-none"
+        className="bottom-0 top-0 m-auto  absolute transform -translate-x-1/2 pointer-events-none"
       />
     </div>
   );

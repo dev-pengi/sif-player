@@ -88,7 +88,7 @@
   list-style: none;
   outline: none;
   border: none;
-  font-family: "Open Sans", "Ubuntu" !important;
+  font-family: "Open Sans", "Ubuntu", sans-serif !important;
   color: var(--white);
 }
 
@@ -124,16 +124,20 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--light-2);
+  background: var(--gray-5);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--light-3);
+  background: var(--gray-4);
   cursor: default;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--light-3);
+}
+
+.modal::-webkit-scrollbar {
+  width: 5px;
 }
 
 .top-shadow {

@@ -3,12 +3,9 @@ import { usePlayerContext } from "../../../contexts/PlayerContext";
 import { BackButton, MenuButton } from "../Buttons";
 import { AnimatePresence, motion } from "framer-motion";
 
-interface TopControllerProps {
-  showControllers: boolean;
-}
 
-const TopController: FC<TopControllerProps> = ({ showControllers }) => {
-  const { mediaData, isLocked } = usePlayerContext();
+const TopController: FC = () => {
+  const { mediaData, isLocked,controllersDeps } = usePlayerContext();
   const videoName = mediaData?.name ?? "Untitled Video";
 
   useEffect(() => {
@@ -17,7 +14,7 @@ const TopController: FC<TopControllerProps> = ({ showControllers }) => {
 
   return (
     <AnimatePresence>
-      {showControllers && !isLocked && (
+      {controllersDeps.length && !isLocked && (
         <motion.div
           variants={{
             visible: { opacity: 1 },

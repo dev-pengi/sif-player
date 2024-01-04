@@ -3,16 +3,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { usePlayerContext } from "../../../contexts/PlayerContext";
 import { UnlockIcon } from "../../../assets";
 
-interface LockedControllerProps {
-  showControllers: boolean;
-}
-
-const LockedController: FC<LockedControllerProps> = ({ showControllers }) => {
-  const { isLocked, setIsLocked } = usePlayerContext();
+const LockedController: FC = () => {
+  const { isLocked, setIsLocked, controllersDeps } = usePlayerContext();
   return (
     <>
       <AnimatePresence>
-        {isLocked && showControllers && (
+        {isLocked && controllersDeps.length && (
           <motion.div
             onClick={() => setIsLocked(false)}
             variants={{

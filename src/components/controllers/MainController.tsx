@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import {
   BottomController,
   CenterController,
@@ -6,22 +6,24 @@ import {
   TopController,
 } from "./Sections";
 import { AnimatePresence, motion } from "framer-motion";
-import { useHotkeys } from "react-hotkeys-hook";
 import { usePlayerContext } from "../../contexts/PlayerContext";
 
+const CONTROLLER_DEP: string = "movement";
+
 const MainController: FC = () => {
-  const [showControllers, setShowControllers] = useState(true);
-  const { isLocked } = usePlayerContext();
+  const { isLocked, controllersDeps, handleAddDep, handleRemoveDep } =
+    usePlayerContext();
   const timerRef = useRef<any>(null);
 
   useEffect(() => {
     const handleEvent = () => {
-      setShowControllers(true);
+      handleAddDep(CONTROLLER_DEP);
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }
       timerRef.current = setTimeout(() => {
-        setShowControllers(false);
+        handleRemoveDep(CONTROLLER_DEP);
+        console.log(controllersDeps);
       }, 2000);
     };
 
@@ -31,7 +33,6 @@ const MainController: FC = () => {
     window.addEventListener("touchstart", handleEvent);
     window.addEventListener("touchmove", handleEvent);
     window.addEventListener("touchend", handleEvent);
-
 
     return () => {
       window.removeEventListener("mousemove", handleEvent);
@@ -44,20 +45,17 @@ const MainController: FC = () => {
         clearTimeout(timerRef.current);
       }
     };
-  }, []);
-  useHotkeys("c", () => {
-    setShowControllers((prev) => !prev);
-  });
+  }, [controllersDeps]);
 
   return (
     <div
       style={{
-        cursor: showControllers ? "auto" : "none",
+        cursor: controllersDeps.length ? "auto" : "none",
       }}
       className="fixed w-screen h-screen flex flex-col z-1"
     >
       <AnimatePresence>
-        {showControllers && !isLocked && (
+        {controllersDeps.length && !isLocked && (
           <motion.div
             variants={{
               visible: { opacity: 1 },
@@ -71,7 +69,7 @@ const MainController: FC = () => {
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {showControllers && (
+        {controllersDeps.length && (
           <motion.div
             variants={{
               visible: { opacity: 1 },
@@ -84,10 +82,10 @@ const MainController: FC = () => {
           ></motion.div>
         )}
       </AnimatePresence>
-      <TopController showControllers={showControllers} />
+      <TopController />
       <CenterController />
-      <BottomController showControllers={showControllers} />
-      <LockedController showControllers={showControllers} />
+      <BottomController />
+      <LockedController />
     </div>
   );
 };
