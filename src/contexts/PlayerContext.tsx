@@ -112,6 +112,7 @@ const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const navigate = useNavigate();
+  console.log(controllersDeps);
 
   useEffect(() => {
     const loadTimeout = setTimeout(() => {

@@ -30,7 +30,6 @@ const MenuButton: FC = () => {
   };
   const handlePiPChange = () => {
     setIsPiP((prev) => {
-      prev ? handleAddDep("pip") : handleRemoveDep("pip");
       return !prev;
     });
   };
