@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePlayerContext } from "../contexts/PlayerContext";
 import { useNavigate } from "react-router-dom";
 import { extractUUIDFromBlobUrl } from "../utils";
+import { useSettingsContext } from "../contexts/SettingsContext";
 
 interface VideoPickerProps {
   handleLoadStart: () => void;
@@ -13,6 +14,7 @@ const VideoPicker: FC<VideoPickerProps> = ({ handleLoadStart }) => {
   const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
   const [isDragOver, setDragOver] = useState(false);
   const { videoFile, setVideoFile, setMediaData } = usePlayerContext();
+  const { primaryColor } = useSettingsContext();
 
   useEffect(() => {
     if (videoFile) {
@@ -72,28 +74,35 @@ const VideoPicker: FC<VideoPickerProps> = ({ handleLoadStart }) => {
 
   return (
     <div
+      style={{
+        color: primaryColor,
+      }}
       className={`border-2 border-dashed  ${
-        isDragOver ? "border-primary text-primary" : "border-neutral-600"
+        isDragOver ? "border-current text-current" : "border-neutral-600"
       } duration-100 capitalize w-max px-16 py-9 rounded-lg flex items-center justify-center flex-col`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
       <FontAwesomeIcon
+        style={{
+          color: isDragOver ? primaryColor : "#a3a3a3",
+        }}
         icon={faCloudArrowUp}
-        className={`text-[40px] text-neutral-400 ${
-          isDragOver ? "text-primary" : "text-neutral-400"
-        }`}
+        className={`text-[40px]`}
       />
       <h3 className="mt-2 capitalize">
         {isDragOver ? "Release File" : "Drag & Drop Video here"}
       </h3>
       <span className="text-[12px] mt-4">or</span>
       <button
+        style={{
+          color: primaryColor,
+        }}
         onClick={handleFileInputClick}
-        className="py-2 px-9 mt-4 text-[14px] text-primary border-[2px] border-primary hover:text-white hover:bg-primary duration-200 border-solid rounded-[4px]"
+        className="py-2 px-9 mt-4 text-[14px] text-current border-[2px] border-current hover:text-white hover:bg-current duration-200 border-solid rounded-[4px]"
       >
-        Browse Files
+        <p className="text-white">Browse Files</p>
       </button>
       <input
         type="file"

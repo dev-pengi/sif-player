@@ -5,6 +5,7 @@ import { LinkIcon } from "../assets";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ActivityIndicator } from "../components/spins";
+import { useSettingsContext } from "../contexts/SettingsContext";
 
 const MainPage: FC = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const MainPage: FC = () => {
   }, []);
 
   const { handleReset } = usePlayerContext();
+  const { primaryColor } = useSettingsContext();
 
   useEffect(() => {
     handleReset();
@@ -82,9 +84,12 @@ const MainPage: FC = () => {
               <div className="flex">
                 <button
                   onClick={handleUrlSubmit}
-                  className="py-2 px-9 mt-4 text-[14px] border-[2px] border-primary text-white bg-primary hover:opacity-90 duration-200 border-solid rounded-[4px]"
+                  style={{
+                    color: primaryColor,
+                  }}
+                  className="py-2 px-9 mt-4 text-[14px] border-[2px] border-current bg-current hover:opacity-90 duration-200 border-solid rounded-[4px]"
                 >
-                  Play Video
+                  <p className="text-white">Play Video</p>
                 </button>
               </div>
             </div>

@@ -8,17 +8,10 @@ interface ModalProps {
   children: ReactNode;
   isOpen: boolean;
   onClose: () => void;
-  useHeader?: boolean;
   title?: string;
 }
 
-const Modal: FC<ModalProps> = ({
-  useHeader,
-  isOpen,
-  onClose,
-  title,
-  children,
-}) => {
+const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
   const [rootElement, setRootElement] = useState(null);
 
   useHotkeys("esc", onClose);
@@ -51,7 +44,7 @@ const Modal: FC<ModalProps> = ({
             animate="visible"
             exit="hidden"
             transition={{
-              duration: 0.2,
+              duration: 0.1,
             }}
             style={ModalStyles.overlay}
           ></motion.div>
@@ -75,7 +68,7 @@ const Modal: FC<ModalProps> = ({
             animate="visible"
             exit="hidden"
             transition={{
-              duration: 0.2,
+              duration: 0.1,
               type: "tween",
             }}
           >
