@@ -4,9 +4,10 @@ import { ActivityIndicator } from "../../spins";
 import { AnimatePresence, motion } from "framer-motion";
 
 const CenterController: FC = () => {
-  const { isLoading } = usePlayerContext();
+  const { isLoading,handleToggleScreen } = usePlayerContext();
   return (
-    <div className="flex-1 flex items-center justify-center">
+    <div 
+    onDoubleClick={handleToggleScreen} className="flex-1 flex items-center justify-center">
       <AnimatePresence>
         {isLoading && (
           <motion.div
