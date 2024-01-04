@@ -6,12 +6,14 @@ import { Separator, SettingCol } from "./Settings";
 interface SettingInputProps {
   defaultValue: string | number;
   onChange: (value: any) => void;
+  localValue: string;
   type?: "number" | "text";
 }
 
 const SettingInput: FC<SettingInputProps> = ({
   defaultValue,
   onChange,
+  localValue,
   type = "number",
 }) => {
   const [isError, setIsError] = useState(false);
@@ -22,6 +24,7 @@ const SettingInput: FC<SettingInputProps> = ({
       if (!isNaN(value) && value > 0) {
         setIsError(false);
         onChange(value);
+        localStorage.setItem(localValue, String(value));
       } else {
         setIsError(true);
       }
@@ -29,6 +32,7 @@ const SettingInput: FC<SettingInputProps> = ({
       const value = e.target.value;
       if (!value?.trim()?.length) {
         onChange(value);
+        localStorage.setItem(localValue, String(value));
       }
     }
   };
@@ -49,16 +53,22 @@ interface ColorSelectorProps {
   color: string;
   isSelected: boolean;
   onSelect: (color: string) => void;
+  localValue: string;
 }
 
 const ColorSelector: FC<ColorSelectorProps> = ({
   color,
   isSelected,
   onSelect,
+  localValue,
 }) => {
+  const handleSelect = () => {
+    onSelect(color);
+    localStorage.setItem(localValue, color);
+  };
   return (
     <div
-      onClick={() => onSelect(color)}
+      onClick={handleSelect}
       style={{
         backgroundColor: color,
       }}
@@ -73,8 +83,8 @@ const SettingsBlock: FC = () => {
   const {
     primaryColor,
     setPrimaryColor,
-    allowLockedShortcuts,
-    setAllowLockedShortcuts,
+    lockShortcuts,
+    setLockShortcuts,
     normalSkipStep,
     setNormalSkipStep,
     doubleSkipStep,
@@ -109,7 +119,8 @@ const SettingsBlock: FC = () => {
   ];
 
   const handleLockShortcutsToggle = () => {
-    setAllowLockedShortcuts((prev) => !prev);
+    setLockShortcuts((prev) => !prev);
+    localStorage.setItem("lock-shortcuts", String(!lockShortcuts));
   };
 
   return (
@@ -119,10 +130,11 @@ const SettingsBlock: FC = () => {
         description="The color used for the main buttons, track progress and switches"
         className="flex-col !items-start !justify-start"
       >
-        <div className="mt-3 flex gap-3 flex-wrap max-w-[30%]">
+        <div className="mt-3 flex gap-3 flex-wrap max-w-[95%]">
           {COLORS.map((color) => {
             return (
               <ColorSelector
+                localValue="primary-color"
                 onSelect={setPrimaryColor}
                 isSelected={primaryColor === color}
                 key={color}
@@ -139,7 +151,7 @@ const SettingsBlock: FC = () => {
       >
         <Switch
           onChange={handleLockShortcutsToggle}
-          checked={allowLockedShortcuts}
+          checked={lockShortcuts}
           uncheckedIcon={false}
           checkedIcon={false}
           onColor={primaryColor}
@@ -155,6 +167,7 @@ const SettingsBlock: FC = () => {
         description="the amount of time to skip forward/backward"
       >
         <SettingInput
+          localValue="skip-step"
           defaultValue={normalSkipStep}
           onChange={setNormalSkipStep}
         />
@@ -164,6 +177,7 @@ const SettingsBlock: FC = () => {
         description="The amount of time to skip forward/backward (double)"
       >
         <SettingInput
+          localValue="double-skip-step"
           defaultValue={doubleSkipStep}
           onChange={setDoubleSkipStep}
         />
@@ -173,13 +187,18 @@ const SettingsBlock: FC = () => {
         title="increase/decrease"
         description="The amount of volume to increase/decrease"
       >
-        <SettingInput defaultValue={volumeStep} onChange={setVolumeStep} />
+        <SettingInput
+          localValue="volume-step"
+          defaultValue={volumeStep}
+          onChange={setVolumeStep}
+        />
       </SettingCol>
       <SettingCol
         title="double increase/decrease"
         description="The amount of volume to increase/decrease (double)"
       >
         <SettingInput
+          localValue="double-volume-step"
           defaultValue={doubleVolumeStep}
           onChange={setDoubleVolumeStep}
         />

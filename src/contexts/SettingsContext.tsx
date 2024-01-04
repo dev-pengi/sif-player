@@ -11,8 +11,8 @@ import {
 interface SettingsContextProps {
   primaryColor: string;
   setPrimaryColor: Dispatch<SetStateAction<string>>;
-  allowLockedShortcuts: boolean;
-  setAllowLockedShortcuts: Dispatch<SetStateAction<boolean>>;
+  lockShortcuts: boolean;
+  setLockShortcuts: Dispatch<SetStateAction<boolean>>;
   normalSkipStep: number;
   setNormalSkipStep: Dispatch<SetStateAction<number>>;
   doubleSkipStep: number;
@@ -45,7 +45,7 @@ const SettingsContextProvider: FC<SettingsContextProviderProps> = ({
   children,
 }) => {
   const [primaryColor, setPrimaryColor] = useState("#ff00fb");
-  const [allowLockedShortcuts, setAllowLockedShortcuts] = useState(true);
+  const [lockShortcuts, setLockShortcuts] = useState(true);
   const [normalSkipStep, setNormalSkipStep] = useState(10);
   const [doubleSkipStep, setDoubleSkipStep] = useState(60);
   const [volumeStep, setVolumeStep] = useState(5);
@@ -54,8 +54,8 @@ const SettingsContextProvider: FC<SettingsContextProviderProps> = ({
   const value = {
     primaryColor,
     setPrimaryColor,
-    allowLockedShortcuts,
-    setAllowLockedShortcuts,
+    lockShortcuts,
+    setLockShortcuts,
 
     normalSkipStep,
     setNormalSkipStep,
