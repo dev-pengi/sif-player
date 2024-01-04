@@ -42,16 +42,16 @@ const MainPage: FC = () => {
             </button>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content>
-            <a href="https://instagram.com/_sif.js">
+            <a target="_blank" href="https://instagram.com/_sif.js">
               <DropdownMenu.Item>Instagram</DropdownMenu.Item>
             </a>
-            <a href="https://t.me/sifjs">
+            <a target="_blank" href="https://t.me/sifjs">
               <DropdownMenu.Item>Telegram</DropdownMenu.Item>
             </a>
-            <a href="https://github.com/dev-pengi">
+            <a target="_blank" href="https://github.com/dev-pengi">
               <DropdownMenu.Item>Github</DropdownMenu.Item>
             </a>
-            <a href="https://sifedine.com">
+            <a target="_blank" href="https://sifedine.com">
               <DropdownMenu.Item>Portfolio</DropdownMenu.Item>
             </a>
           </DropdownMenu.Content>

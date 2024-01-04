@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import Switch from "react-switch";
 import { useSettingsContext } from "../../../contexts/SettingsContext";
 import { Separator, SettingCol } from "./Settings";
+import { motion } from "framer-motion";
 
 interface SettingInputProps {
   defaultValue: string | number;
@@ -17,6 +18,7 @@ const SettingInput: FC<SettingInputProps> = ({
   type = "number",
 }) => {
   const [isError, setIsError] = useState(false);
+  const { primaryColor } = useSettingsContext();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (type === "number") {
@@ -37,11 +39,19 @@ const SettingInput: FC<SettingInputProps> = ({
     }
   };
   return (
-    <input
+    <motion.input
       type="text"
       className={`w-[60px] rounded-[2px] px-2 bg-transparent border-[1px] border-solid duration-100 ${
-        isError ? "border-red-500" : "bg-neutral-800 border-neutral-700"
+        isError
+          ? "text-red-600 border-red-600"
+          : "bg-neutral-800 border-neutral-700"
       }`}
+      whileHover={{
+        borderColor: isError ? "" : primaryColor,
+      }}
+      whileFocus={{
+        borderColor: isError ? "" : primaryColor,
+      }}
       defaultValue={defaultValue}
       placeholder={String(defaultValue)}
       onChange={handleChange}
@@ -130,7 +140,7 @@ const SettingsBlock: FC = () => {
         description="The color used for the main buttons, track progress and switches"
         className="flex-col !items-start !justify-start"
       >
-        <div className="mt-3 flex gap-3 flex-wrap max-w-[95%]">
+        <div className="mt-3 flex gap-3 flex-wrap">
           {COLORS.map((color) => {
             return (
               <ColorSelector
