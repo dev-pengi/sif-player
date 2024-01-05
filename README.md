@@ -1,4 +1,13 @@
-# Project Name
+# Sif Player
+
+[![GitHub license](https://img.shields.io/github/license/dev-pengi/sif-player)]()
+[![GitHub issues](https://img.shields.io/github/issues/dev-pengi/sif-player)]()
+[![GitHub stars](https://img.shields.io/github/stars/dev-pengi/sif-player)]()
+[![GitHub forks](https://img.shields.io/github/forks/dev-pengi/sif-player)]()
+
+---
+
+![Sif Player](https://imgur.com/xY8KQ86.png)
 
 A web-based video player built with Vite and React.
 
@@ -71,4 +80,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-For any questions or inquiries, please contact [your-email@example.com](mailto:your-email@example.com).
+For any questions or inquiries, please contact [siffffdoul@gmail.com](mailto:siffffdoul@gmail.com).
+
+![Sif Player](https://imgur.com/RIB4GKf.png)
+![Sif Player](https://imgur.com/Ao1z9jA.png)
