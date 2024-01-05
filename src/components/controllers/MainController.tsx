@@ -9,22 +9,25 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useControlsContext } from "../../contexts";
 import { usePlayer } from "../../hooks";
 
-const CONTROLLER_DEP: string = "movement";
+const CONTROLLER_DEP: string = "active";
 
 const MainController: FC = () => {
   const { isLocked, controllersDeps } = useControlsContext();
-  const { handleControllerDependencies } = usePlayer();
+  const {
+    handleAddControllerDependencies,
+    handleRemoveControllerDependencies,
+  } = usePlayer();
   const timerRef = useRef<any>(null);
 
   useEffect(() => {
+    // console.log(controllersDeps);
     const handleEvent = () => {
-      handleControllerDependencies(CONTROLLER_DEP);
+      handleAddControllerDependencies(CONTROLLER_DEP);
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }
       timerRef.current = setTimeout(() => {
-        handleControllerDependencies(CONTROLLER_DEP, false);
-        console.log(controllersDeps);
+        handleRemoveControllerDependencies(CONTROLLER_DEP);
       }, 2000);
     };
 

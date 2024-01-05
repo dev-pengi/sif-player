@@ -4,14 +4,9 @@ import { useControlsContext } from "../contexts";
 
 const usePlayer = () => {
   const navigate = useNavigate();
-  const {
-    videoRef,
-    setIsPlaying,
+  const { videoRef, setIsPlaying, setCurrentSpeed } = usePlayerContext();
 
-    setCurrentSpeed,
-  } = usePlayerContext();
-  const { isFullScreen, controllersDeps, setControllersDeps } =
-    useControlsContext();
+  const { controllersDeps, setControllersDeps } = useControlsContext();
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -37,18 +32,22 @@ const usePlayer = () => {
     videoRef.current.playbackRate = speed;
   };
 
-  const handleControllerDependencies = (dependency: string, toAdd = true) => {
+  const handleAddControllerDependencies = (dependency: string) => {
     if (controllersDeps.includes(dependency)) return;
-    if (toAdd) {
-      setControllersDeps((prev) => [
-        ...prev.filter((prevDep: string) => prevDep !== dependency),
-        dependency,
-      ]);
-    } else {
-      setControllersDeps((prev) =>
-        prev.filter((prevDep: string) => prevDep !== dependency)
-      );
-    }
+    console.log("adding");
+    setControllersDeps((prev) => [
+      ...prev.filter((prevDep: string) => prevDep != dependency),
+      dependency,
+    ]);
+  };
+
+  const handleRemoveControllerDependencies = (dependency: string) => {
+      console.log("removing");
+    setControllersDeps((prev) => {
+      console.log(prev);
+      console.log(prev.filter((prevDep: string) => prevDep != dependency));
+      return prev.filter((prevDep: string) => prevDep != dependency);
+    });
   };
 
   const handleTogglePiP = () => {
@@ -63,7 +62,7 @@ const usePlayer = () => {
     handleToggleScreen,
     handleBack,
     handlePlaybackSpeedUpdate,
-    handleControllerDependencies,
+    handleAddControllerDependencies,handleRemoveControllerDependencies,
     handleTogglePiP,
   };
 };

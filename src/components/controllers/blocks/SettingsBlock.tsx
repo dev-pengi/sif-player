@@ -137,7 +137,7 @@ const SettingsBlock: FC = () => {
     <>
       <SettingCol
         title="Primary color"
-        description="The color used for the main buttons, track progress and switches"
+        description="The color used for the main buttons, selections, track progress and switches"
         className="flex-col !items-start !justify-start"
       >
         <div className="mt-3 flex gap-3 flex-wrap">
@@ -173,7 +173,7 @@ const SettingsBlock: FC = () => {
       </SettingCol>
       <Separator />
       <SettingCol
-        title="forward/backward"
+        title="Forward/Backward"
         description="the amount of time to skip forward/backward"
       >
         <SettingInput
@@ -183,7 +183,7 @@ const SettingsBlock: FC = () => {
         />
       </SettingCol>
       <SettingCol
-        title="double forward/backward"
+        title="Double Forward/Backward"
         description="The amount of time to skip forward/backward (double)"
       >
         <SettingInput
@@ -194,7 +194,7 @@ const SettingsBlock: FC = () => {
       </SettingCol>
       <Separator />
       <SettingCol
-        title="increase/decrease"
+        title="Increase/Decrease"
         description="The amount of volume to increase/decrease"
       >
         <SettingInput
@@ -204,7 +204,7 @@ const SettingsBlock: FC = () => {
         />
       </SettingCol>
       <SettingCol
-        title="double increase/decrease"
+        title="Double Increase/Decrease"
         description="The amount of volume to increase/decrease (double)"
       >
         <SettingInput

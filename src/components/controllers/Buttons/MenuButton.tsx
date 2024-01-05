@@ -12,9 +12,12 @@ import { usePlayer } from "../../../hooks";
 const MenuButton: FC = () => {
   const { isLoop, setIsLoop, shortcutsEnabled, setShortcutsEnabled } =
     useSettingsContext();
-  const { isPiP } =
-    usePlayerContext();
-  const { handleControllerDependencies, handleTogglePiP } = usePlayer();
+  const { isPiP } = usePlayerContext();
+  const {
+    handleAddControllerDependencies,
+    handleRemoveControllerDependencies,
+    handleTogglePiP,
+  } = usePlayer();
   const { primaryColor } = useSettingsContext();
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
 
@@ -27,11 +30,11 @@ const MenuButton: FC = () => {
 
   const handleSettingsOpen = () => {
     setSettingsModalOpen(true);
-    handleControllerDependencies("settings");
+    handleAddControllerDependencies("settings");
   };
   const handleSettingsClose = () => {
     setSettingsModalOpen(false);
-    handleControllerDependencies("settings", false);
+    handleRemoveControllerDependencies("settings");
   };
 
   return (

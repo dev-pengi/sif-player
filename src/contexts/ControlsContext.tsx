@@ -43,7 +43,7 @@ const ControlsContextProvider: FC<ControlsContextProviderProps> = ({
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isPanelHovering, setIsPanelHovering] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
-  const [controllersDeps, setControllersDeps] = useState([]);
+  const [controllersDeps, setControllersDeps] = useState(["active"]);
 
   const value = {
     isFullScreen,
