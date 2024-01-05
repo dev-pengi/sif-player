@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { usePlayerContext } from "../../contexts";
+import { usePlayer } from "../../hooks";
 
 const PlayerError: FC = () => {
-  const { handleBack } = usePlayerContext();
+  const { handleBack } = usePlayer();
   return (
     <div className="flex flex-col items-center justify-center">
       <h1 className="text-2xl">Error while loading or playing this video :(</h1>
