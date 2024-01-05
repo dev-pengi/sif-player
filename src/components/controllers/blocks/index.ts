@@ -1,2 +1,4 @@
-import SettingsBlock from "./SettingsBlock";
-export { SettingsBlock }
+import PlayerSettings from './PlayerSettings'
+import MediaInfo from './MediaInfo'
+
+export { PlayerSettings, MediaInfo }

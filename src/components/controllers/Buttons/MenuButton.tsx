@@ -6,7 +6,7 @@ import Switch from "react-switch";
 import { usePlayerContext } from "../../../contexts";
 import { Modal } from "../../modals";
 import { useSettingsContext } from "../../../contexts";
-import { SettingsBlock } from "../blocks";
+import { PlayerSettings, MediaInfo } from "../blocks";
 import { usePlayer } from "../../../hooks";
 
 const MenuButton: FC = () => {
@@ -20,6 +20,7 @@ const MenuButton: FC = () => {
   } = usePlayer();
   const { primaryColor } = useSettingsContext();
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
+  const [mediaInfoModalOpen, setMediaInfoModalOpen] = useState(false);
 
   const handleLoopToggle = () => {
     setIsLoop((prev) => !prev);
@@ -35,6 +36,14 @@ const MenuButton: FC = () => {
   const handleSettingsClose = () => {
     setSettingsModalOpen(false);
     handleRemoveControllerDependencies("settings");
+  };
+  const handleMediaInfoOpen = () => {
+    setMediaInfoModalOpen(true);
+    handleAddControllerDependencies("media-info");
+  };
+  const handleMediaInfoClose = () => {
+    setMediaInfoModalOpen(false);
+    handleRemoveControllerDependencies("media-info");
   };
 
   return (
@@ -119,7 +128,7 @@ const MenuButton: FC = () => {
           <DropdownMenu.Item>
             <p>Keyboard Shortcuts</p>
           </DropdownMenu.Item>
-          <DropdownMenu.Item>
+          <DropdownMenu.Item onSelect={handleMediaInfoOpen}>
             <p>Media Info</p>
           </DropdownMenu.Item>
         </DropdownMenu.Content>
@@ -127,9 +136,16 @@ const MenuButton: FC = () => {
       <Modal
         isOpen={settingsModalOpen}
         onClose={handleSettingsClose}
-        title="Player settings"
+        title="Player Settings"
       >
-        <SettingsBlock />
+        <PlayerSettings />
+      </Modal>
+      <Modal
+        isOpen={mediaInfoModalOpen}
+        onClose={handleMediaInfoClose}
+        title="Media Info"
+      >
+        <MediaInfo />
       </Modal>
     </>
   );

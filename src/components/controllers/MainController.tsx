@@ -4,7 +4,7 @@ import {
   CenterController,
   LockedController,
   TopController,
-} from "./Sections";
+} from "./Controls";
 import { AnimatePresence, motion } from "framer-motion";
 import { useControlsContext } from "../../contexts";
 import { usePlayer } from "../../hooks";
