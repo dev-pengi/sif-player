@@ -6,29 +6,31 @@ import {
   TopController,
 } from "./Sections";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePlayerContext } from "../../contexts/PlayerContext";
+import { useControlsContext } from "../../contexts";
+import { usePlayer } from "../../hooks";
 
 const CONTROLLER_DEP: string = "movement";
 
 const MainController: FC = () => {
-  const { isLocked, controllersDeps, handleAddDep, handleRemoveDep } =
-    usePlayerContext();
+  const { isLocked, controllersDeps } = useControlsContext();
+  const { handleControllerDependencies } = usePlayer();
   const timerRef = useRef<any>(null);
 
   useEffect(() => {
     const handleEvent = () => {
-      handleAddDep(CONTROLLER_DEP);
+      handleControllerDependencies(CONTROLLER_DEP);
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }
       timerRef.current = setTimeout(() => {
-        handleRemoveDep(CONTROLLER_DEP);
+        handleControllerDependencies(CONTROLLER_DEP, false);
         console.log(controllersDeps);
       }, 2000);
     };
 
     window.addEventListener("mousemove", handleEvent);
     window.addEventListener("keydown", handleEvent);
+    window.addEventListener("keyup", handleEvent);
     window.addEventListener("mousedown", handleEvent);
     window.addEventListener("touchstart", handleEvent);
     window.addEventListener("touchmove", handleEvent);
@@ -37,6 +39,7 @@ const MainController: FC = () => {
     return () => {
       window.removeEventListener("mousemove", handleEvent);
       window.removeEventListener("keydown", handleEvent);
+      window.removeEventListener("keyup", handleEvent);
       window.removeEventListener("mousedown", handleEvent);
       window.removeEventListener("touchstart", handleEvent);
       window.removeEventListener("touchmove", handleEvent);

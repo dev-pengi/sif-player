@@ -10,17 +10,21 @@ import {
 
 interface SettingsContextProps {
   primaryColor: string;
-  setPrimaryColor: Dispatch<SetStateAction<string>>;
   lockShortcuts: boolean;
-  setLockShortcuts: Dispatch<SetStateAction<boolean>>;
   normalSkipStep: number;
-  setNormalSkipStep: Dispatch<SetStateAction<number>>;
   doubleSkipStep: number;
-  setDoubleSkipStep: Dispatch<SetStateAction<number>>;
   volumeStep: number;
-  setVolumeStep: Dispatch<SetStateAction<number>>;
   doubleVolumeStep: number;
+  isLoop: boolean;
+  shortcutsEnabled: boolean;
+  setPrimaryColor: Dispatch<SetStateAction<string>>;
+  setLockShortcuts: Dispatch<SetStateAction<boolean>>;
+  setNormalSkipStep: Dispatch<SetStateAction<number>>;
+  setDoubleSkipStep: Dispatch<SetStateAction<number>>;
+  setVolumeStep: Dispatch<SetStateAction<number>>;
   setDoubleVolumeStep: Dispatch<SetStateAction<number>>;
+  setIsLoop: Dispatch<SetStateAction<boolean>>;
+  setShortcutsEnabled: Dispatch<SetStateAction<boolean>>;
 }
 
 const SettingsContext = createContext<SettingsContextProps | undefined>(
@@ -50,21 +54,26 @@ const SettingsContextProvider: FC<SettingsContextProviderProps> = ({
   const [doubleSkipStep, setDoubleSkipStep] = useState(60);
   const [volumeStep, setVolumeStep] = useState(5);
   const [doubleVolumeStep, setDoubleVolumeStep] = useState(20);
+  const [isLoop, setIsLoop] = useState(false);
+  const [shortcutsEnabled, setShortcutsEnabled] = useState(true);
 
   const value = {
     primaryColor,
-    setPrimaryColor,
     lockShortcuts,
-    setLockShortcuts,
-
     normalSkipStep,
-    setNormalSkipStep,
     doubleSkipStep,
-    setDoubleSkipStep,
     volumeStep,
-    setVolumeStep,
     doubleVolumeStep,
+    isLoop,
+    shortcutsEnabled,
+    setPrimaryColor,
+    setLockShortcuts,
+    setNormalSkipStep,
+    setDoubleSkipStep,
+    setVolumeStep,
     setDoubleVolumeStep,
+    setIsLoop,
+    setShortcutsEnabled,
   };
 
   return (

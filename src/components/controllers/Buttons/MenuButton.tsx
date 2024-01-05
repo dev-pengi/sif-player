@@ -3,22 +3,18 @@ import Button from "./Button";
 import { MenuIcon } from "../../../assets";
 import { DropdownMenu } from "@radix-ui/themes";
 import Switch from "react-switch";
-import { usePlayerContext } from "../../../contexts/PlayerContext";
+import { usePlayerContext } from "../../../contexts";
 import { Modal } from "../../modals";
-import { useSettingsContext } from "../../../contexts/SettingsContext";
+import { useSettingsContext } from "../../../contexts";
 import { SettingsBlock } from "../blocks";
+import { usePlayer } from "../../../hooks";
 
 const MenuButton: FC = () => {
-  const {
-    isLoop,
-    setIsLoop,
-    shortcutsEnabled,
-    setShortcutsEnabled,
-    isPiP,
-    setIsPiP,
-    handleAddDep,
-    handleRemoveDep,
-  } = usePlayerContext();
+  const { isLoop, setIsLoop, shortcutsEnabled, setShortcutsEnabled } =
+    useSettingsContext();
+  const { isPiP } =
+    usePlayerContext();
+  const { handleControllerDependencies, handleTogglePiP } = usePlayer();
   const { primaryColor } = useSettingsContext();
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
 
@@ -28,19 +24,14 @@ const MenuButton: FC = () => {
   const handleShortcutsToggle = () => {
     setShortcutsEnabled((prev) => !prev);
   };
-  const handlePiPChange = () => {
-    setIsPiP((prev) => {
-      return !prev;
-    });
-  };
 
   const handleSettingsOpen = () => {
     setSettingsModalOpen(true);
-    handleAddDep("settings");
+    handleControllerDependencies("settings");
   };
   const handleSettingsClose = () => {
     setSettingsModalOpen(false);
-    handleRemoveDep("settings");
+    handleControllerDependencies("settings", false);
   };
 
   return (
@@ -101,13 +92,13 @@ const MenuButton: FC = () => {
           <DropdownMenu.Item
             onSelect={(event) => {
               event.preventDefault();
-              handlePiPChange();
+              handleTogglePiP();
             }}
           >
             <p>Picture in Picture</p>
 
             <Switch
-              onChange={handlePiPChange}
+              onChange={handleTogglePiP}
               uncheckedIcon={false}
               checkedIcon={false}
               onColor={primaryColor}

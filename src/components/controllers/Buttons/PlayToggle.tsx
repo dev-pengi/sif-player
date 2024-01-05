@@ -2,7 +2,8 @@ import { FC, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { PauseIcon, PlayIcon } from "../../../assets";
 import Button from "./Button";
-import { usePlayerContext } from "../../../contexts/PlayerContext";
+import { usePlayerContext } from "../../../contexts";
+import { usePlayer } from "../../../hooks";
 
 interface PlayToggleProps {}
 
@@ -14,7 +15,8 @@ const PlayToggle: FC<PlayToggleProps> = ({}) => {
     hidden: { opacity: 0, scale: 0.2 },
   };
 
-  const { isPlaying, handleTogglePlay } = usePlayerContext();
+  const { isPlaying } = usePlayerContext();
+  const { handleTogglePlay } = usePlayer();
 
   useEffect(() => {
     playController.start(isPlaying ? "hidden" : "visible");

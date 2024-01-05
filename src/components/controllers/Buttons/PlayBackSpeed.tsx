@@ -1,11 +1,13 @@
 import { FC } from "react";
 import Button from "./Button";
 import { CheckIcon, PlaybackSpeedIcon } from "../../../assets";
-import { usePlayerContext } from "../../../contexts/PlayerContext";
+import { usePlayerContext } from "../../../contexts";
 import { DropdownMenu } from "@radix-ui/themes";
+import { usePlayer } from "../../../hooks";
 
 const PlayBackSpeed: FC = () => {
-  const { currentSpeed, handlePlaybackSpeedUpdate } = usePlayerContext();
+  const { currentSpeed } = usePlayerContext();
+  const { handlePlaybackSpeedUpdate } = usePlayer();
 
   const SPEEDS = new Array(9).fill(0, 1, 9);
 

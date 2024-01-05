@@ -1,10 +1,10 @@
 import { FC } from "react";
 import Button from "./Button";
 import { LockIcon } from "../../../assets";
-import { usePlayerContext } from "../../../contexts/PlayerContext";
+import { useControlsContext } from "../../../contexts";
 
 const LockButton: FC = () => {
-  const { setIsLocked } = usePlayerContext();
+  const { setIsLocked } = useControlsContext();
   return (
     <div>
       <Button onClick={() => setIsLocked(true)}>

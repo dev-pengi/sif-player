@@ -2,23 +2,26 @@ import { FC, useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import Slider from "rc-slider";
 
-import { usePlayerContext } from "../../../contexts/PlayerContext";
+import {
+  useControlsContext,
+  usePlayerContext,
+  useVolumeContext,
+} from "../../../contexts";
 import Button from "./Button";
 import { MaxSoundIcon, MinSoundIcon, MuteSoundIcon } from "../../../assets";
 import "rc-slider/assets/index.css";
+import { useVolume } from "../../../hooks";
 
 interface VolumeSliderProps {}
 
 const VolumeSlider: FC<VolumeSliderProps> = ({}) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isButtonHovering, setIsButtonHovering] = useState(false);
-  const {
-    volume,
-    isMuted,
-    isPanelHovering,
-    handleVolumeChange,
-    handleToggleMute,
-  } = usePlayerContext();
+  const { volume, isMuted } = useVolumeContext();
+  const { isPanelHovering } = useControlsContext();
+
+  const { handleVolumeChange, handleToggleMute } = useVolume();
+
   const [currentMaxVar, setCurrentMaxVar] = useState("visible");
   const [currentMinVar, setCurrentMinVar] = useState("hidden");
   const [currentMuteVar, setCurrentMuteVar] = useState("hidden");

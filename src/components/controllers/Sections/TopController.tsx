@@ -1,11 +1,11 @@
 import { FC, useEffect } from "react";
-import { usePlayerContext } from "../../../contexts/PlayerContext";
+import { useControlsContext, usePlayerContext } from "../../../contexts";
 import { BackButton, MenuButton } from "../Buttons";
 import { AnimatePresence, motion } from "framer-motion";
 
-
 const TopController: FC = () => {
-  const { mediaData, isLocked,controllersDeps } = usePlayerContext();
+  const { mediaData } = usePlayerContext();
+  const { isLocked, controllersDeps } = useControlsContext();
   const videoName = mediaData?.name ?? "Untitled Video";
 
   useEffect(() => {

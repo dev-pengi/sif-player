@@ -3,10 +3,12 @@ import { motion, useAnimation } from "framer-motion";
 
 import Button from "./Button";
 import { MaximizeIcon, MinimizeIcon } from "../../../assets";
-import { usePlayerContext } from "../../../contexts/PlayerContext";
+import { useControlsContext, usePlayerContext } from "../../../contexts";
+import { usePlayer } from "../../../hooks";
 
 const FullScreenButton: FC = () => {
-  const { handleToggleScreen, isFullScreen } = usePlayerContext();
+  const { isFullScreen } = useControlsContext();
+  const { handleToggleScreen } = usePlayer();
 
   const maximizeController = useAnimation();
   const minimizeController = useAnimation();

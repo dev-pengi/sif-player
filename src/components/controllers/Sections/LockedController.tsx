@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePlayerContext } from "../../../contexts/PlayerContext";
+import { useControlsContext } from "../../../contexts";
 import { UnlockIcon } from "../../../assets";
 
 const LockedController: FC = () => {
-  const { isLocked, setIsLocked, controllersDeps } = usePlayerContext();
+  const { isLocked, setIsLocked, controllersDeps } = useControlsContext();
   return (
     <>
       <AnimatePresence>

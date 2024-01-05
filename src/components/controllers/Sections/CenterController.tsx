@@ -1,10 +1,12 @@
 import { FC } from "react";
-import { usePlayerContext } from "../../../contexts/PlayerContext";
+import { useLoaderContext } from "../../../contexts";
 import { ActivityIndicator } from "../../spins";
 import { AnimatePresence, motion } from "framer-motion";
+import { usePlayer } from "../../../hooks";
 
 const CenterController: FC = () => {
-  const { isLoading,handleToggleScreen } = usePlayerContext();
+  const { isLoading } = useLoaderContext();
+  const { handleToggleScreen } = usePlayer();
   return (
     <div 
     onDoubleClick={handleToggleScreen} className="flex-1 flex items-center justify-center">

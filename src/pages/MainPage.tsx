@@ -1,11 +1,10 @@
 import { FC, useEffect, useState } from "react";
 import { VideoPicker } from "../components";
-import { usePlayerContext } from "../contexts/PlayerContext";
 import { LinkIcon } from "../assets";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ActivityIndicator } from "../components/spins";
-import { useSettingsContext } from "../contexts/SettingsContext";
+import { useSettingsContext } from "../contexts";
 import { DropdownMenu } from "@radix-ui/themes";
 
 const MainPage: FC = () => {
@@ -16,12 +15,7 @@ const MainPage: FC = () => {
     document.title = `Sif Player | Web Player`;
   }, []);
 
-  const { handleReset } = usePlayerContext();
   const { primaryColor } = useSettingsContext();
-
-  useEffect(() => {
-    handleReset();
-  }, []);
 
   const [url, setUrl] = useState("");
   const [isInvalidUrl, setIsInvalidUrl] = useState(false);

@@ -1,6 +1,8 @@
 import { useEffect } from "react";
-import { useSettingsContext } from "../contexts/SettingsContext";
-import { usePlayerContext } from "../contexts/PlayerContext";
+import {
+  useSettingsContext,
+  useVolumeContext,
+} from "../contexts";
 
 const useSetup = () => {
   const {
@@ -9,17 +11,16 @@ const useSetup = () => {
     setNormalSkipStep,
     setDoubleSkipStep,
     setVolumeStep,
-    setDoubleVolumeStep,
+    setDoubleVolumeStep,setIsLoop
   } = useSettingsContext();
-
-  const { setVolume, setIsLoop } = usePlayerContext();
+  const { setVolume } = useVolumeContext();
 
   useEffect(() => {
     const storedVolume = localStorage.getItem("volume");
     if (storedVolume) {
       setVolume(JSON.parse(storedVolume));
     }
-    
+
     const storedIsLoop = localStorage.getItem("is-loop");
     if (storedIsLoop) {
       setIsLoop(JSON.parse(storedIsLoop));

@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import Switch from "react-switch";
-import { useSettingsContext } from "../../../contexts/SettingsContext";
+import { useSettingsContext } from "../../../contexts";
 import { Separator, SettingCol } from "./Settings";
 import { motion } from "framer-motion";
 

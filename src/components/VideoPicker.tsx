@@ -1,10 +1,10 @@
 import { FC, useRef, RefObject, useState, useEffect } from "react";
 import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { usePlayerContext } from "../contexts/PlayerContext";
+import { usePlayerContext } from "../contexts";
 import { useNavigate } from "react-router-dom";
 import { extractUUIDFromBlobUrl } from "../utils";
-import { useSettingsContext } from "../contexts/SettingsContext";
+import { useSettingsContext } from "../contexts";
 
 interface VideoPickerProps {
   handleLoadStart: () => void;

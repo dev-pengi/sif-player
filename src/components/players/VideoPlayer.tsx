@@ -1,26 +1,14 @@
 import { FC, useEffect } from "react";
-import { usePlayerContext } from "../../contexts/PlayerContext";
+import { usePlayerContext } from "../../contexts";
 import MainController from "../controllers/MainController";
+import { useLoader, usePlayer, useTimer } from "../../hooks";
 
 const VideoPlayer: FC = () => {
-  const {
-    videoRef,
-    videoSrc,
-    handleLoadStart,
-    handleLoadEnd,
-    handleTimeUpdate,
-    handlePlay,
-    handleError,
-    handlePause,
-    handleVideoEnd,
-  } = usePlayerContext();
+  const { videoRef, videoSrc } = usePlayerContext();
 
-  useEffect(() => {
-    const validTimeout = setTimeout(() => {
-      if (!videoSrc) handleError("Video source is not valid");
-    }, 3000);
-    return () => clearTimeout(validTimeout);
-  }, [videoSrc]);
+  const { handleLoadStart, handleLoadEnd, handleVideoEnd } = useLoader();
+  const { handlePlay, handlePause } = usePlayer();
+  const { handleTimeUpdate } = useTimer();
 
   return (
     <>

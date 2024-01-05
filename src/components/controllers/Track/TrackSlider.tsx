@@ -1,12 +1,15 @@
 import { FC, useEffect, useState, useRef } from "react";
-import { usePlayerContext } from "../../../contexts/PlayerContext";
+import { usePlayerContext, useTimerContext } from "../../../contexts";
 import { motion } from "framer-motion";
 import Indicator from "./Indicator";
-import { useSettingsContext } from "../../../contexts/SettingsContext";
+import { useSettingsContext } from "../../../contexts";
+import { useTimer } from "../../../hooks";
 
 const TrackSlider: FC = () => {
-  const { videoRef, duration, currentTime, setCurrentTime } =
-    usePlayerContext();
+  const { videoRef } = usePlayerContext();
+  const { duration, currentTime } = useTimerContext();
+  const { handleSeek } = useTimer();
+
   const { primaryColor } = useSettingsContext();
   const [timePercentage, setTimePercentage] = useState(0);
   const [hoverPoint, setHoverPoint] = useState(0);
@@ -28,7 +31,7 @@ const TrackSlider: FC = () => {
     clickedPercentage = Math.max(0, Math.min(clickedPercentage, 1));
 
     const newCurrentTime = clickedPercentage * duration;
-    setCurrentTime(newCurrentTime);
+    handleSeek(newCurrentTime);
     videoRef.current.currentTime = newCurrentTime;
   };
 

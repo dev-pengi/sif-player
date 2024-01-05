@@ -1,12 +1,16 @@
 import { FC, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { usePlayerContext } from "../contexts/PlayerContext";
+import { usePlayerContext } from "../contexts";
 import { PlayerError } from "./errors";
 import { VideoPlayer } from "./players";
+import { useErrors, useEvents, useShortcuts } from "../hooks";
 
 const useVideoSrc = () => {
   const location = useLocation();
   const { setVideoSrc, setMediaData } = usePlayerContext();
+  useEvents();
+  useShortcuts();
+  useErrors()
 
   useEffect(() => {
     const handleVideoSrc = async () => {

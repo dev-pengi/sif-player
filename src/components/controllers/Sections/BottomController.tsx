@@ -7,13 +7,18 @@ import {
   PlayBackSpeed,
 } from "../Buttons";
 import { formatTime } from "../../../utils";
-import { usePlayerContext } from "../../../contexts/PlayerContext";
+import {
+  useControlsContext,
+  useTimerContext,
+} from "../../../contexts";
 import TrackSlider from "../Track/TrackSlider";
 import LockButton from "../Buttons/LockButton";
 
 const BottomController: FC = () => {
-  const { controllersDeps,duration, currentTime, isLocked, setIsPanelHovering } =
-    usePlayerContext();
+  const { controllersDeps, isLocked, setIsPanelHovering } =
+    useControlsContext();
+  const { duration, currentTime } = useTimerContext();
+
   return (
     <AnimatePresence>
       {controllersDeps.length && !isLocked && (
