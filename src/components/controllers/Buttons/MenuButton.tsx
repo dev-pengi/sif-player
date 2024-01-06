@@ -1,8 +1,9 @@
 import { FC, useState } from "react";
+import Switch from "react-switch";
+import { DropdownMenu } from "@radix-ui/themes";
+
 import Button from "./Button";
 import { MenuIcon } from "../../../assets";
-import { DropdownMenu } from "@radix-ui/themes";
-import Switch from "react-switch";
 import { usePlayerContext } from "../../../contexts";
 import { Modal } from "../../modals";
 import { useSettingsContext } from "../../../contexts";
