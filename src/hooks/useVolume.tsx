@@ -7,13 +7,24 @@ const useVolume = () => {
   const handleVolumeChange = (volume: number) => {
     const newVolume = Math.max(0, Math.min(volume, 100));
     setVolume(newVolume);
-    setIsMuted(false);
+    if (newVolume == 0) {
+      setIsMuted(true);
+      videoRef.current.muted = true;
+    } else {
+      setIsMuted(false);
+      videoRef.current.muted = false;
+    }
     videoRef.current.volume = newVolume / 100;
   };
 
   const handleToggleMute = () => {
-    setIsMuted((prev) => !prev);
-    videoRef.current.muted = !isMuted;
+    setIsMuted((prev) => {
+      videoRef.current.muted = !prev;
+      if (prev && volume == 0) {
+        handleVolumeChange(30);
+      }
+      return !prev;
+    });
   };
 
   const handleIncreaseVolume = (amount: number) => {

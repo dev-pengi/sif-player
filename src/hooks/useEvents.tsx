@@ -1,10 +1,14 @@
 import { useEffect } from "react";
-import { usePlayerContext } from "../contexts";
-import { useControlsContext } from "../contexts";
+import {
+  usePlayerContext,
+  useControlsContext,
+  useTimerContext,
+} from "../contexts";
 import { usePlayer } from ".";
 
 const useEvents = () => {
   const { videoRef, isPlaying, isPiP, setIsPiP } = usePlayerContext();
+  const { duration, currentTime, bufferedPercentage,setBufferedPercentage } = useTimerContext();
   const { setIsFullScreen } = useControlsContext();
   const {
     handleAddControllerDependencies,
@@ -55,6 +59,20 @@ const useEvents = () => {
       );
     };
   }, [isPiP]);
+
+  const calculateBufferedPercentage = () => {
+    if (!videoRef.current) return 0;
+    const buffered = videoRef.current.buffered;
+    if (buffered.length === 0) return 0;
+    const bufferedEnd = buffered.end(buffered.length - 1);
+    return bufferedEnd / duration;
+  };
+
+  
+  useEffect(() => {
+    const bufferedPercentage = calculateBufferedPercentage();
+    setBufferedPercentage(bufferedPercentage);
+  }, [currentTime]);
 };
 
 export default useEvents;

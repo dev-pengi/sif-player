@@ -11,8 +11,12 @@ import {
 interface TimerContextProps {
   duration: number;
   currentTime: number;
+  timePercentage: number;
+  bufferedPercentage: number;
   setDuration: Dispatch<SetStateAction<number>>;
   setCurrentTime: Dispatch<SetStateAction<number>>;
+  setTimePercentage: Dispatch<SetStateAction<number>>;
+  setBufferedPercentage: Dispatch<SetStateAction<number>>;
 }
 
 const TimerContext = createContext<TimerContextProps | undefined>(undefined);
@@ -34,12 +38,18 @@ interface TimerContextProviderProps {
 const TimerContextProvider: FC<TimerContextProviderProps> = ({ children }) => {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [timePercentage, setTimePercentage] = useState(0);
+  const [bufferedPercentage, setBufferedPercentage] = useState(0);
 
   const value = {
     duration,
     currentTime,
+    timePercentage,
+    bufferedPercentage,
     setDuration,
     setCurrentTime,
+    setTimePercentage,
+    setBufferedPercentage,
   };
 
   return (

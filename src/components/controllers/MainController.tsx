@@ -20,7 +20,6 @@ const MainController: FC = () => {
   const timerRef = useRef<any>(null);
 
   useEffect(() => {
-    // console.log(controllersDeps);
     const handleEvent = () => {
       handleAddControllerDependencies(CONTROLLER_DEP);
       if (timerRef.current) {

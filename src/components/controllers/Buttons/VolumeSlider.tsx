@@ -60,13 +60,6 @@ const VolumeSlider: FC<VolumeSliderProps> = ({}) => {
       setCurrentMaxVar("hidden");
       setCurrentMinVar("visible");
       setCurrentMuteVar("hidden");
-    } else if (volume === 0) {
-      currentMaxVar !== "hidden" && maxSoundControls.start("hidden");
-      currentMinVar !== "hidden" && minSoundControls.start("hidden");
-      currentMuteVar !== "visible" && muteSoundControls.start("visible");
-      setCurrentMaxVar("hidden");
-      setCurrentMinVar("hidden");
-      setCurrentMuteVar("visible");
     }
   }, [volume, isMuted, currentMaxVar, currentMinVar, currentMuteVar]);
 

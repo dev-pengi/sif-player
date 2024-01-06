@@ -52,6 +52,9 @@ const SettingInput: FC<SettingInputProps> = ({
       whileFocus={{
         borderColor: isError ? "" : primaryColor,
       }}
+      transition={{
+        duration: 0.1,
+      }}
       defaultValue={defaultValue}
       placeholder={String(defaultValue)}
       onChange={handleChange}
@@ -156,6 +159,39 @@ const SettingsBlock: FC = () => {
       </SettingCol>
       <Separator />
       <SettingCol
+        title="Save track"
+        description="save the current track by filename when the player is closed"
+      >
+        <Switch
+          onChange={handleLockShortcutsToggle}
+          checked={lockShortcuts}
+          uncheckedIcon={false}
+          checkedIcon={false}
+          onColor={primaryColor}
+          height={23}
+          width={46}
+          handleDiameter={18}
+          className="react-switch"
+        />
+      </SettingCol>
+      <SettingCol
+        title="Save Adjustments"
+        description="save the current adjustments (volume, playback rate, etc) when the player is closed"
+      >
+        <Switch
+          onChange={handleLockShortcutsToggle}
+          checked={lockShortcuts}
+          uncheckedIcon={false}
+          checkedIcon={false}
+          onColor={primaryColor}
+          height={23}
+          width={46}
+          handleDiameter={18}
+          className="react-switch"
+        />
+      </SettingCol>
+      <Separator />
+      <SettingCol
         title="Lock Shortcuts"
         description="disable shortcuts when the player is on lock mode"
       >
@@ -174,7 +210,7 @@ const SettingsBlock: FC = () => {
       <Separator />
       <SettingCol
         title="Forward/Backward"
-        description="the amount of time to skip forward/backward"
+        description="the amount of seconds to skip forward/backward"
       >
         <SettingInput
           localValue="skip-step"
@@ -184,7 +220,7 @@ const SettingsBlock: FC = () => {
       </SettingCol>
       <SettingCol
         title="Double Forward/Backward"
-        description="The amount of time to skip forward/backward (double)"
+        description="The amount of seconds to skip forward/backward (double)"
       >
         <SettingInput
           localValue="double-skip-step"

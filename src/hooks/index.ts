@@ -6,6 +6,7 @@ import useSetup from "./useSetup";
 import useShortcuts from "./useShortcuts";
 import useTimer from "./useTimer";
 import useVolume from "./useVolume";
+import useClean from "./useClean";
 
 
-export { useErrors, useEvents, useLoader, usePlayer, useSetup, useShortcuts, useTimer, useVolume };
+export { useErrors, useEvents, useLoader, usePlayer, useSetup, useShortcuts, useTimer, useVolume, useClean };

@@ -10,7 +10,7 @@ const useVideoSrc = () => {
   const { setVideoSrc, setMediaData } = usePlayerContext();
   useEvents();
   useShortcuts();
-  useErrors()
+  useErrors();
 
   useEffect(() => {
     const handleVideoSrc = async () => {
@@ -24,6 +24,7 @@ const useVideoSrc = () => {
         setVideoSrc(blobUrl);
       } else {
         setVideoSrc(src);
+        const url = src;
         const controller = new AbortController();
         const signal = controller.signal;
 
@@ -37,7 +38,7 @@ const useVideoSrc = () => {
         const size = mediaData.headers.get("content-length");
         const type = mediaData.headers.get("content-type");
 
-        setMediaData({ name, size, type });
+        setMediaData({ name, url, size, type });
         controller.abort();
       }
     };

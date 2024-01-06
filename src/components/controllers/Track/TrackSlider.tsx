@@ -1,27 +1,23 @@
 import { FC, useEffect, useState, useRef } from "react";
-import { usePlayerContext, useTimerContext } from "../../../contexts";
+import {
+  usePlayerContext,
+  useSettingsContext,
+  useTimerContext,
+} from "../../../contexts";
 import { motion } from "framer-motion";
 import Indicator from "./Indicator";
-import { useSettingsContext } from "../../../contexts";
-import { useTimer } from "../../../hooks";
+import { usePlayer, useTimer } from "../../../hooks";
 
 const TrackSlider: FC = () => {
-  const { videoRef } = usePlayerContext();
-  const { duration, currentTime } = useTimerContext();
+  const { primaryColor } = useSettingsContext();
+  const { duration, bufferedPercentage, timePercentage } = useTimerContext();
+  const { handlePlay, handlePause } = usePlayer();
   const { handleSeek } = useTimer();
 
-  const { primaryColor } = useSettingsContext();
-  const [timePercentage, setTimePercentage] = useState(0);
   const [hoverPoint, setHoverPoint] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
-  const [bufferedPercentage, setBufferedPercentage] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const sliderRef = useRef(null);
-
-  useEffect(() => {
-    if (!duration) return setTimePercentage(0);
-    setTimePercentage(currentTime / duration);
-  }, [currentTime]);
 
   const calculateTime = (event: React.MouseEvent<HTMLDivElement>) => {
     const rect = sliderRef.current.getBoundingClientRect();
@@ -32,15 +28,6 @@ const TrackSlider: FC = () => {
 
     const newCurrentTime = clickedPercentage * duration;
     handleSeek(newCurrentTime);
-    videoRef.current.currentTime = newCurrentTime;
-  };
-
-  const calculateBufferedPercentage = () => {
-    if (!videoRef.current) return 0;
-    const buffered = videoRef.current.buffered;
-    if (buffered.length === 0) return 0;
-    const bufferedEnd = buffered.end(buffered.length - 1);
-    return bufferedEnd / duration;
   };
 
   const handleHoverMouseMove = (event) => {
@@ -51,37 +38,37 @@ const TrackSlider: FC = () => {
   };
 
   const handleDragMouseMove = (event) => {
+    event.preventDefault();
+    console.count("executed");
     if (isDragging) {
+      handlePause();
       calculateTime(event);
     }
   };
 
   const handleMouseDown = (event) => {
+    event.preventDefault();
+    handlePause();
     calculateTime(event);
     setIsDragging(true);
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (event) => {
+    event.preventDefault();
+    handlePlay();
     setIsDragging(false);
   };
 
   useEffect(() => {
-    window.addEventListener("mousemove", handleDragMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+    if (isDragging) {
+      window.addEventListener("mousemove", handleDragMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+    }
 
     return () => {
       window.removeEventListener("mousemove", handleDragMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isDragging]);
-
-  useEffect(() => {
-    const bufferedPercentage = calculateBufferedPercentage();
-    setBufferedPercentage(bufferedPercentage);
-  }, [currentTime]);
-
-  useEffect(() => {
-    console.log(isDragging);
   }, [isDragging]);
 
   return (
@@ -110,10 +97,6 @@ const TrackSlider: FC = () => {
         onMouseMove={handleHoverMouseMove}
         ref={sliderRef}
       >
-        {isDragging && (
-          <div className="fixed left-0 right-0 top-0 bottom-0 m-auto w-full bg-transparent" />
-        )}
-
         <Indicator
           indicatorPercentage={bufferedPercentage}
           backgroundColor="#ffffff40"

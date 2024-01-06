@@ -1,6 +1,7 @@
 import { usePlayerContext } from "../contexts";
 import { useNavigate } from "react-router-dom";
 import { useControlsContext } from "../contexts";
+import { useCallback } from "react";
 
 const usePlayer = () => {
   const navigate = useNavigate();
@@ -8,52 +9,57 @@ const usePlayer = () => {
 
   const { controllersDeps, setControllersDeps } = useControlsContext();
 
-  const handlePlay = () => {
+  const handlePlay = useCallback(() => {
     setIsPlaying(true);
-  };
+  }, []);
 
-  const handlePause = () => {
+  const handlePause = useCallback(() => {
     setIsPlaying(false);
-  };
+  }, []);
 
-  const handleTogglePlay = () => {
+  const handleTogglePlay = useCallback(() => {
     setIsPlaying((prev) => !prev);
-  };
+  }, []);
 
-  const handleToggleScreen = () => {
+  const handleToggleScreen = useCallback(() => {
     if (document.fullscreenElement) document.exitFullscreen();
     else document.body.requestFullscreen();
-  };
-  const handleBack = () => {
+  }, []);
+
+  const handleBack = useCallback(() => {
     navigate("/");
-  };
-  const handlePlaybackSpeedUpdate = (speed: number) => {
+  }, [navigate]);
+
+  const handlePlaybackSpeedUpdate = useCallback((speed: number) => {
     setCurrentSpeed(speed);
     videoRef.current.playbackRate = speed;
-  };
+  }, []);
 
-  const handleAddControllerDependencies = (dependency: string) => {
-    if (controllersDeps.includes(dependency)) return;
-    console.log("adding");
-    setControllersDeps((prev) => [
-      ...prev.filter((prevDep: string) => prevDep != dependency),
-      dependency,
-    ]);
-  };
+  const handleAddControllerDependencies = useCallback(
+    (dependency: string) => {
+      if (controllersDeps.includes(dependency)) return;
+      setControllersDeps((prev) => [
+        ...prev.filter((prevDep: string) => prevDep != dependency),
+        dependency,
+      ]);
+    },
+    [controllersDeps]
+  );
 
-  const handleRemoveControllerDependencies = (dependency: string) => {
-      console.log("removing");
-    setControllersDeps((prev) => {
-      console.log(prev);
-      console.log(prev.filter((prevDep: string) => prevDep != dependency));
-      return prev.filter((prevDep: string) => prevDep != dependency);
-    });
-  };
+  const handleRemoveControllerDependencies = useCallback(
+    (dependency: string) => {
+      if (!controllersDeps.includes(dependency)) return;
+      setControllersDeps((prev) => {
+        return prev.filter((prevDep: string) => prevDep != dependency);
+      });
+    },
+    [controllersDeps]
+  );
 
-  const handleTogglePiP = () => {
+  const handleTogglePiP = useCallback(() => {
     if (document.pictureInPictureElement) document.exitPictureInPicture();
     else videoRef.current?.requestPictureInPicture();
-  };
+  }, []);
 
   return {
     handlePlay,
@@ -62,7 +68,8 @@ const usePlayer = () => {
     handleToggleScreen,
     handleBack,
     handlePlaybackSpeedUpdate,
-    handleAddControllerDependencies,handleRemoveControllerDependencies,
+    handleAddControllerDependencies,
+    handleRemoveControllerDependencies,
     handleTogglePiP,
   };
 };

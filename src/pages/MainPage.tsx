@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { ActivityIndicator } from "../components/spins";
 import { useSettingsContext } from "../contexts";
 import { DropdownMenu } from "@radix-ui/themes";
+import { useClean } from "../hooks";
 
 const MainPage: FC = () => {
   const navigate = useNavigate();
@@ -24,6 +25,8 @@ const MainPage: FC = () => {
     if (!url?.trim()?.length) return setIsInvalidUrl(true);
     navigate(`/player?src=${url}&type=url`);
   };
+
+  useClean();
 
   return (
     <div className="h-screen">
