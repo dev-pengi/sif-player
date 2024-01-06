@@ -1,13 +1,16 @@
-import { usePlayerContext } from "../contexts";
+import { usePlayerContext, useSettingsContext } from "../contexts";
 import { useNavigate } from "react-router-dom";
 import { useControlsContext } from "../contexts";
 import { useCallback } from "react";
+import { useStore } from ".";
 
 const usePlayer = () => {
   const navigate = useNavigate();
   const { videoRef, setIsPlaying, setCurrentSpeed } = usePlayerContext();
-
+  const { saveAdjustments } = useSettingsContext();
   const { controllersDeps, setControllersDeps } = useControlsContext();
+
+  const { handleStoreData } = useStore();
 
   const handlePlay = useCallback(() => {
     setIsPlaying(true);
@@ -31,8 +34,10 @@ const usePlayer = () => {
   }, [navigate]);
 
   const handlePlaybackSpeedUpdate = useCallback((speed: number) => {
+    if (!videoRef.current) return;
     setCurrentSpeed(speed);
     videoRef.current.playbackRate = speed;
+    saveAdjustments && handleStoreData({ speed });
   }, []);
 
   const handleAddControllerDependencies = useCallback(

@@ -39,7 +39,6 @@ const TrackSlider: FC = () => {
 
   const handleDragMouseMove = (event) => {
     event.preventDefault();
-    console.count("executed");
     if (isDragging) {
       handlePause();
       calculateTime(event);
@@ -48,7 +47,6 @@ const TrackSlider: FC = () => {
 
   const handleMouseDown = (event) => {
     event.preventDefault();
-    handlePause();
     calculateTime(event);
     setIsDragging(true);
   };

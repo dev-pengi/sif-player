@@ -17,6 +17,8 @@ interface SettingsContextProps {
   doubleVolumeStep: number;
   isLoop: boolean;
   shortcutsEnabled: boolean;
+  saveTrack: boolean;
+  saveAdjustments: boolean;
   setPrimaryColor: Dispatch<SetStateAction<string>>;
   setLockShortcuts: Dispatch<SetStateAction<boolean>>;
   setNormalSkipStep: Dispatch<SetStateAction<number>>;
@@ -25,6 +27,8 @@ interface SettingsContextProps {
   setDoubleVolumeStep: Dispatch<SetStateAction<number>>;
   setIsLoop: Dispatch<SetStateAction<boolean>>;
   setShortcutsEnabled: Dispatch<SetStateAction<boolean>>;
+  setSaveTrack: Dispatch<SetStateAction<boolean>>;
+  setSaveAdjustments: Dispatch<SetStateAction<boolean>>;
 }
 
 const SettingsContext = createContext<SettingsContextProps | undefined>(
@@ -56,6 +60,8 @@ const SettingsContextProvider: FC<SettingsContextProviderProps> = ({
   const [doubleVolumeStep, setDoubleVolumeStep] = useState(20);
   const [isLoop, setIsLoop] = useState(false);
   const [shortcutsEnabled, setShortcutsEnabled] = useState(true);
+  const [saveTrack, setSaveTrack] = useState(false);
+  const [saveAdjustments, setSaveAdjustments] = useState(false);
 
   const value = {
     primaryColor,
@@ -66,6 +72,8 @@ const SettingsContextProvider: FC<SettingsContextProviderProps> = ({
     doubleVolumeStep,
     isLoop,
     shortcutsEnabled,
+    saveTrack,
+    saveAdjustments,
     setPrimaryColor,
     setLockShortcuts,
     setNormalSkipStep,
@@ -74,6 +82,8 @@ const SettingsContextProvider: FC<SettingsContextProviderProps> = ({
     setDoubleVolumeStep,
     setIsLoop,
     setShortcutsEnabled,
+    setSaveTrack,
+    setSaveAdjustments,
   };
 
   return (

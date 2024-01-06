@@ -8,7 +8,7 @@ import {
 const useLoader = () => {
   const { videoRef } = usePlayerContext();
   const { isLoop } = useSettingsContext();
-  const { isLoading, setIsLoading } = useLoaderContext();
+  const { setIsLoading } = useLoaderContext();
   const { setDuration, setCurrentTime } = useTimerContext();
 
   const handleLoadStart = () => {

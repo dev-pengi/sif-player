@@ -38,6 +38,7 @@ const SettingInput: FC<SettingInputProps> = ({
       }
     }
   };
+
   return (
     <motion.input
       type="text"
@@ -106,7 +107,21 @@ const SettingsBlock: FC = () => {
     setVolumeStep,
     doubleVolumeStep,
     setDoubleVolumeStep,
+    saveTrack,
+    saveAdjustments,
+    setSaveTrack,
+    setSaveAdjustments,
   } = useSettingsContext();
+
+  const handleSaveTrackToggle = () => {
+    setSaveTrack((prev) => !prev);
+    localStorage.setItem("save-track", String(!saveTrack));
+  };
+
+  const handleSaveAdjustmentsToggle = () => {
+    setSaveAdjustments((prev) => !prev);
+    localStorage.setItem("save-adjustments", String(!saveAdjustments));
+  };
 
   const COLORS = [
     "#e37171",
@@ -163,8 +178,8 @@ const SettingsBlock: FC = () => {
         description="save the current track by filename when the player is closed"
       >
         <Switch
-          onChange={handleLockShortcutsToggle}
-          checked={lockShortcuts}
+          onChange={handleSaveTrackToggle}
+          checked={saveTrack}
           uncheckedIcon={false}
           checkedIcon={false}
           onColor={primaryColor}
@@ -179,8 +194,8 @@ const SettingsBlock: FC = () => {
         description="save the current adjustments (volume, playback rate, etc) when the player is closed"
       >
         <Switch
-          onChange={handleLockShortcutsToggle}
-          checked={lockShortcuts}
+          onChange={handleSaveAdjustmentsToggle}
+          checked={saveAdjustments}
           uncheckedIcon={false}
           checkedIcon={false}
           onColor={primaryColor}

@@ -1,19 +1,22 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import {
   usePlayerContext,
   useControlsContext,
   useTimerContext,
+  useSettingsContext,
 } from "../contexts";
-import { usePlayer } from ".";
+import { usePlayer, useStore } from ".";
 
 const useEvents = () => {
   const { videoRef, isPlaying, isPiP, setIsPiP } = usePlayerContext();
-  const { duration, currentTime, bufferedPercentage,setBufferedPercentage } = useTimerContext();
+  const { duration, currentTime, setBufferedPercentage } = useTimerContext();
+  const { saveTrack } = useSettingsContext();
   const { setIsFullScreen } = useControlsContext();
   const {
     handleAddControllerDependencies,
     handleRemoveControllerDependencies,
   } = usePlayer();
+  const { handleStoreData } = useStore();
 
   useEffect(() => {
     const handleFullScreenChange = () => {
@@ -68,7 +71,20 @@ const useEvents = () => {
     return bufferedEnd / duration;
   };
 
-  
+  useEffect(() => {
+    const storeInterval = setInterval(() => {
+      if (!duration || !videoRef.current) return;
+      saveTrack &&
+        handleStoreData({
+          time: videoRef.current.currentTime,
+        });
+    }, 500);
+
+    return () => {
+      clearInterval(storeInterval);
+    };
+  }, [duration]);
+
   useEffect(() => {
     const bufferedPercentage = calculateBufferedPercentage();
     setBufferedPercentage(bufferedPercentage);

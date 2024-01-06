@@ -1,16 +1,25 @@
 import { FC, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { usePlayerContext } from "../contexts";
+import {
+  usePlayerContext,
+  useSettingsContext,
+  useTimerContext,
+} from "../contexts";
 import { PlayerError } from "./errors";
 import { VideoPlayer } from "./players";
-import { useErrors, useEvents, useShortcuts } from "../hooks";
+import {
+  useErrors,
+  useEvents,
+  usePlayer,
+  useShortcuts,
+  useStore,
+  useTimer,
+  useVolume,
+} from "../hooks";
 
 const useVideoSrc = () => {
   const location = useLocation();
   const { setVideoSrc, setMediaData } = usePlayerContext();
-  useEvents();
-  useShortcuts();
-  useErrors();
 
   useEffect(() => {
     const handleVideoSrc = async () => {
@@ -46,9 +55,35 @@ const useVideoSrc = () => {
     handleVideoSrc();
   }, []);
 };
+
 const Player: FC = () => {
-  const { isError } = usePlayerContext();
+  const { isError, mediaData } = usePlayerContext();
+  const { duration } = useTimerContext();
+  const { saveTrack, saveAdjustments } = useSettingsContext();
+  const { handleSeek } = useTimer();
+  const { handleVolumeChange } = useVolume();
+  const { handlePlaybackSpeedUpdate } = usePlayer();
   useVideoSrc();
+  useEvents();
+  useShortcuts();
+  useErrors();
+
+  const { handleFetchData } = useStore();
+
+  useEffect(() => {
+    const data = handleFetchData();
+    if (data) {
+      const { time, volume, muted, speed } = data;
+      if (time && !isNaN(time) && saveTrack) handleSeek(Math.round(time));
+      if (!saveAdjustments) {
+        if (volume && !isNaN(volume)) {
+          handleVolumeChange(volume);
+          if (muted) handleVolumeChange(0);
+        }
+        if (speed && !isNaN(speed)) handlePlaybackSpeedUpdate(speed);
+      }
+    }
+  }, [mediaData?.name, mediaData?.url, duration]);
 
   return (
     <div className="w-screen h-screen flex items-center justify-center flex-1 bg-black">

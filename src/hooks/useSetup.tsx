@@ -1,8 +1,5 @@
 import { useEffect } from "react";
-import {
-  useSettingsContext,
-  useVolumeContext,
-} from "../contexts";
+import { useSettingsContext, useVolumeContext } from "../contexts";
 
 const useSetup = () => {
   const {
@@ -11,7 +8,11 @@ const useSetup = () => {
     setNormalSkipStep,
     setDoubleSkipStep,
     setVolumeStep,
-    setDoubleVolumeStep,setIsLoop
+    setDoubleVolumeStep,
+    setIsLoop,
+    setSaveTrack,
+    setSaveAdjustments,
+    setShortcutsEnabled,
   } = useSettingsContext();
   const { setVolume } = useVolumeContext();
 
@@ -54,6 +55,21 @@ const useSetup = () => {
     const storedDoubleVolumeStep = localStorage.getItem("double-volume-step");
     if (storedDoubleVolumeStep) {
       setDoubleVolumeStep(JSON.parse(storedDoubleVolumeStep));
+    }
+
+    const storedSaveTrack = localStorage.getItem("save-track");
+    if (storedSaveTrack) {
+      setSaveTrack(JSON.parse(storedSaveTrack));
+    }
+
+    const storedSaveAdjustments = localStorage.getItem("save-adjustments");
+    if (storedSaveAdjustments) {
+      setSaveAdjustments(JSON.parse(storedSaveAdjustments));
+    }
+
+    const storedShortcutsEnabled = localStorage.getItem("shortcuts-enabled");
+    if (storedShortcutsEnabled) {
+      setShortcutsEnabled(JSON.parse(storedShortcutsEnabled));
     }
   }, []);
 };
