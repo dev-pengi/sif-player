@@ -12,20 +12,20 @@ const useVolume = () => {
   const { handleStoreData } = useStore();
 
   const handleVolumeChange = (volume: number) => {
-    if (!videoRef?.current) return;
+    if (!videoRef.current) return;
     const newVolume = Math.max(0, Math.min(volume, 100));
     setVolume(newVolume);
     if (newVolume == 0) {
       setIsMuted(true);
       videoRef.current.muted = true;
-      saveAdjustments && handleStoreData({
+      handleStoreData({
         volume: newVolume,
         muted: true,
       });
     } else {
       setIsMuted(false);
       videoRef.current.muted = false;
-      saveAdjustments && handleStoreData({
+      handleStoreData({
         volume: newVolume,
         muted: false,
       });
@@ -40,7 +40,7 @@ const useVolume = () => {
       if (prev && volume == 0) {
         handleVolumeChange(30);
       }
-      saveAdjustments && handleStoreData({
+      handleStoreData({
         muted: !prev,
       });
       return !prev;

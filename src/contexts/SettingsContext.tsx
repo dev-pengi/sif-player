@@ -53,15 +53,15 @@ const SettingsContextProvider: FC<SettingsContextProviderProps> = ({
   children,
 }) => {
   const [primaryColor, setPrimaryColor] = useState("#ff00fb");
-  const [lockShortcuts, setLockShortcuts] = useState(true);
+  const [lockShortcuts, setLockShortcuts] = useState(false);
   const [normalSkipStep, setNormalSkipStep] = useState(10);
   const [doubleSkipStep, setDoubleSkipStep] = useState(60);
   const [volumeStep, setVolumeStep] = useState(5);
   const [doubleVolumeStep, setDoubleVolumeStep] = useState(20);
   const [isLoop, setIsLoop] = useState(false);
   const [shortcutsEnabled, setShortcutsEnabled] = useState(true);
-  const [saveTrack, setSaveTrack] = useState(false);
-  const [saveAdjustments, setSaveAdjustments] = useState(false);
+  const [saveTrack, setSaveTrack] = useState(true);
+  const [saveAdjustments, setSaveAdjustments] = useState(true);
 
   const value = {
     primaryColor,

@@ -74,10 +74,9 @@ const useEvents = () => {
   useEffect(() => {
     const storeInterval = setInterval(() => {
       if (!duration || !videoRef.current) return;
-      saveTrack &&
-        handleStoreData({
-          time: videoRef.current.currentTime,
-        });
+      handleStoreData({
+        time: videoRef.current.currentTime,
+      });
     }, 500);
 
     return () => {

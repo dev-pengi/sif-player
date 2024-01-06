@@ -75,7 +75,7 @@ const Player: FC = () => {
     if (data) {
       const { time, volume, muted, speed } = data;
       if (time && !isNaN(time) && saveTrack) handleSeek(Math.round(time));
-      if (!saveAdjustments) {
+      if (saveAdjustments) {
         if (volume && !isNaN(volume)) {
           handleVolumeChange(volume);
           if (muted) handleVolumeChange(0);

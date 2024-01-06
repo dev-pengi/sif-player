@@ -27,6 +27,10 @@ const MenuButton: FC = () => {
   };
   const handleShortcutsToggle = () => {
     setShortcutsEnabled((prev) => !prev);
+    localStorage.setItem(
+      "shortcuts-enabled",
+      JSON.stringify(!shortcutsEnabled)
+    );
   };
 
   const handleSettingsOpen = () => {

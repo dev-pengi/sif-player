@@ -37,7 +37,7 @@ const usePlayer = () => {
     if (!videoRef.current) return;
     setCurrentSpeed(speed);
     videoRef.current.playbackRate = speed;
-    saveAdjustments && handleStoreData({ speed });
+    handleStoreData({ speed });
   }, []);
 
   const handleAddControllerDependencies = useCallback(
