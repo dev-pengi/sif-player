@@ -1,7 +1,6 @@
 import { usePlayerContext, useSettingsContext } from "../contexts";
 import { useNavigate } from "react-router-dom";
 import { useControlsContext } from "../contexts";
-import { useCallback } from "react";
 import { useStore } from ".";
 
 const usePlayer = () => {

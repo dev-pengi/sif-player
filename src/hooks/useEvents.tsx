@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   usePlayerContext,
   useControlsContext,
@@ -15,8 +15,6 @@ const useEvents = () => {
   const { playInBackground } = useSettingsContext();
   const { setIsFullScreen } = useControlsContext();
   const {
-    handleAddControllerDependencies,
-    handleRemoveControllerDependencies,
     handlePause,
     handlePlay,
   } = usePlayer();
