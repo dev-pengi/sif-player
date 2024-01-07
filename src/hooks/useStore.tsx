@@ -55,7 +55,6 @@ const useStore = () => {
       );
     });
 
-    console.log(filteredData[0]);
     if (filteredData.length === 0) return [];
     return filteredData[0];
   };

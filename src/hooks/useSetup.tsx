@@ -13,6 +13,7 @@ const useSetup = () => {
     setSaveTrack,
     setSaveAdjustments,
     setShortcutsEnabled,
+    setPlayInBackground,
   } = useSettingsContext();
   const { setVolume } = useVolumeContext();
 
@@ -71,6 +72,12 @@ const useSetup = () => {
     if (storedShortcutsEnabled) {
       setShortcutsEnabled(JSON.parse(storedShortcutsEnabled));
     }
+
+    const storedPlayInBackground = localStorage.getItem("play-in-background");
+    if (storedPlayInBackground) {
+      setPlayInBackground(JSON.parse(storedPlayInBackground));
+    }
+
   }, []);
 };
 

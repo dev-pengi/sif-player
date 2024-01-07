@@ -66,6 +66,14 @@ const usePlayer = () => {
     else videoRef.current?.requestPictureInPicture();
   }, []);
 
+  const requestPiP = useCallback(() => {
+    videoRef.current?.requestPictureInPicture();
+  }, []);
+
+  const cancelPiP = useCallback(() => {
+    document.exitPictureInPicture();
+  }, []);
+
   return {
     handlePlay,
     handlePause,
@@ -76,6 +84,8 @@ const usePlayer = () => {
     handleAddControllerDependencies,
     handleRemoveControllerDependencies,
     handleTogglePiP,
+    requestPiP,
+    cancelPiP,
   };
 };
 

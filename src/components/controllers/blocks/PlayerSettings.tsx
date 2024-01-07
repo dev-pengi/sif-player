@@ -111,6 +111,8 @@ const SettingsBlock: FC = () => {
     saveAdjustments,
     setSaveTrack,
     setSaveAdjustments,
+    playInBackground,
+    setPlayInBackground,
   } = useSettingsContext();
 
   const handleSaveTrackToggle = () => {
@@ -149,6 +151,11 @@ const SettingsBlock: FC = () => {
   const handleLockShortcutsToggle = () => {
     setLockShortcuts((prev) => !prev);
     localStorage.setItem("lock-shortcuts", String(!lockShortcuts));
+  };
+
+  const handleTogglePlayInBackground = () => {
+    setPlayInBackground((prev) => !prev);
+    localStorage.setItem("play-in-background", String(!playInBackground));
   };
 
   return (
@@ -222,6 +229,23 @@ const SettingsBlock: FC = () => {
           className="react-switch"
         />
       </SettingCol>
+      <SettingCol
+        title="Play In Background"
+        description="keep playing the media when you leave the tab or the browser"
+      >
+        <Switch
+          onChange={handleTogglePlayInBackground}
+          checked={playInBackground}
+          uncheckedIcon={false}
+          checkedIcon={false}
+          onColor={primaryColor}
+          height={23}
+          width={46}
+          handleDiameter={18}
+          className="react-switch"
+        />
+      </SettingCol>
+
       <Separator />
       <SettingCol
         title="Forward/Backward"

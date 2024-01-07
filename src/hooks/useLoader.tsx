@@ -12,7 +12,6 @@ const useLoader = () => {
   const { setDuration, setCurrentTime } = useTimerContext();
 
   const handleLoadStart = () => {
-    console.log("load start");
     setIsLoading(true);
   };
 

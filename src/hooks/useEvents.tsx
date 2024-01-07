@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   usePlayerContext,
   useControlsContext,
@@ -8,13 +8,17 @@ import {
 import { usePlayer, useStore } from ".";
 
 const useEvents = () => {
+  const [isBackgroundPause, setIsBackgroundPause] = useState(false);
+
   const { videoRef, isPlaying, isPiP, setIsPiP } = usePlayerContext();
   const { duration, currentTime, setBufferedPercentage } = useTimerContext();
-  const { saveTrack } = useSettingsContext();
+  const { playInBackground } = useSettingsContext();
   const { setIsFullScreen } = useControlsContext();
   const {
     handleAddControllerDependencies,
     handleRemoveControllerDependencies,
+    handlePause,
+    handlePlay,
   } = usePlayer();
   const { handleStoreData } = useStore();
 
@@ -88,6 +92,36 @@ const useEvents = () => {
     const bufferedPercentage = calculateBufferedPercentage();
     setBufferedPercentage(bufferedPercentage);
   }, [currentTime]);
+
+  useEffect(() => {
+    const handleBlur = () => {
+      console.log("handle blur");
+      if (!videoRef.current) return;
+      if (!playInBackground) {
+        console.log("handle pause");
+        handlePause();
+        setIsBackgroundPause(true);
+      }
+    };
+
+    const handleFocus = () => {
+      console.log("handle focus");
+      if (!videoRef.current) return;
+      if (isBackgroundPause) {
+        handlePlay();
+        setIsBackgroundPause(false);
+      }
+    };
+
+
+    window.addEventListener("blur", handleBlur);
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      window.removeEventListener("blur", handleBlur);
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, [playInBackground, isBackgroundPause]);
 };
 
 export default useEvents;

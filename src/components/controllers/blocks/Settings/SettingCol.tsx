@@ -18,7 +18,7 @@ const SettingCol: FC<SettingColProps> = ({
       {...props}
     >
       <div>
-        <p className="text-white">{title}</p>
+        <p className="text-white capitalize">{title}</p>
         {description && (
           <p className="text-white opacity-70 text-[15px] font-light mt-2">
             {description}

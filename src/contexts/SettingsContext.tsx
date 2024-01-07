@@ -19,6 +19,7 @@ interface SettingsContextProps {
   shortcutsEnabled: boolean;
   saveTrack: boolean;
   saveAdjustments: boolean;
+  playInBackground: boolean;
   setPrimaryColor: Dispatch<SetStateAction<string>>;
   setLockShortcuts: Dispatch<SetStateAction<boolean>>;
   setNormalSkipStep: Dispatch<SetStateAction<number>>;
@@ -29,6 +30,7 @@ interface SettingsContextProps {
   setShortcutsEnabled: Dispatch<SetStateAction<boolean>>;
   setSaveTrack: Dispatch<SetStateAction<boolean>>;
   setSaveAdjustments: Dispatch<SetStateAction<boolean>>;
+  setPlayInBackground: Dispatch<SetStateAction<boolean>>;
 }
 
 const SettingsContext = createContext<SettingsContextProps | undefined>(
@@ -62,6 +64,7 @@ const SettingsContextProvider: FC<SettingsContextProviderProps> = ({
   const [shortcutsEnabled, setShortcutsEnabled] = useState(true);
   const [saveTrack, setSaveTrack] = useState(true);
   const [saveAdjustments, setSaveAdjustments] = useState(true);
+  const [playInBackground, setPlayInBackground] = useState(true);
 
   const value = {
     primaryColor,
@@ -74,6 +77,7 @@ const SettingsContextProvider: FC<SettingsContextProviderProps> = ({
     shortcutsEnabled,
     saveTrack,
     saveAdjustments,
+    playInBackground,
     setPrimaryColor,
     setLockShortcuts,
     setNormalSkipStep,
@@ -84,6 +88,7 @@ const SettingsContextProvider: FC<SettingsContextProviderProps> = ({
     setShortcutsEnabled,
     setSaveTrack,
     setSaveAdjustments,
+    setPlayInBackground,
   };
 
   return (
