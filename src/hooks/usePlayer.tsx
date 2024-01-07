@@ -12,18 +12,6 @@ const usePlayer = () => {
 
   const { handleStoreData } = useStore();
 
-  const handlePlay = useCallback(() => {
-    setIsPlaying(true);
-  }, []);
-
-  const handlePause = useCallback(() => {
-    setIsPlaying(false);
-  }, []);
-
-  const handleTogglePlay = useCallback(() => {
-    setIsPlaying((prev) => !prev);
-  }, []);
-
   const handleToggleScreen = useCallback(() => {
     if (document.fullscreenElement) document.exitFullscreen();
     else document.body.requestFullscreen();
@@ -72,6 +60,45 @@ const usePlayer = () => {
 
   const cancelPiP = useCallback(() => {
     document.exitPictureInPicture();
+  }, []);
+
+  const handlePlayingChange = useCallback(
+    (status: boolean = null, toggle = false) => {
+      setIsPlaying(status);
+      if (status === null && toggle === true) {
+        setIsPlaying((prev) => {
+          if (prev) {
+            videoRef.current?.pause();
+            handleAddControllerDependencies("paused");
+          } else {
+            videoRef.current?.play();
+            handleRemoveControllerDependencies("paused");
+          }
+          return !prev;
+        });
+        return;
+      }
+      if (status) {
+        videoRef.current?.play();
+        handleRemoveControllerDependencies("paused");
+      } else {
+        videoRef.current?.pause();
+        handleAddControllerDependencies("paused");
+      }
+    },
+    []
+  );
+
+  const handlePlay = useCallback(() => {
+    handlePlayingChange(true);
+  }, []);
+
+  const handlePause = useCallback(() => {
+    handlePlayingChange(false);
+  }, []);
+
+  const handleTogglePlay = useCallback(() => {
+    handlePlayingChange(null, true);
   }, []);
 
   return {

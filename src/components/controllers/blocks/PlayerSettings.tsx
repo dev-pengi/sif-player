@@ -3,6 +3,7 @@ import Switch from "react-switch";
 import { useSettingsContext } from "../../../contexts";
 import { Separator, SettingCol } from "./Settings";
 import { motion } from "framer-motion";
+import { colors } from "../../../constants";
 
 interface SettingInputProps {
   defaultValue: string | number;
@@ -125,29 +126,6 @@ const SettingsBlock: FC = () => {
     localStorage.setItem("save-adjustments", String(!saveAdjustments));
   };
 
-  const COLORS = [
-    "#e37171",
-    "#e64545",
-    "#e32d2d",
-    "#db4614",
-    "#eb9e34",
-    "#dbd800",
-    "#50db00",
-    "#3461eb",
-    "#00afdb",
-    "#343deb",
-    "#9834eb",
-    "#db34eb",
-    "#ff00fb",
-    "#7c00db",
-    "#855b81",
-    "#855b5b",
-    "#6d5b85",
-    "#486770",
-    "#3d3d3d",
-    "#2e2e2e",
-  ];
-
   const handleLockShortcutsToggle = () => {
     setLockShortcuts((prev) => !prev);
     localStorage.setItem("lock-shortcuts", String(!lockShortcuts));
@@ -166,7 +144,7 @@ const SettingsBlock: FC = () => {
         className="flex-col !items-start !justify-start"
       >
         <div className="mt-3 flex gap-3 flex-wrap">
-          {COLORS.map((color) => {
+          {colors.map((color) => {
             return (
               <ColorSelector
                 localValue="primary-color"

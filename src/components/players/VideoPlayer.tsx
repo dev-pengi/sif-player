@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { usePlayerContext } from "../../contexts";
 import MainController from "../controllers/MainController";
 import { useLoader, usePlayer, useTimer } from "../../hooks";

@@ -34,16 +34,16 @@ const useEvents = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (!videoRef.current) return;
-    if (isPlaying) {
-      videoRef.current?.play();
-      handleRemoveControllerDependencies("paused");
-    } else {
-      videoRef.current?.pause();
-      handleAddControllerDependencies("paused");
-    }
-  }, [isPlaying]);
+  // useEffect(() => {
+  //   if (!videoRef.current) return;
+  //   if (isPlaying) {
+  //     videoRef.current?.play();
+  //     handleRemoveControllerDependencies("paused");
+  //   } else {
+  //     videoRef.current?.pause();
+  //     handleAddControllerDependencies("paused");
+  //   }
+  // }, [isPlaying]);
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -112,7 +112,6 @@ const useEvents = () => {
         setIsBackgroundPause(false);
       }
     };
-
 
     window.addEventListener("blur", handleBlur);
     window.addEventListener("focus", handleFocus);

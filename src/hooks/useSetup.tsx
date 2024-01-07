@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSettingsContext, useVolumeContext } from "../contexts";
+import { colors } from "../constants";
 
 const useSetup = () => {
   const {
@@ -30,6 +31,8 @@ const useSetup = () => {
 
     const storedPrimaryColor = localStorage.getItem("primary-color");
     if (storedPrimaryColor) {
+      if (!colors.includes(storedPrimaryColor))
+        return localStorage.removeItem("primary-color");
       setPrimaryColor(storedPrimaryColor);
     }
 
@@ -77,7 +80,6 @@ const useSetup = () => {
     if (storedPlayInBackground) {
       setPlayInBackground(JSON.parse(storedPlayInBackground));
     }
-
   }, []);
 };
 
