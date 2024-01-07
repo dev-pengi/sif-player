@@ -12,94 +12,85 @@ const usePlayer = () => {
 
   const { handleStoreData } = useStore();
 
-  const handleToggleScreen = useCallback(() => {
+  const handleToggleScreen = () => {
     if (document.fullscreenElement) document.exitFullscreen();
     else document.body.requestFullscreen();
-  }, []);
+  };
 
-  const handleBack = useCallback(() => {
+  const handleBack = () => {
     navigate("/");
-  }, [navigate]);
+  };
 
-  const handlePlaybackSpeedUpdate = useCallback((speed: number) => {
+  const handlePlaybackSpeedUpdate = (speed: number) => {
     if (!videoRef.current) return;
     setCurrentSpeed(speed);
     videoRef.current.playbackRate = speed;
     handleStoreData({ speed });
-  }, []);
+  };
 
-  const handleAddControllerDependencies = useCallback(
-    (dependency: string) => {
-      if (controllersDeps.includes(dependency)) return;
-      setControllersDeps((prev) => [
-        ...prev.filter((prevDep: string) => prevDep != dependency),
-        dependency,
-      ]);
-    },
-    [controllersDeps]
-  );
+  const handleAddControllerDependencies = (dependency: string) => {
+    if (controllersDeps.includes(dependency)) return;
+    setControllersDeps((prev) => [
+      ...prev.filter((prevDep: string) => prevDep != dependency),
+      dependency,
+    ]);
+  };
 
-  const handleRemoveControllerDependencies = useCallback(
-    (dependency: string) => {
-      if (!controllersDeps.includes(dependency)) return;
-      setControllersDeps((prev) => {
-        return prev.filter((prevDep: string) => prevDep != dependency);
-      });
-    },
-    [controllersDeps]
-  );
+  const handleRemoveControllerDependencies = (dependency: string) => {
+    if (!controllersDeps.includes(dependency)) return;
+    setControllersDeps((prev) => {
+      return prev.filter((prevDep: string) => prevDep != dependency);
+    });
+  };
 
-  const handleTogglePiP = useCallback(() => {
+  const handleTogglePiP = () => {
     if (document.pictureInPictureElement) document.exitPictureInPicture();
     else videoRef.current?.requestPictureInPicture();
-  }, []);
+  };
 
-  const requestPiP = useCallback(() => {
+  const requestPiP = () => {
     videoRef.current?.requestPictureInPicture();
-  }, []);
+  };
 
-  const cancelPiP = useCallback(() => {
+  const cancelPiP = () => {
     document.exitPictureInPicture();
-  }, []);
+  };
 
-  const handlePlayingChange = useCallback(
-    (status: boolean = null, toggle = false) => {
-      if (status === null && toggle === true) {
-        setIsPlaying((prev) => {
-          if (prev) {
-            videoRef.current?.pause();
-            handleAddControllerDependencies("paused");
-          } else {
-            videoRef.current?.play();
-            handleRemoveControllerDependencies("paused");
-          }
-          return !prev;
-        });
-        return;
-      }
-      setIsPlaying(status);
-      if (status) {
-        videoRef.current?.play();
-        handleRemoveControllerDependencies("paused");
-      } else {
-        videoRef.current?.pause();
-        handleAddControllerDependencies("paused");
-      }
-    },
-    []
-  );
+  const handlePlayingChange = (status: boolean = null, toggle = false) => {
+    if (status === null && toggle === true) {
+      setIsPlaying((prev) => {
+        if (prev) {
+          videoRef.current?.pause();
+          handleAddControllerDependencies("paused");
+        } else {
+          videoRef.current?.play();
+          handleRemoveControllerDependencies("paused");
+        }
+        return !prev;
+      });
+      return;
+    }
+    setIsPlaying(status);
+    if (status) {
+      videoRef.current?.play();
+      handleRemoveControllerDependencies("paused");
+    } else {
+      videoRef.current?.pause();
+      handleAddControllerDependencies("paused");
+    }
+  };
 
-  const handlePlay = useCallback(() => {
+  const handlePlay = () => {
     handlePlayingChange(true);
-  }, []);
+  };
 
-  const handlePause = useCallback(() => {
+  const handlePause = () => {
     handlePlayingChange(false);
-  }, []);
+  };
 
-  const handleTogglePlay = useCallback(() => {
+  const handleTogglePlay = () => {
     handlePlayingChange(null, true);
-  }, []);
+  };
 
   return {
     handlePlay,
