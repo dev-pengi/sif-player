@@ -15,6 +15,7 @@ const useSetup = () => {
     setSaveAdjustments,
     setShortcutsEnabled,
     setPlayInBackground,
+    setPlayToggleClick
   } = useSettingsContext();
   const { setVolume } = useVolumeContext();
 
@@ -79,6 +80,11 @@ const useSetup = () => {
     const storedPlayInBackground = localStorage.getItem("play-in-background");
     if (storedPlayInBackground) {
       setPlayInBackground(JSON.parse(storedPlayInBackground));
+    }
+
+    const storedPlayToggleClick = localStorage.getItem("play-toggle-click");
+    if (storedPlayToggleClick) {
+      setPlayToggleClick(JSON.parse(storedPlayToggleClick));
     }
   }, []);
 };

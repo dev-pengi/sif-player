@@ -20,6 +20,7 @@ interface SettingsContextProps {
   saveTrack: boolean;
   saveAdjustments: boolean;
   playInBackground: boolean;
+  playToggleClick: boolean;
   setPrimaryColor: Dispatch<SetStateAction<string>>;
   setLockShortcuts: Dispatch<SetStateAction<boolean>>;
   setNormalSkipStep: Dispatch<SetStateAction<number>>;
@@ -31,6 +32,7 @@ interface SettingsContextProps {
   setSaveTrack: Dispatch<SetStateAction<boolean>>;
   setSaveAdjustments: Dispatch<SetStateAction<boolean>>;
   setPlayInBackground: Dispatch<SetStateAction<boolean>>;
+  setPlayToggleClick: Dispatch<SetStateAction<boolean>>;
 }
 
 const SettingsContext = createContext<SettingsContextProps | undefined>(
@@ -65,6 +67,7 @@ const SettingsContextProvider: FC<SettingsContextProviderProps> = ({
   const [saveTrack, setSaveTrack] = useState(true);
   const [saveAdjustments, setSaveAdjustments] = useState(true);
   const [playInBackground, setPlayInBackground] = useState(true);
+  const [playToggleClick, setPlayToggleClick] = useState(false);
 
   const value = {
     primaryColor,
@@ -78,6 +81,7 @@ const SettingsContextProvider: FC<SettingsContextProviderProps> = ({
     saveTrack,
     saveAdjustments,
     playInBackground,
+    playToggleClick,
     setPrimaryColor,
     setLockShortcuts,
     setNormalSkipStep,
@@ -89,6 +93,7 @@ const SettingsContextProvider: FC<SettingsContextProviderProps> = ({
     setSaveTrack,
     setSaveAdjustments,
     setPlayInBackground,
+    setPlayToggleClick,
   };
 
   return (

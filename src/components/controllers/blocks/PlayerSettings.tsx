@@ -114,6 +114,8 @@ const SettingsBlock: FC = () => {
     setSaveAdjustments,
     playInBackground,
     setPlayInBackground,
+    playToggleClick,
+    setPlayToggleClick,
   } = useSettingsContext();
 
   const handleSaveTrackToggle = () => {
@@ -134,6 +136,11 @@ const SettingsBlock: FC = () => {
   const handleTogglePlayInBackground = () => {
     setPlayInBackground((prev) => !prev);
     localStorage.setItem("play-in-background", String(!playInBackground));
+  };
+
+  const handleTogglePlayToggleClick = () => {
+    setPlayToggleClick((prev) => !prev);
+    localStorage.setItem("play-toggle-click", String(!playToggleClick));
   };
 
   return (
@@ -192,6 +199,23 @@ const SettingsBlock: FC = () => {
       </SettingCol>
       <Separator />
       <SettingCol
+        title="Click To Play/Pause"
+        description="click anywhere on the screen to toggle the video play/pause"
+      >
+        <Switch
+          onChange={handleTogglePlayToggleClick}
+          checked={playToggleClick}
+          uncheckedIcon={false}
+          checkedIcon={false}
+          onColor={primaryColor}
+          height={23}
+          width={46}
+          handleDiameter={18}
+          className="react-switch"
+        />
+      </SettingCol>
+      <Separator />
+      <SettingCol
         title="Lock Shortcuts"
         description="disable shortcuts when the player is on lock mode"
       >
@@ -223,7 +247,6 @@ const SettingsBlock: FC = () => {
           className="react-switch"
         />
       </SettingCol>
-
       <Separator />
       <SettingCol
         title="Forward/Backward"
