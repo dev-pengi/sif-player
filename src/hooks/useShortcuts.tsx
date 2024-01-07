@@ -75,7 +75,7 @@ const useShortcuts = () => {
   });
 
   // play/pause with space bar
-  useConditionalHotkeys("space, pause", handleTogglePlay, true);
+  useConditionalHotkeys("space, pause,enter", handleTogglePlay, true);
 
   // toggle fullscreen with f
   useConditionalHotkeys("f", handleToggleScreen, true);

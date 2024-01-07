@@ -64,7 +64,6 @@ const usePlayer = () => {
 
   const handlePlayingChange = useCallback(
     (status: boolean = null, toggle = false) => {
-      setIsPlaying(status);
       if (status === null && toggle === true) {
         setIsPlaying((prev) => {
           if (prev) {
@@ -78,6 +77,7 @@ const usePlayer = () => {
         });
         return;
       }
+      setIsPlaying(status);
       if (status) {
         videoRef.current?.play();
         handleRemoveControllerDependencies("paused");

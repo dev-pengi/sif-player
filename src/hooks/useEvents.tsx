@@ -97,8 +97,7 @@ const useEvents = () => {
     const handleBlur = () => {
       console.log("handle blur");
       if (!videoRef.current) return;
-      if (!playInBackground) {
-        console.log("handle pause");
+      if (!playInBackground && isPlaying) {
         handlePause();
         setIsBackgroundPause(true);
       }
@@ -120,7 +119,7 @@ const useEvents = () => {
       window.removeEventListener("blur", handleBlur);
       window.removeEventListener("focus", handleFocus);
     };
-  }, [playInBackground, isBackgroundPause]);
+  }, [playInBackground, isBackgroundPause, isPlaying]);
 };
 
 export default useEvents;
