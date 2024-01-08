@@ -3,10 +3,19 @@ import { usePlayerContext } from "../../../contexts";
 import { Separator } from "./Settings";
 
 const MediaInfo: FC = () => {
-  const convertSize = (size: number): string => {
-    size;
-    return "1.3GB";
-  };
+  function formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return "0 bytes";
+
+    const k = 1024;
+    const sizes = ["", "KB", "MB", "GB", "TB"];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return (
+      parseFloat((bytes / Math.pow(k, i)).toFixed(decimals)) + " " + sizes[i]
+    );
+  }
+
   const { mediaData } = usePlayerContext();
   const mediaName = mediaData?.name ?? "Untitled Media";
   const mediaType = mediaData?.type ?? "Unspecified Type";
@@ -26,7 +35,7 @@ const MediaInfo: FC = () => {
       <div className="flex items-center py-2">
         <h3 className="opacity-95">Size:</h3>
         <p className="ml-6 opacity-80">
-          {convertSize(mediaSize)} ({mediaSize} bytes)
+          {formatBytes(mediaSize)} ({mediaSize} bytes)
         </p>
       </div>
       <div className="flex items-center py-2">
