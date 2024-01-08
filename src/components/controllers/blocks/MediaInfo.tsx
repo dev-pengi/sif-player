@@ -8,7 +8,6 @@ const MediaInfo: FC = () => {
     return "1.3GB";
   };
   const { mediaData } = usePlayerContext();
-  console.log(mediaData);
   const mediaName = mediaData?.name ?? "Untitled Media";
   const mediaType = mediaData?.type ?? "Unspecified Type";
   const mediaSize = mediaData?.size ?? "Unspecified Size";
@@ -32,7 +31,7 @@ const MediaInfo: FC = () => {
       </div>
       <div className="flex items-center py-2">
         <h3 className="opacity-95">Resolution:</h3>
-        <p className="ml-6 opacity-80">{mediaResolution}</p>
+        <p className="ml-6 opacity-80">{mediaResolution}p</p>
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-import { usePlayerContext, useSettingsContext } from "../contexts";
+import { usePlayerContext } from "../contexts";
 import { useNavigate } from "react-router-dom";
 import { useControlsContext } from "../contexts";
 import { useStore } from ".";

@@ -6,7 +6,7 @@ import {
 } from "../contexts";
 
 const useLoader = () => {
-  const { videoRef } = usePlayerContext();
+  const { videoRef, setMediaData } = usePlayerContext();
   const { isLoop } = useSettingsContext();
   const { setIsLoading } = useLoaderContext();
   const { setDuration, setCurrentTime } = useTimerContext();
@@ -18,6 +18,10 @@ const useLoader = () => {
   const handleLoadEnd = () => {
     setIsLoading(false);
     setDuration(videoRef.current.duration);
+    setMediaData((prev: any) => ({
+      ...prev,
+      resolution: videoRef.current.videoHeight,
+    }));
   };
 
   const handleVideoEnd = () => {
