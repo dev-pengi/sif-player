@@ -93,7 +93,6 @@ const useEvents = () => {
 
   useEffect(() => {
     const handleBlur = () => {
-      console.log("handle blur");
       if (!videoRef.current) return;
       if (!playInBackground && isPlaying) {
         handlePause();
@@ -102,7 +101,6 @@ const useEvents = () => {
     };
 
     const handleFocus = () => {
-      console.log("handle focus");
       if (!videoRef.current) return;
       if (isBackgroundPause) {
         handlePlay();

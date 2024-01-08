@@ -6,7 +6,6 @@ import { useStore } from ".";
 const usePlayer = () => {
   const navigate = useNavigate();
   const { videoRef, setIsPlaying, setCurrentSpeed } = usePlayerContext();
-  const { saveAdjustments } = useSettingsContext();
   const { controllersDeps, setControllersDeps } = useControlsContext();
 
   const { handleStoreData } = useStore();

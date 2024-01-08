@@ -1,8 +1,9 @@
 import { FC, useState } from "react";
 import Switch from "react-switch";
+import { motion } from "framer-motion";
+
 import { useSettingsContext } from "../../../contexts";
 import { Separator, SettingCol } from "./Settings";
-import { motion } from "framer-motion";
 import { colors } from "../../../constants";
 
 interface SettingInputProps {
@@ -214,14 +215,13 @@ const SettingsBlock: FC = () => {
           className="react-switch"
         />
       </SettingCol>
-      <Separator />
       <SettingCol
-        title="Lock Shortcuts"
-        description="disable shortcuts when the player is on lock mode"
+        title="Play In Background"
+        description="keep playing the media when you leave the tab or the browser"
       >
         <Switch
-          onChange={handleLockShortcutsToggle}
-          checked={lockShortcuts}
+          onChange={handleTogglePlayInBackground}
+          checked={playInBackground}
           uncheckedIcon={false}
           checkedIcon={false}
           onColor={primaryColor}
@@ -231,13 +231,14 @@ const SettingsBlock: FC = () => {
           className="react-switch"
         />
       </SettingCol>
+      <Separator />
       <SettingCol
-        title="Play In Background"
-        description="keep playing the media when you leave the tab or the browser"
+        title="Lock Shortcuts"
+        description="disable shortcuts when the player is on lock mode"
       >
         <Switch
-          onChange={handleTogglePlayInBackground}
-          checked={playInBackground}
+          onChange={handleLockShortcutsToggle}
+          checked={lockShortcuts}
           uncheckedIcon={false}
           checkedIcon={false}
           onColor={primaryColor}

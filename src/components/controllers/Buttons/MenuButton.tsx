@@ -1,7 +1,6 @@
 import { FC, useState } from "react";
 import Switch from "react-switch";
 import { DropdownMenu } from "@radix-ui/themes";
-
 import Button from "./Button";
 import { MenuIcon } from "../../../assets";
 import { usePlayerContext } from "../../../contexts";
@@ -148,6 +147,10 @@ const MenuButton: FC = () => {
       <Modal
         isOpen={mediaInfoModalOpen}
         onClose={handleMediaInfoClose}
+        style={{
+          box: { maxWidth: "500px" },
+          content: { minHeight: "100px" },
+        }}
         title="Media Info"
       >
         <MediaInfo />

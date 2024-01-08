@@ -1,5 +1,5 @@
 import { AnimatePresence, MotionStyle, motion } from "framer-motion";
-import { CSSProperties, FC, ReactNode, useEffect, useState } from "react";
+import React, { FC, ReactNode, useEffect, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import ReactDOM from "react-dom";
 import { CloseIcon } from "../../assets";
@@ -8,10 +8,15 @@ interface ModalProps {
   children: ReactNode;
   isOpen: boolean;
   onClose: () => void;
+  style?: {
+    overlay?: MotionStyle;
+    box?: MotionStyle;
+    content?: MotionStyle;
+  };
   title?: string;
 }
 
-const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
+const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children, style }) => {
   const [rootElement, setRootElement] = useState(null);
 
   useHotkeys("esc", onClose);
@@ -46,14 +51,14 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
             transition={{
               duration: 0.1,
             }}
-            style={ModalStyles.overlay}
+            style={{ ...ModalStyles.overlay, ...style?.overlay }}
           ></motion.div>
         )}
       </AnimatePresence>
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            style={ModalStyles.box}
+            style={{ ...ModalStyles.box, ...style?.box }}
             variants={{
               hidden: {
                 opacity: 0,
@@ -85,7 +90,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
             <div className="py-2 px-2">
               <motion.div
                 className="w-full px-4 py-2 modal"
-                style={ModalStyles.content}
+                style={{ ...ModalStyles.content, ...style?.content }}
               >
                 {children}
               </motion.div>
@@ -134,4 +139,4 @@ const ModalStyles: Record<string, MotionStyle> = {
   },
 };
 
-export default Modal;
+export default React.memo(Modal);
