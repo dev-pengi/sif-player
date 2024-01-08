@@ -18,10 +18,13 @@ const useLoader = () => {
   const handleLoadEnd = () => {
     setIsLoading(false);
     setDuration(videoRef.current.duration);
-    setMediaData((prev: any) => ({
-      ...prev,
-      resolution: videoRef.current.videoHeight,
-    }));
+    const resolution = videoRef.current.videoHeight;
+
+    setMediaData((prev) => {
+      const safePrev = prev || {};
+      safePrev.resolution = resolution;
+      return safePrev;
+    });
   };
 
   const handleVideoEnd = () => {
