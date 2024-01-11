@@ -7,13 +7,13 @@ import { Modal } from "../../modals";
 import { useSettingsContext } from "../../../contexts";
 import { PlayerSettings, MediaInfo } from "../blocks";
 import { usePlayer } from "../../../hooks";
-import { useAppSelector } from "../../../hooks/useAppSelector";
+import { useAppSelector } from "../../../hooks";
 
 const MenuButton: FC = () => {
   const { isLoop, setIsLoop, shortcutsEnabled, setShortcutsEnabled } =
     useSettingsContext();
     
-  const { isPiP } = useAppSelector(state => state.playerReducer);
+  const { isPiP } = useAppSelector(state => state.player);
   const {
     handleAddControllerDependencies,
     handleRemoveControllerDependencies,

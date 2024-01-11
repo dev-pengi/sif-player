@@ -8,20 +8,21 @@ const volumeSlice = createSlice({
     name: "volume",
     initialState: initialState,
     reducers: {
-        updateVolume(state, action) {
+        update(state, action) {
             state.volume = action.payload
         },
-        muteVolume(state) {
+        mute(state) {
             state.isMuted = true
         },
-        unmuteVolume(state) {
+        unmute(state) {
             state.isMuted = false
         },
-        toggleMute(state) {
+        toggle(state) {
             state.isMuted = !state.isMuted
         },
-        resetVolume(state) {
-            state = initialState
+        reset(state) {
+            state.volume = initialState.volume;
+            state.isMuted = initialState.isMuted;
         }
     },
 })

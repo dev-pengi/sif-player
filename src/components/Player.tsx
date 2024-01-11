@@ -14,7 +14,7 @@ import {
 } from "../hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { playerActions } from "../store";
-import { useAppSelector } from "../hooks/useAppSelector";
+import { useAppSelector } from "../hooks";
 
 const useVideoSrc = () => {
   const location = useLocation();
@@ -29,9 +29,9 @@ const useVideoSrc = () => {
       const { protocol, host } = window.location;
       if (type === "local") {
         const blobUrl = `blob:${protocol}//${host}/${src}`;
-        dispatch(playerActions.updateVideoSrc(blobUrl));
+        dispatch(playerActions.source(blobUrl));
       } else {
-        dispatch(playerActions.updateVideoSrc(src));
+        dispatch(playerActions.source(src));
         const url = src;
         const controller = new AbortController();
         const signal = controller.signal;
@@ -46,7 +46,7 @@ const useVideoSrc = () => {
         const size = mediaData.headers.get("content-length");
         const type = mediaData.headers.get("content-type");
 
-        dispatch(playerActions.updateMediaData({ name, url, size, type }));
+        dispatch(playerActions.updateData({ name, url, size, type }));
         controller.abort();
       }
     };
@@ -60,14 +60,8 @@ const Player: FC = () => {
   const { handleSeek } = useTimer();
   const { handleVolumeChange } = useVolume();
   const { handlePlaybackSpeedUpdate } = usePlayer();
-  console.log(
-    useAppSelector(state => {
-      return state.playerReducer;
-    })
-  );
-  const { mediaData, isError } = useSelector(
-    (state: any) => state.playerReducer
-  );
+  const { mediaData, isError } = useAppSelector((state) => state.player);
+  const { duration } = useAppSelector((state) => state.timer);
   useVideoSrc();
   useEvents();
   useShortcuts();
@@ -88,7 +82,7 @@ const Player: FC = () => {
         if (speed && !isNaN(speed)) handlePlaybackSpeedUpdate(speed);
       }
     }
-  }, [mediaData?.name, mediaData?.url]);
+  }, [mediaData?.name, mediaData?.url, duration]);
 
   return (
     <div className="w-screen h-screen flex items-center justify-center flex-1 bg-black">

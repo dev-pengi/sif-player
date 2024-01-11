@@ -8,6 +8,7 @@ import useTimer from "./useTimer";
 import useVolume from "./useVolume";
 import useClean from "./useClean";
 import useStore from "./useStore";
+import { useAppSelector } from "./useAppSelector";
 
 
-export { useErrors, useEvents, useLoader, usePlayer, useSetup, useShortcuts, useTimer, useVolume, useClean, useStore };
+export { useErrors, useEvents, useLoader, usePlayer, useSetup, useShortcuts, useTimer, useVolume, useClean, useStore, useAppSelector };

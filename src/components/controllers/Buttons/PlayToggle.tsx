@@ -4,7 +4,7 @@ import { PauseIcon, PlayIcon } from "../../../assets";
 import Button from "./Button";
 import { usePlayer } from "../../../hooks";
 import { useSelector } from "react-redux";
-import { useAppSelector } from "../../../hooks/useAppSelector";
+import { useAppSelector } from "../../../hooks";
 
 interface PlayToggleProps {}
 
@@ -16,7 +16,7 @@ const PlayToggle: FC<PlayToggleProps> = ({}) => {
     hidden: { opacity: 0, scale: 0.2 },
   };
 
-  const {isPlaying} = useAppSelector(state => state.playerReducer);
+  const {isPlaying} = useAppSelector(state => state.player);
   const { handleTogglePlay } = usePlayer();
 
   useEffect(() => {

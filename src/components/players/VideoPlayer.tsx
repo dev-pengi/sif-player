@@ -1,18 +1,36 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { usePlayerContext } from "../../contexts";
 import MainController from "../controllers/MainController";
-import { useLoader, usePlayer, useTimer } from "../../hooks";
-import { useSelector } from "react-redux";
-import { useAppSelector } from "../../hooks/useAppSelector";
+import { useLoader, useTimer } from "../../hooks";
+import { useAppSelector } from "../../hooks";
+import { throttle } from "lodash";
+import { useDispatch } from "react-redux";
+import { playerActions } from "../../store";
 
 const VideoPlayer: FC = () => {
+  const dispatch = useDispatch();
   const { videoRef } = usePlayerContext();
 
-  const { videoSrc } = useAppSelector(state => state.playerReducer);
+  const { videoSrc } = useAppSelector((state) => state.player);
 
   const { handleLoadStart, handleLoadEnd, handleVideoEnd } = useLoader();
-  const { handlePlay, handlePause } = usePlayer();
   const { handleTimeUpdate } = useTimer();
+
+  const handlePlayerTimeUpdate = useCallback(
+    throttle(() => {
+      console.count("handlePlayerTimeUpdate");
+      handleTimeUpdate();
+    }, 500),
+    []
+  );
+
+  const handlePlayVideo = useCallback(() => {
+    dispatch(playerActions.play());
+  }, []);
+
+  const handlePauseVideo = useCallback(() => {
+    dispatch(playerActions.pause());
+  }, []);
 
   return (
     <>
@@ -26,9 +44,9 @@ const VideoPlayer: FC = () => {
           onWaiting={handleLoadStart}
           onPlaying={handleLoadEnd}
           onLoadedData={handleLoadEnd}
-          onTimeUpdate={handleTimeUpdate}
-          onPlay={handlePlay}
-          onPause={handlePause}
+          onTimeUpdate={handlePlayerTimeUpdate}
+          onPlay={handlePlayVideo}
+          onPause={handlePauseVideo}
           onEnded={handleVideoEnd}
           autoPlay
         ></video>

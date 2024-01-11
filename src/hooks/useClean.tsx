@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useControlsContext } from "../contexts";
 import { useDispatch } from "react-redux";
-import { playerActions, timerActions } from "../store";
+import { playerActions, timerActions, volumeActions } from "../store";
 
 const useClean = () => {
   const dispatch = useDispatch();
@@ -9,9 +9,10 @@ const useClean = () => {
   const { setIsFullScreen } = useControlsContext();
 
   useEffect(() => {
-    dispatch(timerActions.resetTimer());
+    dispatch(timerActions.reset());
+    dispatch(volumeActions.reset());
+    dispatch(playerActions.reset());
     setIsFullScreen(false);
-    dispatch(playerActions.resetPlayer());
   }, []);
 };
 

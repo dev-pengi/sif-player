@@ -1,6 +1,8 @@
 import { useEffect } from "react";
-import { useSettingsContext, useVolumeContext } from "../contexts";
+import { useSettingsContext } from "../contexts";
 import { colors } from "../constants";
+import { useDispatch } from "react-redux";
+import { volumeActions } from "../store";
 
 const useSetup = () => {
   const {
@@ -15,14 +17,14 @@ const useSetup = () => {
     setSaveAdjustments,
     setShortcutsEnabled,
     setPlayInBackground,
-    setPlayToggleClick
+    setPlayToggleClick,
   } = useSettingsContext();
-  const { setVolume } = useVolumeContext();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const storedVolume = localStorage.getItem("volume");
     if (storedVolume) {
-      setVolume(JSON.parse(storedVolume));
+      dispatch(volumeActions.update(JSON.parse(storedVolume)));
     }
 
     const storedIsLoop = localStorage.getItem("is-loop");

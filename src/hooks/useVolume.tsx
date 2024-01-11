@@ -1,29 +1,28 @@
+import { useDispatch } from "react-redux";
 import { useStore } from ".";
-import {
-  usePlayerContext,
-  useSettingsContext,
-  useVolumeContext,
-} from "../contexts";
+import { usePlayerContext } from "../contexts";
+import { useAppSelector } from ".";
+import { volumeActions } from "../store";
 
 const useVolume = () => {
+  const dispatch = useDispatch();
+  const { volume, isMuted } = useAppSelector((state) => state.volume);
   const { videoRef } = usePlayerContext();
-  const { volume, setVolume, setIsMuted } = useVolumeContext();
-  const { saveAdjustments } = useSettingsContext();
   const { handleStoreData } = useStore();
 
   const handleVolumeChange = (volume: number) => {
     if (!videoRef.current) return;
     const newVolume = Math.max(0, Math.min(volume, 100));
-    setVolume(newVolume);
+    dispatch(volumeActions.update(newVolume));
     if (newVolume == 0) {
-      setIsMuted(true);
+      dispatch(volumeActions.mute());
       videoRef.current.muted = true;
       handleStoreData({
         volume: newVolume,
         muted: true,
       });
     } else {
-      setIsMuted(false);
+      dispatch(volumeActions.unmute());
       videoRef.current.muted = false;
       handleStoreData({
         volume: newVolume,
@@ -35,16 +34,21 @@ const useVolume = () => {
 
   const handleToggleMute = () => {
     if (!videoRef?.current) return;
-    setIsMuted((prev) => {
-      videoRef.current.muted = !prev;
-      if (prev && volume == 0) {
-        handleVolumeChange(30);
-      }
+
+    if (isMuted) {
+      dispatch(volumeActions.unmute());
+      videoRef.current.muted = false;
+      volume === 0 && handleVolumeChange(30);
       handleStoreData({
-        muted: !prev,
+        muted: false,
       });
-      return !prev;
-    });
+    } else {
+      dispatch(volumeActions.mute());
+      videoRef.current.muted = true;
+      handleStoreData({
+        muted: true,
+      });
+    }
   };
 
   const handleIncreaseVolume = (amount: number) => {

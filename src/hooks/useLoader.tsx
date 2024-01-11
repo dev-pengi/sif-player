@@ -18,11 +18,11 @@ const useLoader = () => {
 
   const handleLoadEnd = () => {
     setIsLoading(false);
-    dispatch(timerActions.initDuration(videoRef.current.duration));
+    dispatch(timerActions.init(videoRef.current.duration));
     const resolution = videoRef.current.videoHeight;
 
     dispatch(
-      playerActions.addMediaData({
+      playerActions.addData({
         name: "resolution",
         value: resolution,
       })
@@ -32,7 +32,7 @@ const useLoader = () => {
   const handleVideoEnd = () => {
     if (isLoop) {
       videoRef.current.currentTime = 0;
-      dispatch(timerActions.updateTime(0));
+      dispatch(timerActions.update(0));
       videoRef.current.play();
     }
   };

@@ -49,7 +49,7 @@ const VideoPicker: FC<VideoPickerProps> = ({ handleLoadStart }) => {
   const handleSelectedFiles = async (files: FileList) => {
     const fileData = files[0];
     dispatch(
-      playerActions.updateMediaData({
+      playerActions.updateData({
         name: fileData.name,
         type: fileData.type,
         size: fileData.size,

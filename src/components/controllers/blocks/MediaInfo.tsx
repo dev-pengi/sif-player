@@ -2,7 +2,7 @@ import { FC } from "react";
 import { usePlayerContext } from "../../../contexts";
 import { Separator } from "./Settings";
 import { useSelector } from "react-redux";
-import { useAppSelector } from "../../../hooks/useAppSelector";
+import { useAppSelector } from "../../../hooks";
 
 const MediaInfo: FC = () => {
   function formatBytes(bytes, decimals = 2) {
@@ -73,7 +73,7 @@ const MediaInfo: FC = () => {
     }
   };
 
-  const { mediaData } = useAppSelector(state => state.playerReducer);
+  const { mediaData } = useAppSelector(state => state.player);
   const mediaName = mediaData?.name ?? "Untitled Media";
   const mediaType = mediaData?.type ?? "Unspecified Type";
   const mediaSize = mediaData?.size ?? "Unspecified Size";

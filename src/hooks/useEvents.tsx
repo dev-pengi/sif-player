@@ -7,17 +7,17 @@ import {
 import { usePlayer, useStore } from ".";
 import { useDispatch } from "react-redux";
 import { playerActions, timerActions } from "../store";
-import { useAppSelector } from "./useAppSelector";
+import { useAppSelector } from ".";
 
 const useEvents = () => {
   const dispatch = useDispatch();
   const [isBackgroundPause, setIsBackgroundPause] = useState(false);
 
   const { videoRef } = usePlayerContext();
-  const { isPlaying, isPiP } = useAppSelector((state) => state.playerReducer);
+  const { isPlaying, isPiP } = useAppSelector((state) => state.player);
 
   const { duration, currentTime } = useAppSelector(
-    (state) => state.timerReducer
+    (state) => state.timer
   );
 
   const { playInBackground } = useSettingsContext();
@@ -93,7 +93,7 @@ const useEvents = () => {
 
   useEffect(() => {
     const bufferedPercentage = calculateBufferedPercentage();
-    dispatch(timerActions.updateBuffered(bufferedPercentage));
+    dispatch(timerActions.buffer(bufferedPercentage));
   }, [currentTime]);
 
   useEffect(() => {

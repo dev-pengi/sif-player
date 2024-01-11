@@ -4,12 +4,12 @@ import { useControlsContext } from "../contexts";
 import { useStore } from ".";
 import { playerActions } from "../store";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "./useAppSelector";
+import { useAppSelector } from ".";
 
 const usePlayer = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isPlaying } = useAppSelector((state) => state.playerReducer);
+  const { isPlaying } = useAppSelector((state) => state.player);
   const { videoRef } = usePlayerContext();
   const { controllersDeps, setControllersDeps } = useControlsContext();
 
@@ -62,22 +62,18 @@ const usePlayer = () => {
   const handlePlayingChange = (status: boolean = null, toggle = false) => {
     if (status === null && toggle === true) {
       if (isPlaying) {
-        dispatch(playerActions.pause());
         videoRef.current?.pause();
         handleAddControllerDependencies("paused");
       } else {
-        dispatch(playerActions.play());
         videoRef.current?.play();
         handleRemoveControllerDependencies("paused");
       }
       return;
     }
     if (status) {
-      dispatch(playerActions.play());
       videoRef.current?.play();
       handleRemoveControllerDependencies("paused");
     } else {
-      dispatch(playerActions.pause());
       videoRef.current?.pause();
       handleAddControllerDependencies("paused");
     }

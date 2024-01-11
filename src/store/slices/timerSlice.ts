@@ -11,10 +11,10 @@ const timerSlice = createSlice({
     name: "timer",
     initialState: initialState,
     reducers: {
-        initDuration(state, action) {
+        init(state, action) {
             state.duration = action.payload;
         },
-        updateTime(state, action) {
+        update(state, action) {
             state.currentTime = action.payload;
             if (state.duration > 0) {
                 state.timePercentage = (state.currentTime / state.duration);
@@ -22,10 +22,10 @@ const timerSlice = createSlice({
                 state.timePercentage = 0;
             }
         },
-        updateBuffered(state, action) {
+        buffer(state, action) {
             state.buffered = action.payload
         },
-        resetTimer(state) {
+        reset(state) {
             state.duration = initialState.duration;
             state.currentTime = initialState.currentTime;
             state.buffered = initialState.buffered;

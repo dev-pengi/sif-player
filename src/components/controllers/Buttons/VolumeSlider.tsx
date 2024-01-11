@@ -1,29 +1,23 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import Slider from "rc-slider";
 
-import {
-  useControlsContext,
-  useVolumeContext,
-} from "../../../contexts";
+import { useControlsContext } from "../../../contexts";
 import Button from "./Button";
 import { MaxSoundIcon, MinSoundIcon, MuteSoundIcon } from "../../../assets";
 import "rc-slider/assets/index.css";
 import { useVolume } from "../../../hooks";
+import { useAppSelector } from "../../../hooks";
+import { throttle } from "lodash";
 
-interface VolumeSliderProps {}
-
-const VolumeSlider: FC<VolumeSliderProps> = ({}) => {
+const VolumeSlider: FC = ({}) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isButtonHovering, setIsButtonHovering] = useState(false);
-  const { volume, isMuted } = useVolumeContext();
+
+  const { volume, isMuted } = useAppSelector((state) => state.volume);
   const { isPanelHovering } = useControlsContext();
 
   const { handleVolumeChange, handleToggleMute } = useVolume();
-
-  const [currentMaxVar, setCurrentMaxVar] = useState("visible");
-  const [currentMinVar, setCurrentMinVar] = useState("hidden");
-  const [currentMuteVar, setCurrentMuteVar] = useState("hidden");
 
   const iconVariants = {
     visible: { opacity: 1, scale: 1 },
@@ -35,37 +29,64 @@ const VolumeSlider: FC<VolumeSliderProps> = ({}) => {
   const minSoundControls = useAnimation();
   const muteSoundControls = useAnimation();
 
-  useEffect(() => {
-    if (isMuted) {
-      currentMaxVar !== "hidden" && maxSoundControls.start("hidden");
-      currentMinVar !== "hidden" && minSoundControls.start("hidden");
-      currentMuteVar !== "visible" && muteSoundControls.start("visible");
-      setCurrentMaxVar("hidden");
-      setCurrentMinVar("hidden");
-      setCurrentMuteVar("visible");
-      return;
-    }
-    if (volume > 50) {
-      currentMaxVar !== "visible" && maxSoundControls.start("visible");
-      currentMinVar !== "hidden" && minSoundControls.start("hidden");
-      currentMuteVar !== "hidden" && muteSoundControls.start("hidden");
-      setCurrentMaxVar("visible");
-      setCurrentMinVar("hidden");
-      setCurrentMuteVar("hidden");
+  const currentMaxVar = useRef("hidden");
+  const currentMinVar = useRef("hidden");
+  const currentMuteVar = useRef("visible");
+
+  const handleIconsAnimations = () => {
+    if (isMuted || volume === 0) {
+      if (currentMaxVar.current !== "hidden") maxSoundControls.start("hidden");
+      if (currentMinVar.current !== "hidden") minSoundControls.start("hidden");
+      if (currentMuteVar.current !== "visible")
+        muteSoundControls.start("visible");
+      currentMaxVar.current = "hidden";
+      currentMinVar.current = "hidden";
+      currentMuteVar.current = "visible";
+    } else if (volume > 50) {
+      if (currentMaxVar.current !== "visible")
+        maxSoundControls.start("visible");
+      if (currentMinVar.current !== "hidden") minSoundControls.start("hidden");
+      if (currentMuteVar.current !== "hidden")
+        muteSoundControls.start("hidden");
+      currentMaxVar.current = "visible";
+      currentMinVar.current = "hidden";
+      currentMuteVar.current = "hidden";
     } else if (volume <= 50 && volume > 0) {
-      currentMaxVar !== "hidden" && maxSoundControls.start("hidden");
-      currentMinVar !== "visible" && minSoundControls.start("visible");
-      currentMuteVar !== "hidden" && muteSoundControls.start("hidden");
-      setCurrentMaxVar("hidden");
-      setCurrentMinVar("visible");
-      setCurrentMuteVar("hidden");
+      if (currentMaxVar.current !== "hidden") maxSoundControls.start("hidden");
+      if (currentMinVar.current !== "visible")
+        minSoundControls.start("visible");
+      if (currentMuteVar.current !== "hidden")
+        muteSoundControls.start("hidden");
+      currentMaxVar.current = "hidden";
+      currentMinVar.current = "visible";
+      currentMuteVar.current = "hidden";
     }
-  }, [volume, isMuted, currentMaxVar, currentMinVar, currentMuteVar]);
+  };
+
+  useEffect(() => {
+    handleIconsAnimations();
+  }, [volume, isMuted]);
+
+  useEffect(() => {
+    return () => {
+      currentMaxVar.current = null;
+      currentMinVar.current = null;
+      currentMuteVar.current = null;
+    };
+  }, []);
 
   useEffect(() => {
     if (!(isPanelHovering || isDragging)) sliderControls.start("hidden");
     else if (isButtonHovering) sliderControls.start("visible");
   }, [isPanelHovering, isDragging, isButtonHovering]);
+
+  const handleVolumeSlide = useCallback(
+    throttle((value: number) => {
+      setIsDragging(true);
+      handleVolumeChange(value);
+    }, 30),
+    []
+  );
 
   return (
     <Button
@@ -132,10 +153,7 @@ const VolumeSlider: FC<VolumeSliderProps> = ({}) => {
             value={volume}
             min={0}
             max={100}
-            onChange={(value: number) => {
-              handleVolumeChange(value);
-              setIsDragging(true);
-            }}
+            onChange={handleVolumeSlide}
             onChangeComplete={() => setIsDragging(false)}
             keyboard={false}
             style={{ width: 60, marginLeft: 15, marginRight: 10 }}

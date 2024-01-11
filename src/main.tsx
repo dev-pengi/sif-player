@@ -1,32 +1,26 @@
 import React, { FC, ReactNode } from "react";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
 import "./index.css";
-import "@fortawesome/fontawesome-svg-core/styles.css";
 import {
   PlayerContextProvider,
   ControlsContextProvider,
   LoaderContextProvider,
   SettingsContextProvider,
-  VolumeContextProvider,
 } from "./contexts";
-import { BrowserRouter } from "react-router-dom";
-import { store } from ".//store";
-import { Provider } from "react-redux";
+import App from "./App.tsx";
+import { store } from "./store";
 
 const ContextWrapper: FC<{
   children: ReactNode;
 }> = ({ children }) => {
   return (
-    <PlayerContextProvider>
-      <SettingsContextProvider>
-        <ControlsContextProvider>
-            <VolumeContextProvider>
-              <LoaderContextProvider>{children}</LoaderContextProvider>
-            </VolumeContextProvider>
-        </ControlsContextProvider>
-      </SettingsContextProvider>
-    </PlayerContextProvider>
+    <SettingsContextProvider>
+      <ControlsContextProvider>
+        <LoaderContextProvider>{children}</LoaderContextProvider>
+      </ControlsContextProvider>
+    </SettingsContextProvider>
   );
 };
 
@@ -35,7 +29,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Provider store={store}>
         <ContextWrapper>
-          <App />
+          <PlayerContextProvider>
+            <App />
+          </PlayerContextProvider>
         </ContextWrapper>
       </Provider>
     </BrowserRouter>

@@ -1,7 +1,7 @@
-import { useAppSelector } from "./useAppSelector";
+import { useAppSelector } from ".";
 
 const useStore = () => {
-  const { mediaData } = useAppSelector((state) => state.playerReducer);
+  const { mediaData } = useAppSelector((state) => state.player);
   const handleStoreData = (newData: any) => {
     const videoName = mediaData?.name || null;
     const videoUrl = mediaData?.url || null;

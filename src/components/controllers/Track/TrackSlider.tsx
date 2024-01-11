@@ -1,16 +1,15 @@
-import { FC, useEffect, useState, useRef } from "react";
-import { useSettingsContext } from "../../../contexts";
+import { FC, useEffect, useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
+import { throttle } from "lodash";
+import { useSettingsContext } from "../../../contexts";
 import Indicator from "./Indicator";
 import { usePlayer, useTimer } from "../../../hooks";
-import { useDispatch, useSelector } from "react-redux";
-import { debounce, throttle } from "lodash";
+import { useAppSelector } from "../../../hooks";
 
 const TrackSlider: FC = () => {
-  const dispatch = useDispatch();
   const { primaryColor } = useSettingsContext();
-  const { duration, buffered, timePercentage, currentTime } = useSelector(
-    (state: any) => state.timerReducer
+  const { duration, buffered, timePercentage } = useAppSelector(
+    (state) => state.timer
   );
   const { handlePlay, handlePause } = usePlayer();
   const { handleSeek } = useTimer();
@@ -20,17 +19,19 @@ const TrackSlider: FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const sliderRef = useRef(null);
 
-  const calculateTime = throttle((event: React.MouseEvent<HTMLDivElement>) => {
-    // event.persist();
-    const rect = sliderRef.current.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    let clickedPercentage = x / rect.width;
+  const calculateTime = useCallback(
+    throttle((event: React.MouseEvent<HTMLDivElement>) => {
+      const rect = sliderRef.current.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      let clickedPercentage = x / rect.width;
 
-    clickedPercentage = Math.max(0, Math.min(clickedPercentage, 1));
+      clickedPercentage = Math.max(0, Math.min(clickedPercentage, 1));
 
-    const newCurrentTime = clickedPercentage * duration;
-    handleSeek(newCurrentTime);
-  }, 20);
+      const newCurrentTime = clickedPercentage * duration;
+      handleSeek(newCurrentTime);
+    }, 50),
+    [duration]
+  );
 
   const handleHoverMouseMove = (event) => {
     const rect = sliderRef.current.getBoundingClientRect();

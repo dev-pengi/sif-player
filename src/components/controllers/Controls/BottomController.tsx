@@ -7,17 +7,15 @@ import {
   PlayBackSpeed,
 } from "../buttons";
 import { formatTime } from "../../../utils";
-import { useControlsContext, useTimerContext } from "../../../contexts";
+import { useControlsContext } from "../../../contexts";
 import TrackSlider from "../track/TrackSlider";
 import LockButton from "../buttons/LockButton";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../../hooks";
 
 const BottomController: FC = () => {
   const { controllersDeps, isLocked, setIsPanelHovering } =
     useControlsContext();
-  const { duration, currentTime } = useSelector(
-    (state: any) => state.timerReducer
-  );
+  const { duration, currentTime } = useAppSelector((state) => state.timer);
 
   return (
     <AnimatePresence>

@@ -20,13 +20,13 @@ const playerSlice = createSlice({
     name: "player",
     initialState,
     reducers: {
-        setError(state) {
+        error(state) {
             state.isError = true
         },
-        removeError(state) {
+        unerror(state) {
             state.isError = false
         },
-        updateVideoSrc(state, action) {
+        source(state, action) {
             state.videoSrc = action.payload
         },
         play(state) {
@@ -35,13 +35,13 @@ const playerSlice = createSlice({
         pause(state) {
             state.isPlaying = false
         },
-        togglePlay(state) {
+        toggle(state) {
             state.isPlaying = !state.isPlaying
         },
-        updateMediaData(state, action) {
+        updateData(state, action) {
             state.mediaData = action.payload
         },
-        addMediaData(state, action) {
+        addData(state, action) {
             state.mediaData[action.payload.name] = action.payload.value
         },
         updateSpeed(state, action) {
@@ -53,8 +53,13 @@ const playerSlice = createSlice({
         exitPiP(state) {
             state.isPiP = false
         },
-        resetPlayer(state) {
-            state = initialState
+        reset(state) {
+            state.isError = initialState.isError;
+            state.videoSrc = initialState.videoSrc;
+            state.isPlaying = initialState.isPlaying;
+            state.mediaData = initialState.mediaData;
+            state.currentSpeed = initialState.currentSpeed;
+            state.isPiP = initialState.isPiP;
         }
     },
 })

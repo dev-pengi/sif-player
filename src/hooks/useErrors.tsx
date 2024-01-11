@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import { usePlayerContext } from "../contexts";
 import { playerActions } from "../store";
-import { useDispatch, useSelector } from "react-redux";
-import { useAppSelector } from "./useAppSelector";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from ".";
 
 const useErrors = () => {
   const dispatch = useDispatch();
-  const { videoSrc } = useAppSelector(state => state.playerReducer);
+  const { videoSrc } = useAppSelector(state => state.player);
   const { videoRef } = usePlayerContext();
-  const handleError = () => dispatch(playerActions.setError());
-  const handleRemoveError = () => dispatch(playerActions.removeError());
+  const handleError = () => dispatch(playerActions.error());
+  const handleRemoveError = () => dispatch(playerActions.unerror());
   useEffect(() => {
     const loadTimeout = setTimeout(() => {
       if (!videoRef?.current?.readyState) handleError();

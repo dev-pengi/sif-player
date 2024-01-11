@@ -4,9 +4,9 @@ import volumeSlice from './slices/volumeSlice';
 import timerSlice from './slices/timerSlice';
 
 const rootReducer = combineReducers({
-    playerReducer: playerSlice.reducer,
-    volumeReducer: volumeSlice.reducer,
-    timerReducer: timerSlice.reducer,
+    player: playerSlice.reducer,
+    volume: volumeSlice.reducer,
+    timer: timerSlice.reducer,
 })
 const store = configureStore({
     reducer: rootReducer
