@@ -62,11 +62,11 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children, style }) => {
             variants={{
               hidden: {
                 opacity: 0,
-                // scale: 0.5,
+                scale: 0.5,
               },
               visible: {
                 opacity: 1,
-                // scale: 1,
+                scale: 1,
               },
             }}
             initial="hidden"
@@ -74,7 +74,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children, style }) => {
             exit="hidden"
             transition={{
               duration: 0.1,
-              type: "tween",
+              ease: [0.04, 0.62, 0.23, 0.98],
             }}
           >
             <div className="py-5 px-4 flex items-center justify-between">
@@ -139,4 +139,4 @@ const ModalStyles: Record<string, MotionStyle> = {
   },
 };
 
-export default React.memo(Modal);
+export default Modal;
