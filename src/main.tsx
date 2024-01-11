@@ -12,6 +12,8 @@ import {
   VolumeContextProvider,
 } from "./contexts";
 import { BrowserRouter } from "react-router-dom";
+import { store } from "./components/store";
+import { Provider } from "react-redux";
 
 const ContextWrapper: FC<{
   children: ReactNode;
@@ -34,9 +36,11 @@ const ContextWrapper: FC<{
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <ContextWrapper>
-        <App />
-      </ContextWrapper>
+      <Provider store={store}>
+        <ContextWrapper>
+          <App />
+        </ContextWrapper>
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>
 );
