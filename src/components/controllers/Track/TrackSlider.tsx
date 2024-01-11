@@ -1,16 +1,17 @@
 import { FC, useEffect, useState, useRef } from "react";
-import {
-  usePlayerContext,
-  useSettingsContext,
-  useTimerContext,
-} from "../../../contexts";
+import { useSettingsContext } from "../../../contexts";
 import { motion } from "framer-motion";
 import Indicator from "./Indicator";
 import { usePlayer, useTimer } from "../../../hooks";
+import { useDispatch, useSelector } from "react-redux";
+import { debounce, throttle } from "lodash";
 
 const TrackSlider: FC = () => {
+  const dispatch = useDispatch();
   const { primaryColor } = useSettingsContext();
-  const { duration, bufferedPercentage, timePercentage } = useTimerContext();
+  const { duration, buffered, timePercentage, currentTime } = useSelector(
+    (state: any) => state.timerReducer
+  );
   const { handlePlay, handlePause } = usePlayer();
   const { handleSeek } = useTimer();
 
@@ -19,7 +20,8 @@ const TrackSlider: FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const sliderRef = useRef(null);
 
-  const calculateTime = (event: React.MouseEvent<HTMLDivElement>) => {
+  const calculateTime = throttle((event: React.MouseEvent<HTMLDivElement>) => {
+    // event.persist();
     const rect = sliderRef.current.getBoundingClientRect();
     const x = event.clientX - rect.left;
     let clickedPercentage = x / rect.width;
@@ -28,7 +30,7 @@ const TrackSlider: FC = () => {
 
     const newCurrentTime = clickedPercentage * duration;
     handleSeek(newCurrentTime);
-  };
+  }, 20);
 
   const handleHoverMouseMove = (event) => {
     const rect = sliderRef.current.getBoundingClientRect();
@@ -96,7 +98,7 @@ const TrackSlider: FC = () => {
         ref={sliderRef}
       >
         <Indicator
-          indicatorPercentage={bufferedPercentage}
+          indicatorPercentage={buffered}
           backgroundColor="#ffffff40"
           animate={false}
         />
@@ -123,7 +125,7 @@ const TrackSlider: FC = () => {
           height: 0,
         }}
         animate={{
-          left: timePercentage * 100 + "%",
+          left: (currentTime / duration) * 100 + "%",
           opacity: isHovering ? 1 : 0,
           width: isHovering ? 13 : 0,
           height: isHovering ? 13 : 0,

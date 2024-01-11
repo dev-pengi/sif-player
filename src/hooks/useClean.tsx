@@ -1,29 +1,17 @@
 import { useEffect } from "react";
-import {
-  useControlsContext,
-  usePlayerContext,
-  useTimerContext,
-} from "../contexts";
+import { useControlsContext } from "../contexts";
+import { useDispatch } from "react-redux";
+import { playerActions, timerActions } from "../store";
 
 const useClean = () => {
-  const {
-    setDuration,
-    setCurrentTime,
-    setTimePercentage,
-    setBufferedPercentage,
-  } = useTimerContext();
+  const dispatch = useDispatch();
 
   const { setIsFullScreen } = useControlsContext();
-  const { setIsError, setMediaData } = usePlayerContext();
 
   useEffect(() => {
-    setDuration(0);
-    setCurrentTime(0);
-    setTimePercentage(0);
-    setBufferedPercentage(0);
+    dispatch(timerActions.resetTimer());
     setIsFullScreen(false);
-    setIsError(false);
-    setMediaData(null);
+    dispatch(playerActions.resetPlayer());
   }, []);
 };
 

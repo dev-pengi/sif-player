@@ -1,6 +1,8 @@
 import { FC } from "react";
 import { usePlayerContext } from "../../../contexts";
 import { Separator } from "./Settings";
+import { useSelector } from "react-redux";
+import { useAppSelector } from "../../../hooks/useAppSelector";
 
 const MediaInfo: FC = () => {
   function formatBytes(bytes, decimals = 2) {
@@ -71,7 +73,7 @@ const MediaInfo: FC = () => {
     }
   };
 
-  const { mediaData } = usePlayerContext();
+  const { mediaData } = useAppSelector(state => state.playerReducer);
   const mediaName = mediaData?.name ?? "Untitled Media";
   const mediaType = mediaData?.type ?? "Unspecified Type";
   const mediaSize = mediaData?.size ?? "Unspecified Size";
@@ -84,7 +86,9 @@ const MediaInfo: FC = () => {
       </div>
       <div className="flex items-center py-2">
         <h3 className="opacity-95">Type:</h3>
-        <p className="ml-6 opacity-80">{videoType(mediaType)} ({mediaType})</p>
+        <p className="ml-6 opacity-80">
+          {videoType(mediaType)} ({mediaType})
+        </p>
       </div>
       <Separator />
       <div className="flex items-center py-2">

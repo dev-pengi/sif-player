@@ -2,10 +2,15 @@ import { usePlayerContext } from "../contexts";
 import { useNavigate } from "react-router-dom";
 import { useControlsContext } from "../contexts";
 import { useStore } from ".";
+import { playerActions } from "../store";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "./useAppSelector";
 
 const usePlayer = () => {
   const navigate = useNavigate();
-  const { videoRef, setIsPlaying, setCurrentSpeed } = usePlayerContext();
+  const dispatch = useDispatch();
+  const { isPlaying } = useAppSelector((state) => state.playerReducer);
+  const { videoRef } = usePlayerContext();
   const { controllersDeps, setControllersDeps } = useControlsContext();
 
   const { handleStoreData } = useStore();
@@ -21,7 +26,7 @@ const usePlayer = () => {
 
   const handlePlaybackSpeedUpdate = (speed: number) => {
     if (!videoRef.current) return;
-    setCurrentSpeed(speed);
+    dispatch(playerActions.updateSpeed(speed));
     videoRef.current.playbackRate = speed;
     handleStoreData({ speed });
   };
@@ -56,23 +61,23 @@ const usePlayer = () => {
 
   const handlePlayingChange = (status: boolean = null, toggle = false) => {
     if (status === null && toggle === true) {
-      setIsPlaying((prev) => {
-        if (prev) {
-          videoRef.current?.pause();
-          handleAddControllerDependencies("paused");
-        } else {
-          videoRef.current?.play();
-          handleRemoveControllerDependencies("paused");
-        }
-        return !prev;
-      });
+      if (isPlaying) {
+        dispatch(playerActions.pause());
+        videoRef.current?.pause();
+        handleAddControllerDependencies("paused");
+      } else {
+        dispatch(playerActions.play());
+        videoRef.current?.play();
+        handleRemoveControllerDependencies("paused");
+      }
       return;
     }
-    setIsPlaying(status);
     if (status) {
+      dispatch(playerActions.play());
       videoRef.current?.play();
       handleRemoveControllerDependencies("paused");
     } else {
+      dispatch(playerActions.pause());
       videoRef.current?.pause();
       handleAddControllerDependencies("paused");
     }

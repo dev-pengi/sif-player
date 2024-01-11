@@ -1,7 +1,6 @@
 import { FC } from "react";
 import Button from "./Button";
 import { BackIcon } from "../../../assets";
-import { usePlayerContext } from "../../../contexts";
 import { usePlayer } from "../../../hooks";
 
 const BackButton: FC = () => {

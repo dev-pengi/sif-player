@@ -2,9 +2,13 @@ import { FC } from "react";
 import { usePlayerContext } from "../../contexts";
 import MainController from "../controllers/MainController";
 import { useLoader, usePlayer, useTimer } from "../../hooks";
+import { useSelector } from "react-redux";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 const VideoPlayer: FC = () => {
-  const { videoRef, videoSrc } = usePlayerContext();
+  const { videoRef } = usePlayerContext();
+
+  const { videoSrc } = useAppSelector(state => state.playerReducer);
 
   const { handleLoadStart, handleLoadEnd, handleVideoEnd } = useLoader();
   const { handlePlay, handlePause } = usePlayer();

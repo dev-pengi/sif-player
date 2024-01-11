@@ -2,22 +2,27 @@ import { useEffect, useState } from "react";
 import {
   usePlayerContext,
   useControlsContext,
-  useTimerContext,
   useSettingsContext,
 } from "../contexts";
 import { usePlayer, useStore } from ".";
+import { useDispatch } from "react-redux";
+import { playerActions, timerActions } from "../store";
+import { useAppSelector } from "./useAppSelector";
 
 const useEvents = () => {
+  const dispatch = useDispatch();
   const [isBackgroundPause, setIsBackgroundPause] = useState(false);
 
-  const { videoRef, isPlaying, isPiP, setIsPiP } = usePlayerContext();
-  const { duration, currentTime, setBufferedPercentage } = useTimerContext();
+  const { videoRef } = usePlayerContext();
+  const { isPlaying, isPiP } = useAppSelector((state) => state.playerReducer);
+
+  const { duration, currentTime } = useAppSelector(
+    (state) => state.timerReducer
+  );
+
   const { playInBackground } = useSettingsContext();
   const { setIsFullScreen } = useControlsContext();
-  const {
-    handlePause,
-    handlePlay,
-  } = usePlayer();
+  const { handlePause, handlePlay } = usePlayer();
   const { handleStoreData } = useStore();
 
   useEffect(() => {
@@ -47,8 +52,8 @@ const useEvents = () => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
 
-    const enterPiPHandler = () => setIsPiP(true);
-    const leavePiPHandler = () => setIsPiP(false);
+    const enterPiPHandler = () => dispatch(playerActions.enterPiP());
+    const leavePiPHandler = () => dispatch(playerActions.exitPiP());
 
     videoElement.addEventListener("enterpictureinpicture", enterPiPHandler);
     videoElement.addEventListener("leavepictureinpicture", leavePiPHandler);
@@ -88,7 +93,7 @@ const useEvents = () => {
 
   useEffect(() => {
     const bufferedPercentage = calculateBufferedPercentage();
-    setBufferedPercentage(bufferedPercentage);
+    dispatch(timerActions.updateBuffered(bufferedPercentage));
   }, [currentTime]);
 
   useEffect(() => {

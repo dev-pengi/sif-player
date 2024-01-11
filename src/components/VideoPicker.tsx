@@ -5,15 +5,18 @@ import { usePlayerContext } from "../contexts";
 import { useNavigate } from "react-router-dom";
 import { extractUUIDFromBlobUrl } from "../utils";
 import { useSettingsContext } from "../contexts";
+import { useDispatch } from "react-redux";
+import { playerActions } from "../store";
 
 interface VideoPickerProps {
   handleLoadStart: () => void;
 }
 const VideoPicker: FC<VideoPickerProps> = ({ handleLoadStart }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
   const [isDragOver, setDragOver] = useState(false);
-  const { videoFile, setVideoFile, setMediaData } = usePlayerContext();
+  const { videoFile, setVideoFile } = usePlayerContext();
   const { primaryColor } = useSettingsContext();
 
   useEffect(() => {
@@ -45,7 +48,13 @@ const VideoPicker: FC<VideoPickerProps> = ({ handleLoadStart }) => {
 
   const handleSelectedFiles = async (files: FileList) => {
     const fileData = files[0];
-    setMediaData(fileData);
+    dispatch(
+      playerActions.updateMediaData({
+        name: fileData.name,
+        type: fileData.type,
+        size: fileData.size,
+      })
+    );
     setVideoFile(fileData);
   };
 

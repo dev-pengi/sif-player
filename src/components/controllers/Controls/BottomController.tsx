@@ -5,19 +5,19 @@ import {
   FullScreenButton,
   VolumeSlider,
   PlayBackSpeed,
-} from "../Buttons";
+} from "../buttons";
 import { formatTime } from "../../../utils";
-import {
-  useControlsContext,
-  useTimerContext,
-} from "../../../contexts";
-import TrackSlider from "../Track/TrackSlider";
-import LockButton from "../Buttons/LockButton";
+import { useControlsContext, useTimerContext } from "../../../contexts";
+import TrackSlider from "../track/TrackSlider";
+import LockButton from "../buttons/LockButton";
+import { useSelector } from "react-redux";
 
 const BottomController: FC = () => {
   const { controllersDeps, isLocked, setIsPanelHovering } =
     useControlsContext();
-  const { duration, currentTime } = useTimerContext();
+  const { duration, currentTime } = useSelector(
+    (state: any) => state.timerReducer
+  );
 
   return (
     <AnimatePresence>

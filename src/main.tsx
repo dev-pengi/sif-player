@@ -5,14 +5,13 @@ import "./index.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import {
   PlayerContextProvider,
-  TimerContextProvider,
   ControlsContextProvider,
   LoaderContextProvider,
   SettingsContextProvider,
   VolumeContextProvider,
 } from "./contexts";
 import { BrowserRouter } from "react-router-dom";
-import { store } from "./components/store";
+import { store } from ".//store";
 import { Provider } from "react-redux";
 
 const ContextWrapper: FC<{
@@ -22,11 +21,9 @@ const ContextWrapper: FC<{
     <PlayerContextProvider>
       <SettingsContextProvider>
         <ControlsContextProvider>
-          <TimerContextProvider>
             <VolumeContextProvider>
               <LoaderContextProvider>{children}</LoaderContextProvider>
             </VolumeContextProvider>
-          </TimerContextProvider>
         </ControlsContextProvider>
       </SettingsContextProvider>
     </PlayerContextProvider>

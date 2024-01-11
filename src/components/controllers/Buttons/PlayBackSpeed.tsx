@@ -4,9 +4,10 @@ import { CheckIcon, PlaybackSpeedIcon } from "../../../assets";
 import { usePlayerContext } from "../../../contexts";
 import { DropdownMenu } from "@radix-ui/themes";
 import { usePlayer } from "../../../hooks";
+import { useAppSelector } from "../../../hooks/useAppSelector";
 
 const PlayBackSpeed: FC = () => {
-  const { currentSpeed } = usePlayerContext();
+  const { currentSpeed } = useAppSelector(state => state.playerReducer);
   const { handlePlaybackSpeedUpdate } = usePlayer();
 
   const SPEEDS = new Array(9).fill(0, 1, 9);

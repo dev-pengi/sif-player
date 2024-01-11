@@ -1,13 +1,10 @@
 import { useHotkeys } from "react-hotkeys-hook";
-import {
-  useControlsContext,
-  useSettingsContext,
-  useTimerContext,
-} from "../contexts";
+import { useControlsContext, useSettingsContext } from "../contexts";
 import { usePlayer, useTimer, useVolume } from ".";
+import { useAppSelector } from "./useAppSelector";
 
 const useShortcuts = () => {
-  const { duration } = useTimerContext();
+  const { duration } = useAppSelector(state => state.timerReducer);
   const {
     normalSkipStep,
     doubleSkipStep,

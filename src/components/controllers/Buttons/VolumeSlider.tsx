@@ -4,7 +4,6 @@ import Slider from "rc-slider";
 
 import {
   useControlsContext,
-  usePlayerContext,
   useVolumeContext,
 } from "../../../contexts";
 import Button from "./Button";

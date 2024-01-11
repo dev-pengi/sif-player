@@ -3,16 +3,17 @@ import Switch from "react-switch";
 import { DropdownMenu } from "@radix-ui/themes";
 import Button from "./Button";
 import { MenuIcon } from "../../../assets";
-import { usePlayerContext } from "../../../contexts";
 import { Modal } from "../../modals";
 import { useSettingsContext } from "../../../contexts";
 import { PlayerSettings, MediaInfo } from "../blocks";
 import { usePlayer } from "../../../hooks";
+import { useAppSelector } from "../../../hooks/useAppSelector";
 
 const MenuButton: FC = () => {
   const { isLoop, setIsLoop, shortcutsEnabled, setShortcutsEnabled } =
     useSettingsContext();
-  const { isPiP } = usePlayerContext();
+    
+  const { isPiP } = useAppSelector(state => state.playerReducer);
   const {
     handleAddControllerDependencies,
     handleRemoveControllerDependencies,

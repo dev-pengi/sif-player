@@ -1,15 +1,16 @@
+import { useDispatch } from "react-redux";
 import {
   useLoaderContext,
-  useTimerContext,
   usePlayerContext,
   useSettingsContext,
 } from "../contexts";
+import { playerActions, timerActions } from "../store";
 
 const useLoader = () => {
-  const { videoRef, setMediaData } = usePlayerContext();
+  const dispatch = useDispatch();
+  const { videoRef } = usePlayerContext();
   const { isLoop } = useSettingsContext();
   const { setIsLoading } = useLoaderContext();
-  const { setDuration, setCurrentTime } = useTimerContext();
 
   const handleLoadStart = () => {
     setIsLoading(true);
@@ -17,20 +18,21 @@ const useLoader = () => {
 
   const handleLoadEnd = () => {
     setIsLoading(false);
-    setDuration(videoRef.current.duration);
+    dispatch(timerActions.initDuration(videoRef.current.duration));
     const resolution = videoRef.current.videoHeight;
 
-    setMediaData((prev) => {
-      const safePrev = prev || {};
-      safePrev.resolution = resolution;
-      return safePrev;
-    });
+    dispatch(
+      playerActions.addMediaData({
+        name: "resolution",
+        value: resolution,
+      })
+    );
   };
 
   const handleVideoEnd = () => {
     if (isLoop) {
       videoRef.current.currentTime = 0;
-      setCurrentTime(0);
+      dispatch(timerActions.updateTime(0));
       videoRef.current.play();
     }
   };

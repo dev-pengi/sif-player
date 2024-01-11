@@ -4,7 +4,13 @@ const initialState = {
     isError: false,
     videoSrc: null,
     isPlaying: false,
-    mediaData: {},
+    mediaData: {
+        name: null,
+        type: null,
+        resolution: null,
+        url: null,
+        size: 0,
+    },
     currentSpeed: 1,
     isPiP: false
 
@@ -34,6 +40,9 @@ const playerSlice = createSlice({
         },
         updateMediaData(state, action) {
             state.mediaData = action.payload
+        },
+        addMediaData(state, action) {
+            state.mediaData[action.payload.name] = action.payload.value
         },
         updateSpeed(state, action) {
             state.currentSpeed = action.payload

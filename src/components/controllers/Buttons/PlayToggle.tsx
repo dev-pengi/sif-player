@@ -2,8 +2,9 @@ import { FC, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { PauseIcon, PlayIcon } from "../../../assets";
 import Button from "./Button";
-import { usePlayerContext } from "../../../contexts";
 import { usePlayer } from "../../../hooks";
+import { useSelector } from "react-redux";
+import { useAppSelector } from "../../../hooks/useAppSelector";
 
 interface PlayToggleProps {}
 
@@ -15,7 +16,7 @@ const PlayToggle: FC<PlayToggleProps> = ({}) => {
     hidden: { opacity: 0, scale: 0.2 },
   };
 
-  const { isPlaying } = usePlayerContext();
+  const {isPlaying} = useAppSelector(state => state.playerReducer);
   const { handleTogglePlay } = usePlayer();
 
   useEffect(() => {

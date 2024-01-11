@@ -13,19 +13,7 @@ import {
 interface PlayerContextProps {
   videoRef: RefObject<HTMLVideoElement>;
   videoFile: any;
-  isError: boolean;
-  videoSrc: string;
-  isPlaying: boolean;
-  mediaData: any;
-  currentSpeed: number;
-  isPiP: boolean;
   setVideoFile: Dispatch<SetStateAction<any>>;
-  setIsError: Dispatch<SetStateAction<boolean>>;
-  setVideoSrc: Dispatch<SetStateAction<string>>;
-  setIsPlaying: Dispatch<SetStateAction<boolean>>;
-  setMediaData: Dispatch<SetStateAction<any>>;
-  setCurrentSpeed: Dispatch<SetStateAction<number>>;
-  setIsPiP: Dispatch<SetStateAction<boolean>>;
 }
 
 const PlayerContext = createContext<PlayerContextProps | undefined>(undefined);
@@ -47,33 +35,15 @@ interface PlayerContextProviderProps {
 const PlayerContextProvider: FC<PlayerContextProviderProps> = ({
   children,
 }) => {
-  const [mediaData, setMediaData] = useState({});
   const [videoFile, setVideoFile] = useState(null);
-  const [isError, setIsError] = useState(false);
   const [videoSrc, setVideoSrc] = useState("");
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentSpeed, setCurrentSpeed] = useState(1);
-  const [isPiP, setIsPiP] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const value = {
     videoRef,
-
     videoFile,
-    isError,
-    videoSrc,
-    isPlaying,
-    mediaData,
-    currentSpeed,
-    isPiP,
     setVideoFile,
-    setIsError,
-    setVideoSrc,
-    setIsPlaying,
-    setMediaData,
-    setCurrentSpeed,
-    setIsPiP,
   };
 
   return (

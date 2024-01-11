@@ -1,7 +1,7 @@
-import { usePlayerContext } from "../contexts";
+import { useAppSelector } from "./useAppSelector";
 
 const useStore = () => {
-  const { mediaData } = usePlayerContext();
+  const { mediaData } = useAppSelector((state) => state.playerReducer);
   const handleStoreData = (newData: any) => {
     const videoName = mediaData?.name || null;
     const videoUrl = mediaData?.url || null;

@@ -1,10 +1,6 @@
 import { FC, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import {
-  usePlayerContext,
-  useSettingsContext,
-  useTimerContext,
-} from "../contexts";
+import { useSettingsContext } from "../contexts";
 import { PlayerError } from "./errors";
 import { VideoPlayer } from "./players";
 import {
@@ -16,10 +12,13 @@ import {
   useTimer,
   useVolume,
 } from "../hooks";
+import { useDispatch, useSelector } from "react-redux";
+import { playerActions } from "../store";
+import { useAppSelector } from "../hooks/useAppSelector";
 
 const useVideoSrc = () => {
   const location = useLocation();
-  const { setVideoSrc, setMediaData } = usePlayerContext();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleVideoSrc = async () => {
@@ -30,9 +29,9 @@ const useVideoSrc = () => {
       const { protocol, host } = window.location;
       if (type === "local") {
         const blobUrl = `blob:${protocol}//${host}/${src}`;
-        setVideoSrc(blobUrl);
+        dispatch(playerActions.updateVideoSrc(blobUrl));
       } else {
-        setVideoSrc(src);
+        dispatch(playerActions.updateVideoSrc(src));
         const url = src;
         const controller = new AbortController();
         const signal = controller.signal;
@@ -47,7 +46,7 @@ const useVideoSrc = () => {
         const size = mediaData.headers.get("content-length");
         const type = mediaData.headers.get("content-type");
 
-        setMediaData({ name, url, size, type });
+        dispatch(playerActions.updateMediaData({ name, url, size, type }));
         controller.abort();
       }
     };
@@ -57,12 +56,18 @@ const useVideoSrc = () => {
 };
 
 const Player: FC = () => {
-  const { isError, mediaData } = usePlayerContext();
-  const { duration } = useTimerContext();
   const { saveTrack, saveAdjustments } = useSettingsContext();
   const { handleSeek } = useTimer();
   const { handleVolumeChange } = useVolume();
   const { handlePlaybackSpeedUpdate } = usePlayer();
+  console.log(
+    useAppSelector(state => {
+      return state.playerReducer;
+    })
+  );
+  const { mediaData, isError } = useSelector(
+    (state: any) => state.playerReducer
+  );
   useVideoSrc();
   useEvents();
   useShortcuts();
@@ -83,7 +88,7 @@ const Player: FC = () => {
         if (speed && !isNaN(speed)) handlePlaybackSpeedUpdate(speed);
       }
     }
-  }, [mediaData?.name, mediaData?.url, duration]);
+  }, [mediaData?.name, mediaData?.url]);
 
   return (
     <div className="w-screen h-screen flex items-center justify-center flex-1 bg-black">

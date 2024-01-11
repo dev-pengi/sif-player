@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+    volume: 100, isMuted: false
+}
+
 const volumeSlice = createSlice({
     name: "volume",
-    initialState: {
-        volume: 100, isMuted: false
-    },
+    initialState: initialState,
     reducers: {
         updateVolume(state, action) {
             state.volume = action.payload
@@ -17,6 +19,9 @@ const volumeSlice = createSlice({
         },
         toggleMute(state) {
             state.isMuted = !state.isMuted
+        },
+        resetVolume(state) {
+            state = initialState
         }
     },
 })
