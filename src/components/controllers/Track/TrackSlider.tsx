@@ -86,7 +86,7 @@ const TrackSlider: FC = () => {
           scaleY: 0.6,
         }}
         animate={{
-          scaleY: isHovering ? 1 : 0.6,
+          scaleY: isHovering || isDragging ? 1 : 0.6,
         }}
         transition={{
           type: "tween",
@@ -113,29 +113,27 @@ const TrackSlider: FC = () => {
           animate={false}
         />
       </motion.div>
-      <motion.div
+      <div
         style={{
           borderRadius: "50%",
-          backgroundColor: primaryColor,
+          left: timePercentage * 100 + "%",
+          width: 13,
+          height: 13,
+          backgroundColor: "transparent",
         }}
-        initial={{
-          left: 0,
-          opacity: 0,
-          width: 0,
-          height: 0,
-        }}
-        animate={{
-          left: (currentTime / duration) * 100 + "%",
-          opacity: isHovering ? 1 : 0,
-          width: isHovering ? 13 : 0,
-          height: isHovering ? 13 : 0,
-        }}
-        transition={{
-          type: "tween",
-          duration: isDragging ? 0 : 0.1,
-        }}
-        className="bottom-0 top-0 m-auto  absolute transform -translate-x-1/2 pointer-events-none"
-      />
+        className="bottom-0 top-0 m-auto flex items-center justify-center absolute transform -translate-x-1/2 pointer-events-none"
+      >
+        <div
+          style={{
+            borderRadius: "50%",
+            backgroundColor: primaryColor,
+            opacity: isHovering || isDragging ? 1 : 0,
+            width: isHovering || isDragging ? 13 : 0,
+            height: isHovering || isDragging ? 13 : 0,
+          }}
+          className="rounded-full duration-100"
+        ></div>
+      </div>
     </div>
   );
 };
