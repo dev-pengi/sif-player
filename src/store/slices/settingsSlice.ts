@@ -4,7 +4,7 @@ import { extractLocalStorage } from "../../utils";
 const defaultSettings = {
     primaryColor: "#ff00fb",
     lockShortcuts: false,
-    lockGestures: false, //
+    lockGestures: false,
     normalSkipStep: 10,
     doubleSkipStep: 30,
     volumeStep: 5,
@@ -15,8 +15,19 @@ const defaultSettings = {
     saveAdjustments: true,
     playInBackground: true,
     playToggleClick: false,
-    fullScreenOnDoubleClick: true, //
+    fullScreenOnDoubleClick: true,
     showHoverThumbnail: true,
+    //TODO: add these settings
+    allowAnimations: true,
+    borderShadows: true,
+    darkLayer: false,
+    darkLayerOpacity: 0.2,
+    sleepMode: false,
+    sleepModeDelay: 30, // in minutes
+    sleepModeBehavior: "pause", // pause, quit video, close tab/app
+    askForBreak: false,
+    breakDelay: 30, // in minutes
+    breakDuration: 5, // in minutes
 }
 
 const initialState = {
@@ -34,7 +45,18 @@ const initialState = {
     playInBackground: extractLocalStorage("play-in-background", true, "boolean"),
     playToggleClick: extractLocalStorage("play-toggle-click", false, "boolean"),
     fullScreenOnDoubleClick: extractLocalStorage("full-screen-on-double-click", true, "boolean"),
-    showHoverThumbnail: true,
+    //TODO: add these settings
+    showHoverThumbnail: extractLocalStorage("show-hover-thumbnail", true, "boolean"),
+    allowAnimations: extractLocalStorage("allow-animations", true, "boolean"),
+    borderShadows: extractLocalStorage("border-shadows", true, "boolean"),
+    darkLayer: extractLocalStorage("dark-layer", false, "boolean"),
+    darkLayerOpacity: extractLocalStorage("dark-layer-opacity", 0.2, "number"),
+    sleepMode: extractLocalStorage("sleep-mode", false, "boolean"),
+    sleepModeDelay: extractLocalStorage("sleep-mode-delay", 30, "number"),
+    sleepModeBehavior: extractLocalStorage("sleep-mode-behavior", "pause", "string"),
+    askForBreak: extractLocalStorage("ask-for-break", false, "boolean"),
+    breakDelay: extractLocalStorage("break-delay", 30, "number"),
+    breakDuration: extractLocalStorage("break-duration", 5, "number"),
 }
 
 const settingsSlice = createSlice({
@@ -180,6 +202,87 @@ const settingsSlice = createSlice({
         toggleHoverThumbnail(state) {
             localStorage.setItem("show-hover-thumbnail", String(!state.showHoverThumbnail));
             state.showHoverThumbnail = !state.showHoverThumbnail
+        },
+        enableAnimations(state) {
+            localStorage.setItem("allow-animations", "true");
+            state.allowAnimations = true
+        },
+        disableAnimations(state) {
+            localStorage.setItem("allow-animations", "false");
+            state.allowAnimations = false
+        },
+        toggleAnimations(state) {
+            localStorage.setItem("allow-animations", String(!state.allowAnimations));
+            state.allowAnimations = !state.allowAnimations
+        },
+        enableBorderShadows(state) {
+            localStorage.setItem("border-shadows", "true");
+            state.borderShadows = true
+        },
+        disableBorderShadows(state) {
+            localStorage.setItem("border-shadows", "false");
+            state.borderShadows = false
+        },
+        toggleBorderShadows(state) {
+            localStorage.setItem("border-shadows", String(!state.borderShadows));
+            state.borderShadows = !state.borderShadows
+        },
+        enableDarkLayer(state) {
+            localStorage.setItem("dark-layer", "true");
+            state.darkLayer = true
+        },
+        disableDarkLayer(state) {
+            localStorage.setItem("dark-layer", "false");
+            state.darkLayer = false
+        },
+        toggleDarkLayer(state) {
+            localStorage.setItem("dark-layer", String(!state.darkLayer));
+            state.darkLayer = !state.darkLayer
+        },
+        updateDarkLayerOpacity(state, action) {
+            localStorage.setItem("dark-layer-opacity", String(action.payload));
+            state.darkLayerOpacity = action.payload
+        },
+        enableSleepMode(state) {
+            localStorage.setItem("sleep-mode", "true");
+            state.sleepMode = true
+        },
+        disableSleepMode(state) {
+            localStorage.setItem("sleep-mode", "false");
+            state.sleepMode = false
+        },
+        toggleSleepMode(state) {
+            localStorage.setItem("sleep-mode", String(!state.sleepMode));
+            state.sleepMode = !state.sleepMode
+        },
+        updateSleepModeDelay(state, action) {
+            localStorage.setItem("sleep-mode-delay", String(action.payload));
+            state.sleepModeDelay = action.payload
+        },
+
+        updateSleepModeBehavior(state, action) {
+            localStorage.setItem("sleep-mode-behavior", action.payload);
+            state.sleepModeBehavior = action.payload
+        },
+        enableAskForBreak(state) {
+            localStorage.setItem("ask-for-break", "true");
+            state.askForBreak = true
+        },
+        disableAskForBreak(state) {
+            localStorage.setItem("ask-for-break", "false");
+            state.askForBreak = false
+        },
+        toggleAskForBreak(state) {
+            localStorage.setItem("ask-for-break", String(!state.askForBreak));
+            state.askForBreak = !state.askForBreak
+        },
+        updateBreakDelay(state, action) {
+            localStorage.setItem("break-delay", String(action.payload));
+            state.breakDelay = action.payload
+        },
+        updateBreakDuration(state, action) {
+            localStorage.setItem("break-duration", String(action.payload));
+            state.breakDuration = action.payload
         },
         reset() {
             return initialState;
