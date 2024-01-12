@@ -113,14 +113,14 @@ const TrackSlider: FC = () => {
       onMouseMove={handleHoverMouseMove}
       className="w-full h-[16px] relative flex items-center justify-center"
     >
-      {showHoverThumbnail && (
-        <div
-          style={{
-            left: thumbnailPosition * 100 + "%",
-            backgroundColor: "transparent",
-          }}
-          className="bottom-6 flex items-center justify-center flex-col absolute transform -translate-x-1/2 pointer-events-none"
-        >
+      <div
+        style={{
+          left: thumbnailPosition * 100 + "%",
+          backgroundColor: "transparent",
+        }}
+        className="bottom-6 flex items-center justify-center flex-col absolute transform -translate-x-1/2 pointer-events-none"
+      >
+        {showHoverThumbnail && (
           <motion.div
             className="mb-3 flex items-center justify-center rounded-md shadow-md bg-[#ffffff41] border-[2px] border-[#ffffff51] border-solid duration-100"
             style={{
@@ -144,17 +144,17 @@ const TrackSlider: FC = () => {
               }}
             />
           </motion.div>
-          <motion.div
-            style={{
-              opacity: isHovering ? 1 : 0,
-              scale: isHovering ? 1 : 0.4,
-            }}
-            className="rounded-md bg-[#ffffff41] px-2 py-1 text-xs text-white font-semibold shadow-md duration-100"
-          >
-            {formatTime(hoverTime)}
-          </motion.div>
-        </div>
-      )}
+        )}
+        <motion.div
+          style={{
+            opacity: isHovering ? 1 : 0,
+            scale: isHovering ? 1 : 0.4,
+          }}
+          className="rounded-md bg-[#ffffff41] px-2 py-1 text-xs text-white font-semibold shadow-md duration-100"
+        >
+          {formatTime(hoverTime)}
+        </motion.div>
+      </div>
       <motion.div
         className="w-full cursor-pointer relative bg-[#ffffff52] rounded-[1px] overflow-hidden"
         style={{
