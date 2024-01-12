@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { BackButton, MenuButton } from "../buttons";
+import { BackButton, MenuButton } from "../Buttons";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useAppSelector } from "../../../hooks";

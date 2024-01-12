@@ -5,10 +5,10 @@ import {
   FullScreenButton,
   VolumeSlider,
   PlayBackSpeed,
-} from "../buttons";
+} from "../Buttons";
 import { formatTime } from "../../../utils";
-import TrackSlider from "../track/TrackSlider";
-import LockButton from "../buttons/LockButton";
+import TrackSlider from "../Track/TrackSlider";
+import LockButton from "../Buttons/LockButton";
 import { useAppSelector } from "../../../hooks";
 import { useDispatch } from "react-redux";
 import { controlsActions } from "../../../store";

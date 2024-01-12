@@ -4,7 +4,7 @@ import {
   CenterController,
   LockedController,
   TopController,
-} from "./controls";
+} from "./Controls";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAppSelector, usePlayer } from "../../hooks";
 import { throttle } from "lodash";
