@@ -5,7 +5,6 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import {
   PlayerContextProvider,
-  ControlsContextProvider,
   LoaderContextProvider,
   SettingsContextProvider,
 } from "./contexts";
@@ -17,9 +16,7 @@ const ContextWrapper: FC<{
 }> = ({ children }) => {
   return (
     <SettingsContextProvider>
-      <ControlsContextProvider>
-        <LoaderContextProvider>{children}</LoaderContextProvider>
-      </ControlsContextProvider>
+      <LoaderContextProvider>{children}</LoaderContextProvider>
     </SettingsContextProvider>
   );
 };

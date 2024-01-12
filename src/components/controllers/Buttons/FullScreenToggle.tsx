@@ -3,11 +3,10 @@ import { motion, useAnimation } from "framer-motion";
 
 import Button from "./Button";
 import { MaximizeIcon, MinimizeIcon } from "../../../assets";
-import { useControlsContext, usePlayerContext } from "../../../contexts";
-import { usePlayer } from "../../../hooks";
+import { useAppSelector, usePlayer } from "../../../hooks";
 
 const FullScreenButton: FC = () => {
-  const { isFullScreen } = useControlsContext();
+  const { isFullscreen } = useAppSelector((state) => state.controls);
   const { handleToggleScreen } = usePlayer();
 
   const maximizeController = useAnimation();
@@ -18,9 +17,9 @@ const FullScreenButton: FC = () => {
   };
 
   useEffect(() => {
-    maximizeController.start(isFullScreen ? "hidden" : "visible");
-    minimizeController.start(isFullScreen ? "visible" : "hidden");
-  }, [isFullScreen]);
+    maximizeController.start(isFullscreen ? "hidden" : "visible");
+    minimizeController.start(isFullscreen ? "visible" : "hidden");
+  }, [isFullscreen]);
 
   return (
     <Button onClick={handleToggleScreen}>

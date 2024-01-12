@@ -1,5 +1,4 @@
 import { FC, useEffect } from "react";
-import { useControlsContext } from "../../../contexts";
 import { BackButton, MenuButton } from "../buttons";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSelector } from "react-redux";
@@ -7,7 +6,7 @@ import { useAppSelector } from "../../../hooks";
 
 const TopController: FC = () => {
   const { mediaData } = useAppSelector(state => state.player);
-  const { isLocked, controllersDeps } = useControlsContext();
+  const { isLocked, controllersDeps } = useAppSelector(state => state.controls);
   const videoName = mediaData?.name ?? "Untitled Video";
 
   useEffect(() => {

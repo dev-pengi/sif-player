@@ -1,8 +1,7 @@
 import { usePlayerContext } from "../contexts";
 import { useNavigate } from "react-router-dom";
-import { useControlsContext } from "../contexts";
 import { useStore } from ".";
-import { playerActions } from "../store";
+import { controlsActions, playerActions } from "../store";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from ".";
 
@@ -11,7 +10,7 @@ const usePlayer = () => {
   const dispatch = useDispatch();
   const { isPlaying } = useAppSelector((state) => state.player);
   const { videoRef } = usePlayerContext();
-  const { controllersDeps, setControllersDeps } = useControlsContext();
+  const { controllersDeps } = useAppSelector(state => state.controls);
 
   const { handleStoreData } = useStore();
 
@@ -33,17 +32,12 @@ const usePlayer = () => {
 
   const handleAddControllerDependencies = (dependency: string) => {
     if (controllersDeps.includes(dependency)) return;
-    setControllersDeps((prev) => [
-      ...prev.filter((prevDep: string) => prevDep != dependency),
-      dependency,
-    ]);
+    dispatch(controlsActions.addControllerDependency(dependency));
   };
 
   const handleRemoveControllerDependencies = (dependency: string) => {
     if (!controllersDeps.includes(dependency)) return;
-    setControllersDeps((prev) => {
-      return prev.filter((prevDep: string) => prevDep != dependency);
-    });
+    dispatch(controlsActions.removeControllerDependency(dependency));
   };
 
   const handleTogglePiP = () => {

@@ -18,7 +18,6 @@ const VideoPlayer: FC = () => {
 
   const handlePlayerTimeUpdate = useCallback(
     throttle(() => {
-      console.count("handlePlayerTimeUpdate");
       handleTimeUpdate();
     }, 500),
     []

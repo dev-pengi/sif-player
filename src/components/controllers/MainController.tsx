@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useCallback, useEffect, useRef } from "react";
 import {
   BottomController,
   CenterController,
@@ -6,21 +6,23 @@ import {
   TopController,
 } from "./controls";
 import { AnimatePresence, motion } from "framer-motion";
-import { useControlsContext } from "../../contexts";
-import { usePlayer } from "../../hooks";
+import { useAppSelector, usePlayer } from "../../hooks";
+import { throttle } from "lodash";
 
 const CONTROLLER_DEP: string = "active";
 
 const MainController: FC = () => {
-  const { isLocked, controllersDeps } = useControlsContext();
+  const { isLocked, controllersDeps } = useAppSelector(
+    (state) => state.controls
+  );
   const {
     handleAddControllerDependencies,
     handleRemoveControllerDependencies,
   } = usePlayer();
   const timerRef = useRef<any>(null);
 
-  useEffect(() => {
-    const handleEvent = () => {
+  const handleEvent = useCallback(
+    throttle(() => {
       handleAddControllerDependencies(CONTROLLER_DEP);
       if (timerRef.current) {
         clearTimeout(timerRef.current);
@@ -28,23 +30,22 @@ const MainController: FC = () => {
       timerRef.current = setTimeout(() => {
         handleRemoveControllerDependencies(CONTROLLER_DEP);
       }, 2000);
-    };
+    }, 200),
+    [controllersDeps]
+  );
 
+  useEffect(() => {
     window.addEventListener("mousemove", handleEvent);
-    window.addEventListener("keydown", handleEvent);
-    window.addEventListener("keyup", handleEvent);
     window.addEventListener("mousedown", handleEvent);
+    window.addEventListener("keyup", handleEvent);
     window.addEventListener("touchstart", handleEvent);
-    window.addEventListener("touchmove", handleEvent);
     window.addEventListener("touchend", handleEvent);
 
     return () => {
-      window.removeEventListener("mousemove", handleEvent);
-      window.removeEventListener("keydown", handleEvent);
-      window.removeEventListener("keyup", handleEvent);
       window.removeEventListener("mousedown", handleEvent);
+      window.removeEventListener("mousemove", handleEvent);
+      window.removeEventListener("keyup", handleEvent);
       window.removeEventListener("touchstart", handleEvent);
-      window.removeEventListener("touchmove", handleEvent);
       window.removeEventListener("touchend", handleEvent);
       if (timerRef.current) {
         clearTimeout(timerRef.current);

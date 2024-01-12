@@ -1,8 +1,6 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import Slider from "rc-slider";
-
-import { useControlsContext } from "../../../contexts";
 import Button from "./Button";
 import { MaxSoundIcon, MinSoundIcon, MuteSoundIcon } from "../../../assets";
 import "rc-slider/assets/index.css";
@@ -15,7 +13,7 @@ const VolumeSlider: FC = ({}) => {
   const [isButtonHovering, setIsButtonHovering] = useState(false);
 
   const { volume, isMuted } = useAppSelector((state) => state.volume);
-  const { isPanelHovering } = useControlsContext();
+  const { isPanelHovering } = useAppSelector((state) => state.controls);
 
   const { handleVolumeChange, handleToggleMute } = useVolume();
 

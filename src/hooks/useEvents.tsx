@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import {
   usePlayerContext,
-  useControlsContext,
   useSettingsContext,
 } from "../contexts";
 import { usePlayer, useStore } from ".";
 import { useDispatch } from "react-redux";
-import { playerActions, timerActions } from "../store";
+import { controlsActions, playerActions, timerActions } from "../store";
 import { useAppSelector } from ".";
 
 const useEvents = () => {
@@ -21,13 +20,16 @@ const useEvents = () => {
   );
 
   const { playInBackground } = useSettingsContext();
-  const { setIsFullScreen } = useControlsContext();
   const { handlePause, handlePlay } = usePlayer();
   const { handleStoreData } = useStore();
 
   useEffect(() => {
     const handleFullScreenChange = () => {
-      setIsFullScreen(!!document.fullscreenElement);
+      if (!!document.fullscreenElement) {
+        dispatch(controlsActions.fullscreen());
+      } else {
+        dispatch(controlsActions.unfullscreen());
+      }
     };
 
     document.addEventListener("fullscreenchange", handleFullScreenChange);

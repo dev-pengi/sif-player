@@ -1,10 +1,13 @@
 import { useHotkeys } from "react-hotkeys-hook";
-import { useControlsContext, useSettingsContext } from "../contexts";
+import { useSettingsContext } from "../contexts";
 import { usePlayer, useTimer, useVolume } from ".";
 import { useAppSelector } from ".";
+import { useDispatch } from "react-redux";
+import { controlsActions } from "../store";
 
 const useShortcuts = () => {
-  const { duration } = useAppSelector(state => state.timer);
+  const dispatch = useDispatch();
+  const { duration } = useAppSelector((state) => state.timer);
   const {
     normalSkipStep,
     doubleSkipStep,
@@ -14,7 +17,7 @@ const useShortcuts = () => {
     shortcutsEnabled,
     setIsLoop,
   } = useSettingsContext();
-  const { setIsLocked, isLocked } = useControlsContext();
+  const { isLocked } = useAppSelector((state) => state.controls);
 
   const { handleTogglePlay, handleToggleScreen, handleBack } = usePlayer();
   const { handleToggleMute, handleIncreaseVolume, handleDecreaseVolume } =
@@ -82,7 +85,7 @@ const useShortcuts = () => {
   useConditionalHotkeys(
     "l",
     () => {
-      setIsLocked((prev) => !prev);
+      dispatch(controlsActions.toggleLock());
     },
     true
   );

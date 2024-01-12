@@ -15,7 +15,6 @@ const useStore = () => {
       try {
         data = JSON.parse(storedData);
       } catch (error) {
-        console.error("Error parsing data from localStorage:", error);
         return;
       }
     }

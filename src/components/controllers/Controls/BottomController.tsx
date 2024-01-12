@@ -7,14 +7,17 @@ import {
   PlayBackSpeed,
 } from "../buttons";
 import { formatTime } from "../../../utils";
-import { useControlsContext } from "../../../contexts";
 import TrackSlider from "../track/TrackSlider";
 import LockButton from "../buttons/LockButton";
 import { useAppSelector } from "../../../hooks";
+import { useDispatch } from "react-redux";
+import { controlsActions } from "../../../store";
 
 const BottomController: FC = () => {
-  const { controllersDeps, isLocked, setIsPanelHovering } =
-    useControlsContext();
+  const dispatch = useDispatch();
+  const { controllersDeps, isLocked } = useAppSelector(
+    (state) => state.controls
+  );
   const { duration, currentTime } = useAppSelector((state) => state.timer);
 
   return (
@@ -28,8 +31,8 @@ const BottomController: FC = () => {
           initial="hidden"
           animate="visible"
           exit="hidden"
-          onMouseLeave={() => setIsPanelHovering(false)}
-          onMouseEnter={() => setIsPanelHovering(true)}
+          onMouseEnter={() => dispatch(controlsActions.panelHover())}
+          onMouseLeave={() => dispatch(controlsActions.panelUnhover())}
           className="relative flex w-full items-center px-12 h-[80px] flex-col"
         >
           <TrackSlider />

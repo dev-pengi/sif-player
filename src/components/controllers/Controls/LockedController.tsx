@@ -1,16 +1,19 @@
 import { FC } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useControlsContext } from "../../../contexts";
 import { UnlockIcon } from "../../../assets";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../../hooks";
+import { controlsActions } from "../../../store";
 
 const LockedController: FC = () => {
-  const { isLocked, setIsLocked, controllersDeps } = useControlsContext();
+  const dispatch = useDispatch();
+  const { isLocked, controllersDeps } = useAppSelector(state => state.controls);
   return (
     <>
       <AnimatePresence>
         {isLocked && controllersDeps.length && (
           <motion.div
-            onClick={() => setIsLocked(false)}
+            onClick={() => dispatch(controlsActions.unlock())}
             variants={{
               visible: { opacity: 1, y: -20 },
               hidden: { opacity: 0, y: 20 },
