@@ -27,13 +27,9 @@ const MenuButton: FC = () => {
 
   const handleLoopToggle = () => {
     dispatch(settingsActions.toggleLoop());
-    localStorage.setItem("loop", JSON.stringify(!isLoop));
   };
   const handleShortcutsToggle = () => {
-    localStorage.setItem(
-      "shortcuts-enabled",
-      JSON.stringify(!shortcutsEnabled)
-    );
+
     dispatch(settingsActions.toggleShortcuts());
   };
 

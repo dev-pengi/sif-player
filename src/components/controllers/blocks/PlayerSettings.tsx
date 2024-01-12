@@ -17,7 +17,6 @@ interface SettingInputProps {
 const SettingInput: FC<SettingInputProps> = ({
   defaultValue,
   onChange,
-  localValue,
   type = "number",
 }) => {
   const [isError, setIsError] = useState(false);
@@ -29,7 +28,6 @@ const SettingInput: FC<SettingInputProps> = ({
       if (!isNaN(value) && value > 0) {
         setIsError(false);
         onChange(value);
-        localStorage.setItem(localValue, String(value));
       } else {
         setIsError(true);
       }
@@ -37,7 +35,6 @@ const SettingInput: FC<SettingInputProps> = ({
       const value = e.target.value;
       if (!value?.trim()?.length) {
         onChange(value);
-        localStorage.setItem(localValue, String(value));
       }
     }
   };
@@ -106,32 +103,26 @@ const SettingsBlock: FC = () => {
   } = useAppSelector((state) => state.settings);
 
   const handleSaveTrackToggle = () => {
-    localStorage.setItem("save-track", String(!saveTrack));
     dispatch(settingsActions.toggleSaveTrack());
   };
 
   const handleSaveAdjustmentsToggle = () => {
-    localStorage.setItem("save-adjustments", String(!saveAdjustments));
     dispatch(settingsActions.toggleSaveAdjustments());
   };
 
   const handleLockShortcutsToggle = () => {
-    localStorage.setItem("lock-shortcuts", String(!lockShortcuts));
     dispatch(settingsActions.toggleLockShortcuts());
   };
 
   const handleTogglePlayInBackground = () => {
-    localStorage.setItem("play-in-background", String(!playInBackground));
     dispatch(settingsActions.togglePlayInBackground());
   };
 
   const handleTogglePlayToggleClick = () => {
-    localStorage.setItem("play-toggle-click", String(!playToggleClick));
     dispatch(settingsActions.togglePlayToggleClick());
   };
 
   const handleColorSelect = (color: string) => {
-    localStorage.setItem("primary-color", color);
     dispatch(settingsActions.updateColor(color));
   };
 
