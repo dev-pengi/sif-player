@@ -5,12 +5,14 @@ interface IndicatorProps {
   indicatorPercentage: number;
   backgroundColor?: string;
   animate?: boolean;
+  hidden?: boolean;
 }
 
 const Indicator: FC<IndicatorProps> = ({
   indicatorPercentage,
   backgroundColor,
   animate = true,
+  hidden = false,
 }) => {
   return (
     <motion.div
@@ -18,6 +20,7 @@ const Indicator: FC<IndicatorProps> = ({
       style={{
         backgroundColor: backgroundColor,
         transformOrigin: "0 50%",
+        opacity: hidden ? 0 : 1,
       }}
       initial={{
         scaleX: 0,

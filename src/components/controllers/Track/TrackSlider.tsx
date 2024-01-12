@@ -4,9 +4,11 @@ import { throttle } from "lodash";
 import Indicator from "./Indicator";
 import { usePlayer, useTimer } from "../../../hooks";
 import { useAppSelector } from "../../../hooks";
+import { formatTime } from "../../../utils";
 
 const TrackSlider: FC = () => {
   const { primaryColor } = useAppSelector((state) => state.settings);
+  const { videoSrc } = useAppSelector((state) => state.player);
   const { duration, buffered, timePercentage } = useAppSelector(
     (state) => state.timer
   );
@@ -14,9 +16,25 @@ const TrackSlider: FC = () => {
   const { handleSeek } = useTimer();
 
   const [hoverPoint, setHoverPoint] = useState(0);
+  const [hoverTime, setHoverTime] = useState(0);
+  const [thumbnailPosition, setThumbnailPosition] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const sliderRef = useRef(null);
+
+  const thumbnailVideoRef = useRef<HTMLVideoElement>(null);
+
+  const handleCaptureFrame = useCallback(
+    throttle(() => {
+      const video = thumbnailVideoRef.current;
+      video.currentTime = hoverTime;
+    }, 50),
+    [hoverTime]
+  );
+
+  useEffect(() => {
+    handleCaptureFrame();
+  }, [hoverTime]);
 
   const calculateTime = useCallback(
     throttle((event: React.MouseEvent<HTMLDivElement>) => {
@@ -35,8 +53,22 @@ const TrackSlider: FC = () => {
   const handleHoverMouseMove = (event) => {
     const rect = sliderRef.current.getBoundingClientRect();
     const x = event.clientX - rect.left;
-    const clickedPercentage = x / rect.width;
-    setHoverPoint(clickedPercentage);
+    let Percentage = x / rect.width;
+    const thumbnailWidth = 180;
+
+    //damn, had to do the fucking math to limit the thumbnail from going out of the slider
+    const limitedWidth = rect.width - thumbnailWidth / 2;
+    if (limitedWidth - x < 0) {
+      setThumbnailPosition(limitedWidth / rect.width);
+    } else if (x < thumbnailWidth / 2) {
+      setThumbnailPosition(thumbnailWidth / 2 / rect.width);
+    } else {
+      setThumbnailPosition(Percentage);
+    }
+
+    setHoverPoint(Percentage);
+    setHoverTime(Percentage * duration);
+    thumbnailVideoRef.current.currentTime = Percentage * duration;
   };
 
   const handleDragMouseMove = (event) => {
@@ -74,9 +106,52 @@ const TrackSlider: FC = () => {
   return (
     <div
       onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
+      onMouseLeave={() => {
+        setIsHovering(false);
+      }}
+      onMouseMove={handleHoverMouseMove}
       className="w-full h-[16px] relative flex items-center justify-center"
     >
+      <div
+        style={{
+          left: thumbnailPosition * 100 + "%",
+          backgroundColor: "transparent",
+        }}
+        className="bottom-6 flex items-center justify-center flex-col absolute transform -translate-x-1/2 pointer-events-none"
+      >
+        <motion.div
+          className="mb-3 flex items-center justify-center rounded-md shadow-md bg-[#ffffff41] border-[2px] border-[#ffffff51] border-solid duration-100"
+          style={{
+            opacity: isHovering ? 1 : 0,
+            scale: isHovering ? 1 : 0.4,
+            width: 180,
+            height: 110,
+            objectFit: "contain",
+          }}
+        >
+          <video
+            ref={thumbnailVideoRef}
+            src={videoSrc}
+            autoPlay={false}
+            muted={true}
+            loop={false}
+            style={{
+              objectFit: "contain",
+              width: "100%",
+              height: "100%",
+            }}
+          />
+        </motion.div>
+        <motion.div
+          style={{
+            opacity: isHovering ? 1 : 0,
+            scale: isHovering ? 1 : 0.4,
+          }}
+          className="rounded-md bg-[#ffffff41] px-2 py-1 text-xs text-white font-semibold shadow-md duration-100"
+        >
+          {formatTime(hoverTime)}
+        </motion.div>
+      </div>
       <motion.div
         className="w-full cursor-pointer relative bg-[#ffffff52] rounded-[1px] overflow-hidden"
         style={{
@@ -93,8 +168,6 @@ const TrackSlider: FC = () => {
           duration: 0.15,
         }}
         onMouseDown={handleMouseDown}
-        onMouseLeave={() => setHoverPoint(0)}
-        onMouseMove={handleHoverMouseMove}
         ref={sliderRef}
       >
         <Indicator
@@ -104,6 +177,7 @@ const TrackSlider: FC = () => {
         />
         <Indicator
           indicatorPercentage={hoverPoint}
+          hidden={!isHovering}
           backgroundColor="#ffffff7d"
           animate={false}
         />

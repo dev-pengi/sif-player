@@ -15,4 +15,4 @@ function extractLocalStorage<T extends LocalStorageTypes>(key: string, defaultVa
     return value as any;
 }
 
-export default extractLocalStorage;
+export { extractLocalStorage };

@@ -4,4 +4,4 @@ function extractUUIDFromBlobUrl(blobUrl: string): string | null {
   return match ? match[2] : null;
 }
 
-export default extractUUIDFromBlobUrl;
+export {extractUUIDFromBlobUrl};
