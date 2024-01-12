@@ -49,10 +49,7 @@ const controlsSlice = createSlice({
             }
         },
         reset(state) {
-            state.isFullscreen = initialState.isFullscreen;
-            state.isPanelHovering = initialState.isPanelHovering;
-            state.isLocked = initialState.isLocked;
-            state.controllersDeps = initialState.controllersDeps;
+            return initialState;
         }
     },
 })

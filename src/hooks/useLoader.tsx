@@ -1,6 +1,5 @@
 import { useDispatch } from "react-redux";
 import {
-  useLoaderContext,
   usePlayerContext,
   useSettingsContext,
 } from "../contexts";
@@ -10,14 +9,13 @@ const useLoader = () => {
   const dispatch = useDispatch();
   const { videoRef } = usePlayerContext();
   const { isLoop } = useSettingsContext();
-  const { setIsLoading } = useLoaderContext();
 
   const handleLoadStart = () => {
-    setIsLoading(true);
+    dispatch(playerActions.loading());
   };
 
   const handleLoadEnd = () => {
-    setIsLoading(false);
+    dispatch(playerActions.loaded());
     dispatch(timerActions.init(videoRef.current.duration));
     const resolution = videoRef.current.videoHeight;
 

@@ -26,10 +26,7 @@ const timerSlice = createSlice({
             state.buffered = action.payload
         },
         reset(state) {
-            state.duration = initialState.duration;
-            state.currentTime = initialState.currentTime;
-            state.buffered = initialState.buffered;
-            state.timePercentage = initialState.timePercentage;
+            return initialState;
         }
     },
 })

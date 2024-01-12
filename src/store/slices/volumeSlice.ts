@@ -21,8 +21,7 @@ const volumeSlice = createSlice({
             state.isMuted = !state.isMuted
         },
         reset(state) {
-            state.volume = initialState.volume;
-            state.isMuted = initialState.isMuted;
+            return initialState;
         }
     },
 })

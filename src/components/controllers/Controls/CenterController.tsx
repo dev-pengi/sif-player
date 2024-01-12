@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { useLoaderContext, useSettingsContext } from "../../../contexts";
+import { useSettingsContext } from "../../../contexts";
 import { ActivityIndicator } from "../../spins";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePlayer } from "../../../hooks";
+import { useAppSelector, usePlayer } from "../../../hooks";
 
 const CenterController: FC = () => {
-  const { isLoading } = useLoaderContext();
+  const { isLoading } = useAppSelector((state) => state.player);
   const { playToggleClick } = useSettingsContext();
   const { handleToggleScreen, handleTogglePlay } = usePlayer();
 

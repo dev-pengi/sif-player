@@ -12,8 +12,8 @@ const initialState = {
         size: 0,
     },
     currentSpeed: 1,
-    isPiP: false
-
+    isPiP: false,
+    isLoading: false,
 }
 
 const playerSlice = createSlice({
@@ -53,13 +53,14 @@ const playerSlice = createSlice({
         exitPiP(state) {
             state.isPiP = false
         },
+        loading(state) {
+            state.isLoading = true
+        },
+        loaded(state) {
+            state.isLoading = false
+        },
         reset(state) {
-            state.isError = initialState.isError;
-            state.videoSrc = initialState.videoSrc;
-            state.isPlaying = initialState.isPlaying;
-            state.mediaData = initialState.mediaData;
-            state.currentSpeed = initialState.currentSpeed;
-            state.isPiP = initialState.isPiP;
+            return initialState;
         }
     },
 })
