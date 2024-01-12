@@ -4,34 +4,37 @@ import { DropdownMenu } from "@radix-ui/themes";
 import Button from "./Button";
 import { MenuIcon } from "../../../assets";
 import { Modal } from "../../modals";
-import { useSettingsContext } from "../../../contexts";
 import { PlayerSettings, MediaInfo } from "../blocks";
 import { usePlayer } from "../../../hooks";
 import { useAppSelector } from "../../../hooks";
+import { useDispatch } from "react-redux";
+import { settingsActions } from "../../../store";
 
 const MenuButton: FC = () => {
-  const { isLoop, setIsLoop, shortcutsEnabled, setShortcutsEnabled } =
-    useSettingsContext();
-    
-  const { isPiP } = useAppSelector(state => state.player);
+  const dispatch = useDispatch();
+  const { primaryColor, isLoop, shortcutsEnabled } = useAppSelector(
+    (state) => state.settings
+  );
+
+  const { isPiP } = useAppSelector((state) => state.player);
   const {
     handleAddControllerDependencies,
     handleRemoveControllerDependencies,
     handleTogglePiP,
   } = usePlayer();
-  const { primaryColor } = useSettingsContext();
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
   const [mediaInfoModalOpen, setMediaInfoModalOpen] = useState(false);
 
   const handleLoopToggle = () => {
-    setIsLoop((prev) => !prev);
+    dispatch(settingsActions.toggleLoop());
+    localStorage.setItem("loop", JSON.stringify(!isLoop));
   };
   const handleShortcutsToggle = () => {
-    setShortcutsEnabled((prev) => !prev);
     localStorage.setItem(
       "shortcuts-enabled",
       JSON.stringify(!shortcutsEnabled)
     );
+    dispatch(settingsActions.toggleShortcuts());
   };
 
   const handleSettingsOpen = () => {

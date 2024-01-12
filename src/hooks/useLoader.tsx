@@ -1,14 +1,12 @@
 import { useDispatch } from "react-redux";
-import {
-  usePlayerContext,
-  useSettingsContext,
-} from "../contexts";
+import { usePlayerContext } from "../contexts";
 import { playerActions, timerActions } from "../store";
+import { useAppSelector } from ".";
 
 const useLoader = () => {
   const dispatch = useDispatch();
   const { videoRef } = usePlayerContext();
-  const { isLoop } = useSettingsContext();
+  const { isLoop } = useAppSelector((state) => state.settings);
 
   const handleLoadStart = () => {
     dispatch(playerActions.loading());

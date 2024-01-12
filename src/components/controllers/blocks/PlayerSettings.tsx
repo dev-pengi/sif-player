@@ -1,10 +1,11 @@
 import { FC, useState } from "react";
 import Switch from "react-switch";
 import { motion } from "framer-motion";
-
-import { useSettingsContext } from "../../../contexts";
 import { Separator, SettingCol } from "./Settings";
 import { colors } from "../../../constants";
+import { useAppSelector } from "../../../hooks";
+import { useDispatch } from "react-redux";
+import { settingsActions } from "../../../store";
 
 interface SettingInputProps {
   defaultValue: string | number;
@@ -20,7 +21,7 @@ const SettingInput: FC<SettingInputProps> = ({
   type = "number",
 }) => {
   const [isError, setIsError] = useState(false);
-  const { primaryColor } = useSettingsContext();
+  const { primaryColor } = useAppSelector((state) => state.settings);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (type === "number") {
@@ -69,22 +70,16 @@ interface ColorSelectorProps {
   color: string;
   isSelected: boolean;
   onSelect: (color: string) => void;
-  localValue: string;
 }
 
 const ColorSelector: FC<ColorSelectorProps> = ({
   color,
   isSelected,
   onSelect,
-  localValue,
 }) => {
-  const handleSelect = () => {
-    onSelect(color);
-    localStorage.setItem(localValue, color);
-  };
   return (
     <div
-      onClick={handleSelect}
+      onClick={() => onSelect(color)}
       style={{
         backgroundColor: color,
       }}
@@ -96,52 +91,48 @@ const ColorSelector: FC<ColorSelectorProps> = ({
 };
 
 const SettingsBlock: FC = () => {
+  const dispatch = useDispatch();
   const {
     primaryColor,
-    setPrimaryColor,
     lockShortcuts,
-    setLockShortcuts,
     normalSkipStep,
-    setNormalSkipStep,
     doubleSkipStep,
-    setDoubleSkipStep,
     volumeStep,
-    setVolumeStep,
     doubleVolumeStep,
-    setDoubleVolumeStep,
     saveTrack,
     saveAdjustments,
-    setSaveTrack,
-    setSaveAdjustments,
     playInBackground,
-    setPlayInBackground,
     playToggleClick,
-    setPlayToggleClick,
-  } = useSettingsContext();
+  } = useAppSelector((state) => state.settings);
 
   const handleSaveTrackToggle = () => {
-    setSaveTrack((prev) => !prev);
     localStorage.setItem("save-track", String(!saveTrack));
+    dispatch(settingsActions.toggleSaveTrack());
   };
 
   const handleSaveAdjustmentsToggle = () => {
-    setSaveAdjustments((prev) => !prev);
     localStorage.setItem("save-adjustments", String(!saveAdjustments));
+    dispatch(settingsActions.toggleSaveAdjustments());
   };
 
   const handleLockShortcutsToggle = () => {
-    setLockShortcuts((prev) => !prev);
     localStorage.setItem("lock-shortcuts", String(!lockShortcuts));
+    dispatch(settingsActions.toggleLockShortcuts());
   };
 
   const handleTogglePlayInBackground = () => {
-    setPlayInBackground((prev) => !prev);
     localStorage.setItem("play-in-background", String(!playInBackground));
+    dispatch(settingsActions.togglePlayInBackground());
   };
 
   const handleTogglePlayToggleClick = () => {
-    setPlayToggleClick((prev) => !prev);
     localStorage.setItem("play-toggle-click", String(!playToggleClick));
+    dispatch(settingsActions.togglePlayToggleClick());
+  };
+
+  const handleColorSelect = (color: string) => {
+    localStorage.setItem("primary-color", color);
+    dispatch(settingsActions.updateColor(color));
   };
 
   return (
@@ -155,8 +146,7 @@ const SettingsBlock: FC = () => {
           {colors.map((color) => {
             return (
               <ColorSelector
-                localValue="primary-color"
-                onSelect={setPrimaryColor}
+                onSelect={handleColorSelect}
                 isSelected={primaryColor === color}
                 key={color}
                 color={color}
@@ -256,7 +246,9 @@ const SettingsBlock: FC = () => {
         <SettingInput
           localValue="skip-step"
           defaultValue={normalSkipStep}
-          onChange={setNormalSkipStep}
+          onChange={(value) =>
+            dispatch(settingsActions.updateNormalSkipStep(value))
+          }
         />
       </SettingCol>
       <SettingCol
@@ -266,7 +258,9 @@ const SettingsBlock: FC = () => {
         <SettingInput
           localValue="double-skip-step"
           defaultValue={doubleSkipStep}
-          onChange={setDoubleSkipStep}
+          onChange={(value) =>
+            dispatch(settingsActions.updateDoubleSkipStep(value))
+          }
         />
       </SettingCol>
       <Separator />
@@ -277,7 +271,9 @@ const SettingsBlock: FC = () => {
         <SettingInput
           localValue="volume-step"
           defaultValue={volumeStep}
-          onChange={setVolumeStep}
+          onChange={(value) =>
+            dispatch(settingsActions.updateVolumeStep(value))
+          }
         />
       </SettingCol>
       <SettingCol
@@ -287,7 +283,9 @@ const SettingsBlock: FC = () => {
         <SettingInput
           localValue="double-volume-step"
           defaultValue={doubleVolumeStep}
-          onChange={setDoubleVolumeStep}
+          onChange={(value) =>
+            dispatch(settingsActions.updateDoubleVolumeStep(value))
+          }
         />
       </SettingCol>
     </>

@@ -1,6 +1,5 @@
 import { FC, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useSettingsContext } from "../contexts";
 import { PlayerError } from "./errors";
 import { VideoPlayer } from "./players";
 import {
@@ -12,7 +11,7 @@ import {
   useTimer,
   useVolume,
 } from "../hooks";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { playerActions } from "../store";
 import { useAppSelector } from "../hooks";
 
@@ -56,7 +55,9 @@ const useVideoSrc = () => {
 };
 
 const Player: FC = () => {
-  const { saveTrack, saveAdjustments } = useSettingsContext();
+  const { saveTrack, saveAdjustments } = useAppSelector(
+    (state) => state.settings
+  );
   const { handleSeek } = useTimer();
   const { handleVolumeChange } = useVolume();
   const { handlePlaybackSpeedUpdate } = usePlayer();

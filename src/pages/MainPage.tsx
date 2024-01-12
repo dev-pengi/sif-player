@@ -4,9 +4,8 @@ import { LinkIcon } from "../assets";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ActivityIndicator } from "../components/spins";
-import { useSettingsContext } from "../contexts";
 import { DropdownMenu } from "@radix-ui/themes";
-import { useClean } from "../hooks";
+import { useAppSelector, useClean } from "../hooks";
 
 const MainPage: FC = () => {
   const navigate = useNavigate();
@@ -16,7 +15,7 @@ const MainPage: FC = () => {
     document.title = `Sif Player | Web Player`;
   }, []);
 
-  const { primaryColor } = useSettingsContext();
+  const { primaryColor } = useAppSelector((state) => state.settings);
 
   const [url, setUrl] = useState("");
   const [isInvalidUrl, setIsInvalidUrl] = useState(false);

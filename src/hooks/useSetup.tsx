@@ -1,24 +1,9 @@
 import { useEffect } from "react";
-import { useSettingsContext } from "../contexts";
 import { colors } from "../constants";
 import { useDispatch } from "react-redux";
-import { volumeActions } from "../store";
+import { volumeActions, settingsActions } from "../store";
 
 const useSetup = () => {
-  const {
-    setPrimaryColor,
-    setLockShortcuts,
-    setNormalSkipStep,
-    setDoubleSkipStep,
-    setVolumeStep,
-    setDoubleVolumeStep,
-    setIsLoop,
-    setSaveTrack,
-    setSaveAdjustments,
-    setShortcutsEnabled,
-    setPlayInBackground,
-    setPlayToggleClick,
-  } = useSettingsContext();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,64 +14,86 @@ const useSetup = () => {
 
     const storedIsLoop = localStorage.getItem("is-loop");
     if (storedIsLoop) {
-      setIsLoop(JSON.parse(storedIsLoop));
+      storedIsLoop === "true"
+        ? dispatch(settingsActions.enableLoop())
+        : dispatch(settingsActions.disableLoop());
     }
 
     const storedPrimaryColor = localStorage.getItem("primary-color");
     if (storedPrimaryColor) {
       if (!colors.includes(storedPrimaryColor))
         return localStorage.removeItem("primary-color");
-      setPrimaryColor(storedPrimaryColor);
+      dispatch(settingsActions.updateColor(storedPrimaryColor));
     }
 
     const storedAllowLockedShortcuts = localStorage.getItem("lock-shortcuts");
     if (storedAllowLockedShortcuts) {
-      setLockShortcuts(JSON.parse(storedAllowLockedShortcuts));
+      storedAllowLockedShortcuts === "true"
+        ? dispatch(settingsActions.lockShortcuts())
+        : dispatch(settingsActions.unlockShortcuts());
     }
 
     const storedNormalSkipStep = localStorage.getItem("skip-step");
     if (storedNormalSkipStep) {
-      setNormalSkipStep(JSON.parse(storedNormalSkipStep));
+      dispatch(
+        settingsActions.updateNormalSkipStep(JSON.parse(storedNormalSkipStep))
+      );
     }
 
     const storedDoubleSkipStep = localStorage.getItem("double-skip-step");
     if (storedDoubleSkipStep) {
-      setDoubleSkipStep(JSON.parse(storedDoubleSkipStep));
+      dispatch(
+        settingsActions.updateDoubleSkipStep(JSON.parse(storedDoubleSkipStep))
+      );
     }
 
     const storedVolumeStep = localStorage.getItem("volume-step");
     if (storedVolumeStep) {
-      setVolumeStep(JSON.parse(storedVolumeStep));
+      dispatch(settingsActions.updateVolumeStep(JSON.parse(storedVolumeStep)));
     }
 
     const storedDoubleVolumeStep = localStorage.getItem("double-volume-step");
     if (storedDoubleVolumeStep) {
-      setDoubleVolumeStep(JSON.parse(storedDoubleVolumeStep));
+      dispatch(
+        settingsActions.updateDoubleVolumeStep(
+          JSON.parse(storedDoubleVolumeStep)
+        )
+      );
     }
 
     const storedSaveTrack = localStorage.getItem("save-track");
     if (storedSaveTrack) {
-      setSaveTrack(JSON.parse(storedSaveTrack));
+      storedSaveTrack === "true"
+        ? dispatch(settingsActions.enableSaveTrack())
+        : dispatch(settingsActions.disableSaveTrack());
     }
 
     const storedSaveAdjustments = localStorage.getItem("save-adjustments");
     if (storedSaveAdjustments) {
-      setSaveAdjustments(JSON.parse(storedSaveAdjustments));
+      storedSaveAdjustments === "true"
+        ? dispatch(settingsActions.enableSaveAdjustments())
+        : dispatch(settingsActions.disableSaveAdjustments());
     }
 
     const storedShortcutsEnabled = localStorage.getItem("shortcuts-enabled");
     if (storedShortcutsEnabled) {
-      setShortcutsEnabled(JSON.parse(storedShortcutsEnabled));
+      storedShortcutsEnabled === "true"
+        ? dispatch(settingsActions.enableShortcuts())
+        : dispatch(settingsActions.disableShortcuts());
     }
 
     const storedPlayInBackground = localStorage.getItem("play-in-background");
     if (storedPlayInBackground) {
-      setPlayInBackground(JSON.parse(storedPlayInBackground));
+      storedPlayInBackground === "true"
+        ? dispatch(settingsActions.enablePlayInBackground())
+        : dispatch(settingsActions.disablePlayInBackground());
     }
 
     const storedPlayToggleClick = localStorage.getItem("play-toggle-click");
     if (storedPlayToggleClick) {
-      setPlayToggleClick(JSON.parse(storedPlayToggleClick));
+      storedPlayToggleClick === "true"
+        ? dispatch(settingsActions.enablePlayToggleClick())
+        : dispatch(settingsActions.disablePlayToggleClick());
     }
   }, []);
 };

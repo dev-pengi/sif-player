@@ -1,9 +1,8 @@
 import { FC } from "react";
-import { usePlayer } from "../../hooks";
-import { useSettingsContext } from "../../contexts";
+import { useAppSelector, usePlayer } from "../../hooks";
 
 const PlayerError: FC = () => {
-  const { primaryColor } = useSettingsContext();
+  const { primaryColor } = useAppSelector((state) => state.settings);
   const { handleBack } = usePlayer();
   return (
     <div className="flex flex-col items-center justify-center">

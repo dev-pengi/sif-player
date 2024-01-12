@@ -3,11 +3,10 @@ import { MainPage, PlayerPage } from "./pages";
 import { Theme } from "@radix-ui/themes";
 import "react-contexify/dist/ReactContexify.css";
 import "@radix-ui/themes/styles.css";
-import { useSetup } from "./hooks";
-import { useSettingsContext } from "./contexts";
+import { useAppSelector, useSetup } from "./hooks";
 
 function App() {
-  const { primaryColor } = useSettingsContext();
+  const { primaryColor } = useAppSelector((state) => state.settings);
   useSetup();
   return (
     <Theme>

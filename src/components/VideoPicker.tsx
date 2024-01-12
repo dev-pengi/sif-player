@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePlayerContext } from "../contexts";
 import { useNavigate } from "react-router-dom";
 import { extractUUIDFromBlobUrl } from "../utils";
-import { useSettingsContext } from "../contexts";
 import { useDispatch } from "react-redux";
 import { playerActions } from "../store";
+import { useAppSelector } from "../hooks";
 
 interface VideoPickerProps {
   handleLoadStart: () => void;
@@ -17,7 +17,7 @@ const VideoPicker: FC<VideoPickerProps> = ({ handleLoadStart }) => {
   const fileInputRef: RefObject<HTMLInputElement> = useRef(null);
   const [isDragOver, setDragOver] = useState(false);
   const { videoFile, setVideoFile } = usePlayerContext();
-  const { primaryColor } = useSettingsContext();
+  const { primaryColor } = useAppSelector((state) => state.settings);
 
   useEffect(() => {
     if (videoFile) {

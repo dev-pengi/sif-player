@@ -1,9 +1,8 @@
 import { useHotkeys } from "react-hotkeys-hook";
-import { useSettingsContext } from "../contexts";
 import { usePlayer, useTimer, useVolume } from ".";
 import { useAppSelector } from ".";
 import { useDispatch } from "react-redux";
-import { controlsActions } from "../store";
+import { controlsActions, settingsActions } from "../store";
 
 const useShortcuts = () => {
   const dispatch = useDispatch();
@@ -15,8 +14,7 @@ const useShortcuts = () => {
     doubleVolumeStep,
     lockShortcuts,
     shortcutsEnabled,
-    setIsLoop,
-  } = useSettingsContext();
+  } = useAppSelector((state) => state.settings);
   const { isLocked } = useAppSelector((state) => state.controls);
 
   const { handleTogglePlay, handleToggleScreen, handleBack } = usePlayer();
@@ -80,7 +78,7 @@ const useShortcuts = () => {
   // toggle fullscreen with f
   useConditionalHotkeys("f", handleToggleScreen, true);
   useConditionalHotkeys("r", () => {
-    setIsLoop((prev) => !prev);
+    dispatch(settingsActions.toggleLoop());
   });
   useConditionalHotkeys(
     "l",

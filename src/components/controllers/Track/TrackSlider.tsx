@@ -1,13 +1,12 @@
 import { FC, useEffect, useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { throttle } from "lodash";
-import { useSettingsContext } from "../../../contexts";
 import Indicator from "./Indicator";
 import { usePlayer, useTimer } from "../../../hooks";
 import { useAppSelector } from "../../../hooks";
 
 const TrackSlider: FC = () => {
-  const { primaryColor } = useSettingsContext();
+  const { primaryColor } = useAppSelector((state) => state.settings);
   const { duration, buffered, timePercentage } = useAppSelector(
     (state) => state.timer
   );

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   usePlayerContext,
-  useSettingsContext,
 } from "../contexts";
 import { usePlayer, useStore } from ".";
 import { useDispatch } from "react-redux";
@@ -19,7 +18,7 @@ const useEvents = () => {
     (state) => state.timer
   );
 
-  const { playInBackground } = useSettingsContext();
+  const { playInBackground } = useAppSelector((state) => state.settings);
   const { handlePause, handlePlay } = usePlayer();
   const { handleStoreData } = useStore();
 
