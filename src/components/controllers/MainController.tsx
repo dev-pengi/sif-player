@@ -70,7 +70,7 @@ const MainController: FC = () => {
             initial="hidden"
             animate="visible"
             exit="hidden"
-            className="fixed z-0 top-0 left-0 w-full h-[150px] top-shadow"
+            className="fixed z-0 top-0 left-0 w-full h-[150px] top-shadow pointer-events-none"
           ></motion.div>
         )}
       </AnimatePresence>
@@ -84,7 +84,7 @@ const MainController: FC = () => {
             initial="hidden"
             animate="visible"
             exit="hidden"
-            className="fixed z-0 bottom-0 left-0 w-full h-[150px] bottom-shadow"
+            className="fixed z-0 bottom-0 left-0 w-full h-[150px] bottom-shadow pointer-events-none"
           ></motion.div>
         )}
       </AnimatePresence>

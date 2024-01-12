@@ -30,7 +30,7 @@ const VideoPlayer: FC = () => {
   const handlePauseVideo = useCallback(() => {
     dispatch(playerActions.pause());
   }, []);
-
+  
   return (
     <>
       {videoSrc && (

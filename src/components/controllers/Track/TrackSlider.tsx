@@ -27,6 +27,7 @@ const TrackSlider: FC = () => {
   const handleCaptureFrame = useCallback(
     throttle(() => {
       const video = thumbnailVideoRef.current;
+      if (!video) return;
       video.currentTime = hoverTime;
     }, 50),
     [hoverTime]
@@ -68,7 +69,6 @@ const TrackSlider: FC = () => {
 
     setHoverPoint(Percentage);
     setHoverTime(Percentage * duration);
-    thumbnailVideoRef.current.currentTime = Percentage * duration;
   };
 
   const handleDragMouseMove = (event) => {
