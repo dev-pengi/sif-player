@@ -45,8 +45,8 @@ const initialState = {
     playInBackground: extractLocalStorage("play-in-background", true, "boolean"),
     playToggleClick: extractLocalStorage("play-toggle-click", false, "boolean"),
     fullScreenOnDoubleClick: extractLocalStorage("full-screen-on-double-click", true, "boolean"),
-    //TODO: add these settings
     showHoverThumbnail: extractLocalStorage("show-hover-thumbnail", true, "boolean"),
+    //TODO: add these settings
     allowAnimations: extractLocalStorage("allow-animations", true, "boolean"),
     borderShadows: extractLocalStorage("border-shadows", true, "boolean"),
     darkLayer: extractLocalStorage("dark-layer", false, "boolean"),

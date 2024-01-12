@@ -57,7 +57,7 @@ const TrackSlider: FC = () => {
     const rect = sliderRef.current.getBoundingClientRect();
     const x = event.clientX - rect.left;
     let Percentage = x / rect.width;
-    const thumbnailWidth = 180;
+    const thumbnailWidth = showHoverThumbnail ? 180 : 40;
 
     const limitedWidth = rect.width - thumbnailWidth / 2;
     if (limitedWidth - x < 0) {
