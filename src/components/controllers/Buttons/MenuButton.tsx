@@ -29,7 +29,6 @@ const MenuButton: FC = () => {
     dispatch(settingsActions.toggleLoop());
   };
   const handleShortcutsToggle = () => {
-
     dispatch(settingsActions.toggleShortcuts());
   };
 
@@ -140,6 +139,18 @@ const MenuButton: FC = () => {
       <Modal
         isOpen={settingsModalOpen}
         onClose={handleSettingsClose}
+        style={{
+          box: { maxWidth: "1000px" },
+          content: {
+            width: "100%",
+            overflow: "hidden",
+            height: "max-content",
+            minHeight: "100px",
+            maxHeight: "100vh",
+            paddingLeft: "0px",
+            paddingRight: "0px",
+          },
+        }}
         title="Player Settings"
       >
         <PlayerSettings />

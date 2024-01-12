@@ -5,18 +5,24 @@ import { useAppSelector, usePlayer } from "../../../hooks";
 
 const CenterController: FC = () => {
   const { isLoading } = useAppSelector((state) => state.player);
-  const { playToggleClick } = useAppSelector((state) => state.settings);
+  const { isLocked } = useAppSelector((state) => state.controls);
+  const { playToggleClick, fullScreenOnDoubleClick, lockGestures } =
+    useAppSelector((state) => state.settings);
   const { handleToggleScreen, handleTogglePlay } = usePlayer();
 
   const handleClickPlay = () => {
-    if (playToggleClick) {
-      handleTogglePlay();
-    }
+    if (isLocked && lockGestures) return;
+    if (playToggleClick) handleTogglePlay();
+  };
+
+  const handleDoubleClick = () => {
+    if (isLocked && lockGestures) return;
+    if (fullScreenOnDoubleClick) handleToggleScreen();
   };
 
   return (
     <div
-      onDoubleClick={handleToggleScreen}
+      onDoubleClick={handleDoubleClick}
       onClick={handleClickPlay}
       className="flex-1 flex items-center justify-center"
     >

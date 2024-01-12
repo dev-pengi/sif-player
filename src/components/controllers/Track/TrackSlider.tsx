@@ -7,7 +7,9 @@ import { useAppSelector } from "../../../hooks";
 import { formatTime } from "../../../utils";
 
 const TrackSlider: FC = () => {
-  const { primaryColor } = useAppSelector((state) => state.settings);
+  const { primaryColor, showHoverThumbnail } = useAppSelector(
+    (state) => state.settings
+  );
   const { videoSrc } = useAppSelector((state) => state.player);
   const { duration, buffered, timePercentage } = useAppSelector(
     (state) => state.timer
@@ -57,7 +59,6 @@ const TrackSlider: FC = () => {
     let Percentage = x / rect.width;
     const thumbnailWidth = 180;
 
-    //damn, had to do the fucking math to limit the thumbnail from going out of the slider
     const limitedWidth = rect.width - thumbnailWidth / 2;
     if (limitedWidth - x < 0) {
       setThumbnailPosition(limitedWidth / rect.width);
@@ -112,46 +113,48 @@ const TrackSlider: FC = () => {
       onMouseMove={handleHoverMouseMove}
       className="w-full h-[16px] relative flex items-center justify-center"
     >
-      <div
-        style={{
-          left: thumbnailPosition * 100 + "%",
-          backgroundColor: "transparent",
-        }}
-        className="bottom-6 flex items-center justify-center flex-col absolute transform -translate-x-1/2 pointer-events-none"
-      >
-        <motion.div
-          className="mb-3 flex items-center justify-center rounded-md shadow-md bg-[#ffffff41] border-[2px] border-[#ffffff51] border-solid duration-100"
+      {showHoverThumbnail && (
+        <div
           style={{
-            opacity: isHovering ? 1 : 0,
-            scale: isHovering ? 1 : 0.4,
-            width: 180,
-            height: 110,
-            objectFit: "contain",
+            left: thumbnailPosition * 100 + "%",
+            backgroundColor: "transparent",
           }}
+          className="bottom-6 flex items-center justify-center flex-col absolute transform -translate-x-1/2 pointer-events-none"
         >
-          <video
-            ref={thumbnailVideoRef}
-            src={videoSrc}
-            autoPlay={false}
-            muted={true}
-            loop={false}
+          <motion.div
+            className="mb-3 flex items-center justify-center rounded-md shadow-md bg-[#ffffff41] border-[2px] border-[#ffffff51] border-solid duration-100"
             style={{
+              opacity: isHovering ? 1 : 0,
+              scale: isHovering ? 1 : 0.4,
+              width: 180,
+              height: 110,
               objectFit: "contain",
-              width: "100%",
-              height: "100%",
             }}
-          />
-        </motion.div>
-        <motion.div
-          style={{
-            opacity: isHovering ? 1 : 0,
-            scale: isHovering ? 1 : 0.4,
-          }}
-          className="rounded-md bg-[#ffffff41] px-2 py-1 text-xs text-white font-semibold shadow-md duration-100"
-        >
-          {formatTime(hoverTime)}
-        </motion.div>
-      </div>
+          >
+            <video
+              ref={thumbnailVideoRef}
+              src={videoSrc}
+              autoPlay={false}
+              muted={true}
+              loop={false}
+              style={{
+                objectFit: "contain",
+                width: "100%",
+                height: "100%",
+              }}
+            />
+          </motion.div>
+          <motion.div
+            style={{
+              opacity: isHovering ? 1 : 0,
+              scale: isHovering ? 1 : 0.4,
+            }}
+            className="rounded-md bg-[#ffffff41] px-2 py-1 text-xs text-white font-semibold shadow-md duration-100"
+          >
+            {formatTime(hoverTime)}
+          </motion.div>
+        </div>
+      )}
       <motion.div
         className="w-full cursor-pointer relative bg-[#ffffff52] rounded-[1px] overflow-hidden"
         style={{

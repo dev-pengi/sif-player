@@ -124,20 +124,25 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--gray-5);
+  background: #2e3033;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--gray-4);
+  background: #5e6064;
   cursor: default;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--light-3);
+  background: #8a8c91;
 }
 
 .modal::-webkit-scrollbar {
   width: 5px;
+}
+
+.hidden-track::-webkit-scrollbar {
+  display: none;
+  width: 0px;
 }
 
 .top-shadow {
@@ -184,8 +189,4 @@ body {
     rgba(0, 0, 0, 0) 100%
   );
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#000000",GradientType=1);
-}
-
-.contexify {
-  border: rgba(184, 184, 184, 0.322) 1px solid;
 }

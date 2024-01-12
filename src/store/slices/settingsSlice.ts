@@ -4,7 +4,7 @@ import { extractLocalStorage } from "../../utils";
 const defaultSettings = {
     primaryColor: "#ff00fb",
     lockShortcuts: false,
-    lockGestures: false,
+    lockGestures: false, //
     normalSkipStep: 10,
     doubleSkipStep: 30,
     volumeStep: 5,
@@ -15,7 +15,8 @@ const defaultSettings = {
     saveAdjustments: true,
     playInBackground: true,
     playToggleClick: false,
-    fullScreenOnDoubleClick: true,
+    fullScreenOnDoubleClick: true, //
+    showHoverThumbnail: true,
 }
 
 const initialState = {
@@ -33,6 +34,7 @@ const initialState = {
     playInBackground: extractLocalStorage("play-in-background", true, "boolean"),
     playToggleClick: extractLocalStorage("play-toggle-click", false, "boolean"),
     fullScreenOnDoubleClick: extractLocalStorage("full-screen-on-double-click", true, "boolean"),
+    showHoverThumbnail: true,
 }
 
 const settingsSlice = createSlice({
@@ -166,6 +168,18 @@ const settingsSlice = createSlice({
         toggleFullScreenOnDoubleClick(state) {
             localStorage.setItem("full-screen-on-double-click", String(!state.fullScreenOnDoubleClick));
             state.fullScreenOnDoubleClick = !state.fullScreenOnDoubleClick
+        },
+        enableHoverThumbnail(state) {
+            localStorage.setItem("show-hover-thumbnail", "true");
+            state.showHoverThumbnail = true
+        },
+        disableHoverThumbnail(state) {
+            localStorage.setItem("show-hover-thumbnail", "false");
+            state.showHoverThumbnail = false
+        },
+        toggleHoverThumbnail(state) {
+            localStorage.setItem("show-hover-thumbnail", String(!state.showHoverThumbnail));
+            state.showHoverThumbnail = !state.showHoverThumbnail
         },
         reset() {
             return initialState;
