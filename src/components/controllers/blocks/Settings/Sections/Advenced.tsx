@@ -148,12 +148,12 @@ const Advanced: FC = () => {
         </>
       )}
       <Separator />
-      <SettingCol
+      {/* <SettingCol
         title="Ask for break"
         description="automatically stop the player and asks you to take break or cancel it"
       >
         <SettingSwitch onChange={handleToggleBreakMode} checked={askForBreak} />
-      </SettingCol>
+      </SettingCol> */}
       {askForBreak && (
         <>
           <SettingCol
