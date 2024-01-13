@@ -8,7 +8,6 @@ import { settingsActions } from "../../../../../store";
 import { settings } from "../../../../../constants";
 import { findLabel } from "../../../../../utils";
 
-
 const Advanced: FC = () => {
   const dispatch = useDispatch();
   const {
@@ -148,12 +147,12 @@ const Advanced: FC = () => {
         </>
       )}
       <Separator />
-      {/* <SettingCol
+      <SettingCol
         title="Ask for break"
         description="automatically stop the player and asks you to take break or cancel it"
       >
         <SettingSwitch onChange={handleToggleBreakMode} checked={askForBreak} />
-      </SettingCol> */}
+      </SettingCol>
       {askForBreak && (
         <>
           <SettingCol
