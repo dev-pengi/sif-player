@@ -51,7 +51,6 @@ const SleepMode: FC = () => {
     if (!sleepMode || !lastActivityTime) return;
     const timeoutDuration =
       lastActivityTime + sleepModeDelay * 1000 * 60 - Date.now();
-    console.log(timeoutDuration);
     let timeUpdateInterval = null;
     let timeFinishTimeout = null;
     if (timeoutDuration <= 0 || timeoutDuration > 60000) {
@@ -92,10 +91,10 @@ const SleepMode: FC = () => {
         title="Sleep Alert"
       >
         <>
-          <div className="w-full flex flex-col items-center justify-center">
+          <div className="w-full flex flex-col items-center justify-center text-center">
             <p>
               Your {findLabel(settings.sleepModeDelay, sleepModeDelay)} sleep
-              countdown is Almost Up!
+              countdown is almost over!
             </p>
             <h2 className="mx-2 text-[60px]">{formatTime(LeftTime)}</h2>
             <p className="text-[14px] opacity-75 mt-2">

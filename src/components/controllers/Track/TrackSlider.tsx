@@ -123,6 +123,10 @@ const TrackSlider: FC = () => {
         {showHoverThumbnail && (
           <motion.div
             className="mb-3 flex items-center justify-center rounded-md shadow-md bg-[#ffffff41] border-[2px] border-[#ffffff51] border-solid"
+            initial={{
+              opacity: 0,
+              scale: 0.4,
+            }}
             animate={{
               width: 180,
               height: 110,
@@ -149,6 +153,10 @@ const TrackSlider: FC = () => {
           </motion.div>
         )}
         <motion.div
+          initial={{
+            opacity: 0,
+            scale: 0.4,
+          }}
           animate={{
             opacity: isHovering ? 1 : 0,
             scale: isHovering ? 1 : 0.4,

@@ -22,13 +22,15 @@ const defaultSettings = {
     borderShadows: true,
     darkLayer: false,
     darkLayerOpacity: 0.2,
-    //TODO: add these settings
     sleepMode: false,
     sleepModeDelay: 30, // in minutes
     sleepModeBehavior: "pause", // pause, quit video, close tab/app
+    //TODO: add these settings
     askForBreak: false,
     breakDelay: 30, // in minutes
     breakDuration: 5, // in minutes
+    //! not for persistence
+    isBreak: false
 }
 
 const colorCheck = (color: string) => {
@@ -61,6 +63,9 @@ const initialState = {
     askForBreak: extractLocalStorage("ask-for-break", false, "boolean"),
     breakDelay: extractLocalStorage("break-delay", 30, "number"),
     breakDuration: extractLocalStorage("break-duration", 5, "number"),
+    //! not for persistence
+    isBreak: false
+
 }
 
 const settingsSlice = createSlice({
@@ -287,6 +292,12 @@ const settingsSlice = createSlice({
         updateBreakDuration(state, action) {
             localStorage.setItem("break-duration", String(action.payload));
             state.breakDuration = action.payload
+        },
+        enterBreak(state) {
+            state.isBreak = true
+        },
+        quitBreak(state) {
+            state.isBreak = false
         },
         reset() {
             return initialState;

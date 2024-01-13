@@ -1,6 +1,4 @@
 import { FC, useRef, RefObject, useState, useEffect } from "react";
-import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePlayerContext } from "../contexts";
 import { useNavigate } from "react-router-dom";
 import { extractUUIDFromBlobUrl } from "../utils";
@@ -90,13 +88,6 @@ const VideoPicker: FC<VideoPickerProps> = ({ handleLoadStart }) => {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <FontAwesomeIcon
-        style={{
-          color: isDragOver ? primaryColor : "#a3a3a3",
-        }}
-        icon={faCloudArrowUp}
-        className={`text-[40px]`}
-      />
       <h3 className="mt-2 capitalize">
         {isDragOver ? "Release File" : "Drag & Drop Video here"}
       </h3>
