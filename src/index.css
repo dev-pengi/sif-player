@@ -138,8 +138,9 @@ body {
   background: #8a8c91;
 }
 
-.modal::-webkit-scrollbar {
-  width: 5px;
+.min-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
 }
 
 .hidden-track::-webkit-scrollbar {

@@ -39,9 +39,11 @@ const tabs: Tab[] = [
   },
 ];
 
-const CurrentSection = ({ activeTab }) => {
-  return tabs[activeTab].section;
+const CurrentSection = ({ sectionsTabs, activeTab }) => {
+  return sectionsTabs[activeTab].section;
 };
+
+
 
 const SettingsBlock: FC = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -63,7 +65,7 @@ const SettingsBlock: FC = () => {
           );
         })}
       </div>
-      <div className="flex md:hidden items-center px-2 modal">
+      <div className="flex md:hidden items-center px-2 pb-2 min-scrollbar w-full overflow-auto">
         {tabs.map((tab, index) => {
           return (
             <>
@@ -71,15 +73,20 @@ const SettingsBlock: FC = () => {
                 key={index}
                 title={tab.title}
                 isActive={activeTab === index}
-                onSelect={() => setActiveTab(index)}
+                onSelect={() => {
+                  setActiveTab(index);
+                }}
                 vertical
               />
             </>
           );
         })}
       </div>
-      <div className="modal px-4 md:ml-2 md:mt-0 mt-1 w-full h-[55vh] overflow-y-auto">
-        <CurrentSection activeTab={activeTab} />
+      <div className="md:hidden flex h-max w-full">
+        <Separator margins={true} />
+      </div>
+      <div className="min-scrollbar px-4 md:ml-2 md:mt-0 mt-1 w-full h-[55vh] overflow-y-auto">
+        <CurrentSection sectionsTabs={tabs} activeTab={activeTab} />
       </div>
     </div>
   );

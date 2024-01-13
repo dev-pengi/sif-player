@@ -91,7 +91,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children, style }) => {
             <div className="h-[1px] w-full bg-[#ffffff21]" />
             <div className="py-2 px-2">
               <motion.div
-                className="w-full px-4 py-2 modal"
+                className="w-full px-4 py-2 min-scrollbar"
                 style={{ ...ModalStyles.content, ...style?.content }}
               >
                 {children}

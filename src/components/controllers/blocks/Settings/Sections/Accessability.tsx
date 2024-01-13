@@ -7,15 +7,15 @@ import { settingsActions } from "../../../../../store";
 const Accessability: FC = () => {
   const dispatch = useDispatch();
   const {
-    primaryColor,
     lockShortcuts,
     fullScreenOnDoubleClick,
     lockGestures,
+    gesturesEnabled,
     playToggleClick,
   } = useAppSelector((state) => state.settings);
 
   const handleLockGesturesToggle = () => {
-    dispatch(settingsActions.toggleGestures());
+    dispatch(settingsActions.toggleLockGestures());
   };
 
   const handleLockShortcutsToggle = () => {
@@ -29,6 +29,9 @@ const Accessability: FC = () => {
   const handleToggleFullScreenOnDoubleClick = () => {
     dispatch(settingsActions.toggleFullScreenOnDoubleClick());
   };
+  const handleGesturesEnabledToggle = () => {
+    dispatch(settingsActions.toggleGestures());
+  };
   return (
     <>
       <SettingCol
@@ -40,17 +43,27 @@ const Accessability: FC = () => {
           checked={lockShortcuts}
         />
       </SettingCol>
+      <Separator />
       <SettingCol
-        title="Lock Gestures"
-        description="disable gestures when the player is on lock mode (click, double click, etc)"
+        title="Enable Gestures"
+        description="enable gestures to interact with the player (click, double click, etc)"
       >
         <SettingSwitch
-          onChange={handleLockGesturesToggle}
-          checked={lockGestures}
+          onChange={handleGesturesEnabledToggle}
+          checked={gesturesEnabled}
         />
       </SettingCol>
-      {!lockGestures && (
+      {gesturesEnabled && (
         <>
+          <SettingCol
+            title="Lock Gestures"
+            description="disable gestures when the player is on lock mode (click, double click, etc)"
+          >
+            <SettingSwitch
+              onChange={handleLockGesturesToggle}
+              checked={lockGestures}
+            />
+          </SettingCol>
           <Separator />
           <SettingCol
             title="Click To Play/Pause"
@@ -65,10 +78,10 @@ const Accessability: FC = () => {
             title="Full screen on double click"
             description="toggle full screen mode when double clicking on the screen"
           >
-          <SettingSwitch
-            onChange={handleToggleFullScreenOnDoubleClick}
-            checked={fullScreenOnDoubleClick}
-          />
+            <SettingSwitch
+              onChange={handleToggleFullScreenOnDoubleClick}
+              checked={fullScreenOnDoubleClick}
+            />
           </SettingCol>
         </>
       )}

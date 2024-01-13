@@ -11,15 +11,18 @@ const CenterController: FC = () => {
     fullScreenOnDoubleClick,
     lockGestures,
     allowAnimations,
+    gesturesEnabled,
   } = useAppSelector((state) => state.settings);
   const { handleToggleScreen, handleTogglePlay } = usePlayer();
 
   const handleClickPlay = () => {
+    if (!gesturesEnabled) return;
     if (isLocked && lockGestures) return;
     if (playToggleClick) handleTogglePlay();
   };
 
   const handleDoubleClick = () => {
+    if (!gesturesEnabled) return;
     if (isLocked && lockGestures) return;
     if (fullScreenOnDoubleClick) handleToggleScreen();
   };

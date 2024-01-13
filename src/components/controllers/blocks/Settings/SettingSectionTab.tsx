@@ -1,6 +1,12 @@
-import { FC } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { FC, useRef } from "react";
 import { useAppSelector } from "../../../../hooks";
+
+const scrollTo = (element: HTMLElement) => {
+  element.scrollIntoView({
+    behavior: "smooth",
+    block: "end",
+  });
+};
 
 interface SettingSectionTabProps {
   title: string;
@@ -13,18 +19,22 @@ const SettingSectionTab: FC<SettingSectionTabProps> = ({
   title,
   isActive,
   onSelect,
-  vertical = false,
 }) => {
+  const tabRef = useRef<HTMLDivElement>(null);
   const { primaryColor } = useAppSelector((state) => state.settings);
   return (
     <div
       style={{
         backgroundColor: isActive ? "#ffffff18" : "transparent",
       }}
+      ref={tabRef}
       className={`relative px-3 py-1.5 ${
         isActive ? `text-${primaryColor}` : "text-neutral-400"
       } hover:text-neutral-100 cursor-pointer rounded-md text-[15px]`}
-      onClick={onSelect}
+      onClick={() => {
+        onSelect();
+        scrollTo(tabRef.current);
+      }}
     >
       {/* <AnimatePresence>
         {isActive && (

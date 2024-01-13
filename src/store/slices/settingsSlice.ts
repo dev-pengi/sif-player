@@ -12,6 +12,7 @@ const defaultSettings = {
     doubleVolumeStep: 20,
     isLoop: false,
     shortcutsEnabled: true,
+    gesturesEnabled: true,
     saveTrack: true,
     saveAdjustments: true,
     playInBackground: true,
@@ -47,6 +48,7 @@ const initialState = {
     doubleVolumeStep: extractLocalStorage("double-volume-step", 20, "number"),
     isLoop: extractLocalStorage("is-loop", false, "boolean"),
     shortcutsEnabled: extractLocalStorage("shortcuts-enabled", true, "boolean"),
+    gesturesEnabled: extractLocalStorage("gestures-enabled", true, "boolean"),
     saveTrack: extractLocalStorage("save-track", true, "boolean"),
     saveAdjustments: extractLocalStorage("save-adjustments", true, "boolean"),
     playInBackground: extractLocalStorage("play-in-background", true, "boolean"),
@@ -96,7 +98,7 @@ const settingsSlice = createSlice({
             localStorage.setItem("lock-gestures", "false");
             state.lockGestures = false
         },
-        toggleGestures(state) {
+        toggleLockGestures(state) {
             localStorage.setItem("lock-gestures", String(!state.lockGestures));
             state.lockGestures = !state.lockGestures
         },
@@ -139,6 +141,18 @@ const settingsSlice = createSlice({
         toggleShortcuts(state) {
             localStorage.setItem("shortcuts-enabled", String(!state.shortcutsEnabled));
             state.shortcutsEnabled = !state.shortcutsEnabled
+        },
+        enableGestures(state) {
+            localStorage.setItem("gestures-enabled", "true");
+            state.gesturesEnabled = true
+        },
+        disableGestures(state) {
+            localStorage.setItem("gestures-enabled", "false");
+            state.gesturesEnabled = false
+        },
+        toggleGestures(state) {
+            localStorage.setItem("gestures-enabled", String(!state.gesturesEnabled));
+            state.gesturesEnabled = !state.gesturesEnabled
         },
         enableSaveTrack(state) {
             localStorage.setItem("save-track", "true");

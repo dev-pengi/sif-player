@@ -1,4 +1,7 @@
 function formatTime(seconds: number) {
+    if (isNaN(seconds) || seconds < 0) {
+        return "00:00";
+    }
     const days = Math.floor(seconds / 86400);
     const hours = Math.floor((seconds % 86400) / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);

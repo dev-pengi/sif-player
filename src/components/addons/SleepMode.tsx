@@ -4,7 +4,14 @@ import { Modal } from "../modals";
 import { findLabel, formatTime } from "../../utils";
 import { settings } from "../../constants";
 
-const getSleepAction = (behavior, handlePause, handleBack) => {
+
+type HandleAction = () => void;
+
+const getSleepAction = (
+  behavior: string,
+  handlePause: HandleAction,
+  handleBack: HandleAction
+): HandleAction | (() => void) => {
   switch (behavior) {
     case "pause":
       return handlePause;
@@ -42,17 +49,19 @@ const SleepMode: FC = () => {
     handleRemoveControllerDependencies("sleep-modal");
   };
 
+  const timeoutDuration = sleepModeDelay * 1000 * 60;
+  const sleepAlertDelay = 60000; 
+
   useEffect(() => {
     if (!sleepMode || !lastActivityTime) return;
-    const timeoutDuration =
-      lastActivityTime + sleepModeDelay * 1000 * 60 - Date.now();
+    const remainingTime = lastActivityTime + timeoutDuration - Date.now();
     let timeUpdateInterval = null;
     let timeFinishTimeout = null;
-    if (timeoutDuration <= 0 || timeoutDuration > 60000) {
+    if (remainingTime <= 0 || remainingTime > sleepAlertDelay) {
       handleSleepCancel();
     }
     const sleepTimeout = setTimeout(() => {
-      setRemainingSleepTime(60);
+      setRemainingSleepTime(sleepAlertDelay / 1000);
       handleSleepAlert();
       timeUpdateInterval = setInterval(() => {
         setRemainingSleepTime((prev) => prev - 1);
@@ -60,14 +69,14 @@ const SleepMode: FC = () => {
       timeFinishTimeout = setTimeout(() => {
         handleSleepCancel();
         sleep();
-      }, 60000);
-    }, timeoutDuration - 60000);
+      }, sleepAlertDelay);
+    }, remainingTime - sleepAlertDelay);
 
     return () => {
       clearTimeout(sleepTimeout);
       clearTimeout(timeFinishTimeout);
       clearInterval(timeUpdateInterval);
-      setRemainingSleepTime(60);
+      setRemainingSleepTime(sleepAlertDelay / 1000);
     };
   }, [sleepMode, lastActivityTime, sleepModeDelay]);
 
