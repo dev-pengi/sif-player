@@ -4,6 +4,7 @@
     "max": 90
   },
   "sleepModeDelay": [
+    { "value": 1.05, "label": "1.05 minutes" },
     { "value": 10, "label": "10 minutes" },
     { "value": 15, "label": "15 minutes" },
     { "value": 30, "label": "30 minutes" },
@@ -13,8 +14,7 @@
   ],
   "sleepModeBehavior": [
     { "value": "pause", "label": "pause video" },
-    { "value": "quit", "label": "quit video" },
-    { "value": "close", "label": "close tab" }
+    { "value": "quit", "label": "quit video" }
   ],
   "breakDelay": [
     { "value": 10, "label": "10 minutes" },

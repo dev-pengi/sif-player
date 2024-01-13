@@ -16,6 +16,7 @@ const CONTROLLER_DEP: string = "active";
 const MainController: FC = () => {
   const dispatch = useDispatch();
   const { controllersDeps } = useAppSelector((state) => state.controls);
+  const { sleepMode } = useAppSelector((state) => state.settings);
   const {
     handleAddControllerDependencies,
     handleRemoveControllerDependencies,
@@ -63,7 +64,7 @@ const MainController: FC = () => {
       className="fixed w-screen h-screen flex flex-col z-1"
     >
       <BorderShadows />
-      <SleepMode />
+      {sleepMode && <SleepMode />}
       <TopController />
       <CenterController />
       <BottomController />

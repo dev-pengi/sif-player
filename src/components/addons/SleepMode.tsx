@@ -4,9 +4,20 @@ import { Modal } from "../modals";
 import { findLabel, formatTime } from "../../utils";
 import { settings } from "../../constants";
 
+const getSleepAction = (behavior, handlePause, handleBack) => {
+  switch (behavior) {
+    case "pause":
+      return handlePause;
+    case "quit":
+      return handleBack;
+    case "close":
+      return window.close;
+  }
+};
+
 const SleepMode: FC = () => {
   const [isSleepModalOpen, setIsSleepModalOpen] = useState(false);
-  const [LeftTime, setLeftTime] = useState(60);
+  const [remainingSleepTime, setRemainingSleepTime] = useState(60);
 
   const { sleepMode, sleepModeDelay, sleepModeBehavior } = useAppSelector(
     (state) => state.settings
@@ -20,23 +31,7 @@ const SleepMode: FC = () => {
     handleRemoveControllerDependencies,
   } = usePlayer();
 
-  const sleepAction = () => {
-    switch (sleepModeBehavior) {
-      case "pause":
-        return () => {
-          handlePause();
-        };
-      case "quit":
-        return () => {
-          handleBack();
-        };
-      case "close":
-        return () => {
-          window.close();
-        };
-    }
-  };
-  const sleep = sleepAction();
+  const sleep = getSleepAction(sleepModeBehavior, handlePause, handleBack);
 
   const handleSleepAlert = () => {
     setIsSleepModalOpen(true);
@@ -57,10 +52,10 @@ const SleepMode: FC = () => {
       handleSleepCancel();
     }
     const sleepTimeout = setTimeout(() => {
-      setLeftTime(60);
+      setRemainingSleepTime(60);
       handleSleepAlert();
       timeUpdateInterval = setInterval(() => {
-        setLeftTime((prev) => prev - 1);
+        setRemainingSleepTime((prev) => prev - 1);
       }, 1000);
       timeFinishTimeout = setTimeout(() => {
         handleSleepCancel();
@@ -72,38 +67,34 @@ const SleepMode: FC = () => {
       clearTimeout(sleepTimeout);
       clearTimeout(timeFinishTimeout);
       clearInterval(timeUpdateInterval);
-      setLeftTime(60);
+      setRemainingSleepTime(60);
     };
   }, [sleepMode, lastActivityTime, sleepModeDelay]);
 
   return (
-    <>
-      <Modal
-        isOpen={isSleepModalOpen && sleepMode}
-        onClose={handleSleepCancel}
-        style={{
-          box: { maxWidth: "500px" },
-          content: {
-            height: "max-content",
-            minHeight: 0,
-          },
-        }}
-        title="Sleep Alert"
-      >
-        <>
-          <div className="w-full flex flex-col items-center justify-center text-center">
-            <p>
-              Your {findLabel(settings.sleepModeDelay, sleepModeDelay)} sleep
-              countdown is almost over!
-            </p>
-            <h2 className="mx-2 text-[60px]">{formatTime(LeftTime)}</h2>
-            <p className="text-[14px] opacity-75 mt-2">
-              NOTE: you can interact with the app to cancel the sleep mode
-            </p>
-          </div>
-        </>
-      </Modal>
-    </>
+    <Modal
+      isOpen={isSleepModalOpen && sleepMode}
+      onClose={handleSleepCancel}
+      style={{
+        box: { maxWidth: "500px" },
+        content: {
+          height: "max-content",
+          minHeight: 0,
+        },
+      }}
+      title="Sleep Alert"
+    >
+      <div className="w-full flex flex-col items-center justify-center text-center">
+        <p className="opacity-90">
+          Your {findLabel(settings.sleepModeDelay, sleepModeDelay)} sleep
+          countdown is almost over!
+        </p>
+        <h2 className="mx-2 text-[60px] opacity-90">{formatTime(remainingSleepTime)}</h2>
+        <p className="text-[14px] opacity-75 mt-2">
+          NOTE: you can interact with the app to cancel the sleep mode
+        </p>
+      </div>
+    </Modal>
   );
 };
 
