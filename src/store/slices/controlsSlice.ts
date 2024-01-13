@@ -4,7 +4,10 @@ const initialState = {
     isFullscreen: false,
     isPanelHovering: false,
     isLocked: false,
-    controllersDeps: []
+    lastActivityTime: 0,
+    controllersDeps: [
+        'active'
+    ]
 }
 
 const controlsSlice = createSlice({
@@ -47,6 +50,10 @@ const controlsSlice = createSlice({
             if (state.controllersDeps.includes(action.payload)) {
                 state.controllersDeps.splice(state.controllersDeps.indexOf(action.payload), 1);
             }
+        },
+        updateLastActivityTime(state) {
+            const Time = Date.now()
+            state.lastActivityTime = Time
         },
         reset(state) {
             return initialState;

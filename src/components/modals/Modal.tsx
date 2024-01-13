@@ -1,8 +1,9 @@
 import { AnimatePresence, MotionStyle, motion } from "framer-motion";
-import React, { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import ReactDOM from "react-dom";
 import { CloseIcon } from "../../assets";
+import { useAppSelector } from "../../hooks";
 
 interface ModalProps {
   children: ReactNode;
@@ -18,6 +19,7 @@ interface ModalProps {
 
 const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children, style }) => {
   const [rootElement, setRootElement] = useState(null);
+  const { allowAnimations } = useAppSelector((state) => state.settings);
 
   useHotkeys("esc", onClose);
 
@@ -49,7 +51,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children, style }) => {
             animate="visible"
             exit="hidden"
             transition={{
-              duration: 0.1,
+              duration: allowAnimations ? 0.1 : 0,
             }}
             style={{ ...ModalStyles.overlay, ...style?.overlay }}
           ></motion.div>
@@ -73,7 +75,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children, style }) => {
             animate="visible"
             exit="hidden"
             transition={{
-              duration: 0.1,
+              duration: allowAnimations ? 0.1 : 0,
               ease: [0.04, 0.62, 0.23, 0.98],
             }}
           >

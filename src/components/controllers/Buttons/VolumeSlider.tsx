@@ -14,6 +14,7 @@ const VolumeSlider: FC = ({}) => {
 
   const { volume, isMuted } = useAppSelector((state) => state.volume);
   const { isPanelHovering } = useAppSelector((state) => state.controls);
+  const { allowAnimations } = useAppSelector((state) => state.settings);
 
   const { handleVolumeChange, handleToggleMute } = useVolume();
 
@@ -103,7 +104,7 @@ const VolumeSlider: FC = ({}) => {
             initial="visible"
             animate={maxSoundControls}
             transition={{
-              duration: 0.1,
+              duration: allowAnimations ? 0.1 : 0,
             }}
           >
             <MaxSoundIcon />
@@ -114,7 +115,7 @@ const VolumeSlider: FC = ({}) => {
             initial="hidden"
             animate={minSoundControls}
             transition={{
-              duration: 0.1,
+              duration: allowAnimations ? 0.1 : 0,
             }}
           >
             <MinSoundIcon />
@@ -125,7 +126,7 @@ const VolumeSlider: FC = ({}) => {
             initial="hidden"
             animate={muteSoundControls}
             transition={{
-              duration: 0.1,
+              duration: allowAnimations ? 0.1 : 0,
             }}
           >
             <MuteSoundIcon />
@@ -145,6 +146,9 @@ const VolumeSlider: FC = ({}) => {
           }}
           initial="hidden"
           animate={sliderControls}
+          transition={{
+            duration: allowAnimations ? 0.15 : 0,
+          }}
         >
           <Slider
             step={1}

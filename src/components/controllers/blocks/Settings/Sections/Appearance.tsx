@@ -1,10 +1,9 @@
 import { FC } from "react";
-import { SettingCol, ColorSelector, Separator } from "..";
+import { SettingCol, ColorSelector, Separator, SettingSwitch } from "..";
 import { colors } from "../../../../../constants";
 import { useAppSelector } from "../../../../../hooks";
 import { useDispatch } from "react-redux";
 import { settingsActions } from "../../../../../store";
-import Switch from "react-switch";
 
 const Appearance: FC = () => {
   const dispatch = useDispatch();
@@ -43,16 +42,9 @@ const Appearance: FC = () => {
         title="Show hover thumbnail"
         description="Show a thumbnail when hovering the progress bar"
       >
-        <Switch
+        <SettingSwitch
           onChange={handleToggleHoverThumbnail}
           checked={showHoverThumbnail}
-          uncheckedIcon={false}
-          checkedIcon={false}
-          onColor={primaryColor}
-          height={23}
-          width={46}
-          handleDiameter={18}
-          className="react-switch"
         />
       </SettingCol>
     </>

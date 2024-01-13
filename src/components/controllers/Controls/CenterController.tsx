@@ -6,8 +6,12 @@ import { useAppSelector, usePlayer } from "../../../hooks";
 const CenterController: FC = () => {
   const { isLoading } = useAppSelector((state) => state.player);
   const { isLocked } = useAppSelector((state) => state.controls);
-  const { playToggleClick, fullScreenOnDoubleClick, lockGestures } =
-    useAppSelector((state) => state.settings);
+  const {
+    playToggleClick,
+    fullScreenOnDoubleClick,
+    lockGestures,
+    allowAnimations,
+  } = useAppSelector((state) => state.settings);
   const { handleToggleScreen, handleTogglePlay } = usePlayer();
 
   const handleClickPlay = () => {
@@ -36,6 +40,9 @@ const CenterController: FC = () => {
             initial="hidden"
             animate="visible"
             exit="hidden"
+            transition={{
+              duration: allowAnimations ? 0.1 : 0,
+            }}
             className="text-[22px]"
           >
             <ActivityIndicator />

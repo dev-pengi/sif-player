@@ -16,7 +16,8 @@ const PlayToggle: FC<PlayToggleProps> = ({}) => {
     hidden: { opacity: 0, scale: 0.2 },
   };
 
-  const {isPlaying} = useAppSelector(state => state.player);
+  const { isPlaying } = useAppSelector((state) => state.player);
+  const { allowAnimations } = useAppSelector((state) => state.settings);
   const { handleTogglePlay } = usePlayer();
 
   useEffect(() => {
@@ -31,6 +32,9 @@ const PlayToggle: FC<PlayToggleProps> = ({}) => {
         variants={iconVariants}
         initial="hidden"
         animate={playController}
+        transition={{
+          duration: allowAnimations ? 0.1 : 0,
+        }}
       >
         <PlayIcon />
       </motion.div>
@@ -39,6 +43,9 @@ const PlayToggle: FC<PlayToggleProps> = ({}) => {
         variants={iconVariants}
         initial="visible"
         animate={pauseController}
+        transition={{
+          duration: allowAnimations ? 0.1 : 0,
+        }}
       >
         <PauseIcon />
       </motion.div>

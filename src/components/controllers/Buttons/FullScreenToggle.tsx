@@ -7,6 +7,7 @@ import { useAppSelector, usePlayer } from "../../../hooks";
 
 const FullScreenButton: FC = () => {
   const { isFullscreen } = useAppSelector((state) => state.controls);
+  const { allowAnimations } = useAppSelector((state) => state.settings);
   const { handleToggleScreen } = usePlayer();
 
   const maximizeController = useAnimation();
@@ -28,6 +29,9 @@ const FullScreenButton: FC = () => {
         variants={iconVariants}
         initial="hidden"
         animate={maximizeController}
+        transition={{
+          duration: allowAnimations ? 0.1 : 0,
+        }}
       >
         <MaximizeIcon />
       </motion.div>
@@ -36,6 +40,9 @@ const FullScreenButton: FC = () => {
         variants={iconVariants}
         initial="visible"
         animate={minimizeController}
+        transition={{
+          duration: allowAnimations ? 0.1 : 0,
+        }}
       >
         <MinimizeIcon />
       </motion.div>

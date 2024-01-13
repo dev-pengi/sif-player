@@ -1,8 +1,8 @@
 type LocalStorageTypes = 'string' | 'number' | 'boolean';
 
-function extractLocalStorage<T extends LocalStorageTypes>(key: string, defaultValue: T extends 'boolean' ? boolean : (T extends 'number' ? number : string), type: T): T extends 'boolean' ? boolean : (T extends 'number' ? number : string) {
+function extractLocalStorage<T extends LocalStorageTypes>(key: string, defaultValue: T extends 'boolean' ? boolean : (T extends 'number' ? number : string), type: T, conditionCb?: ((value: any) => boolean)): T extends 'boolean' ? boolean : (T extends 'number' ? number : string) {
     const value = localStorage.getItem(key);
-    if (value === null) {
+    if (value === null || (conditionCb && !conditionCb(value))) {
         localStorage.setItem(key, String(defaultValue));
         return defaultValue;
     }

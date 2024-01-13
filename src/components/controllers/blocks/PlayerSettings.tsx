@@ -32,11 +32,11 @@ const tabs: Tab[] = [
     title: "Accessibility",
     section: <Accessability />,
   },
-  // {
-  //   title: "Advanced",
-  //   section: <Advanced />,
-  //   separate: true,
-  // },
+  {
+    title: "Advanced",
+    section: <Advanced />,
+    separate: true,
+  },
 ];
 
 const CurrentSection = ({ activeTab }) => {

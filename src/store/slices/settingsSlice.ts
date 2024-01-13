@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { extractLocalStorage } from "../../utils";
+import { colors } from "../../constants";
 
 const defaultSettings = {
     primaryColor: "#ff00fb",
@@ -17,11 +18,11 @@ const defaultSettings = {
     playToggleClick: false,
     fullScreenOnDoubleClick: true,
     showHoverThumbnail: true,
-    //TODO: add these settings
     allowAnimations: true,
     borderShadows: true,
     darkLayer: false,
     darkLayerOpacity: 0.2,
+    //TODO: add these settings
     sleepMode: false,
     sleepModeDelay: 30, // in minutes
     sleepModeBehavior: "pause", // pause, quit video, close tab/app
@@ -30,8 +31,12 @@ const defaultSettings = {
     breakDuration: 5, // in minutes
 }
 
+const colorCheck = (color: string) => {
+    return colors.includes(color);
+}
+
 const initialState = {
-    primaryColor: extractLocalStorage("primary-color", "#ff00fb", "string"),
+    primaryColor: extractLocalStorage("primary-color", "#ff00fb", "string", colorCheck),
     lockShortcuts: extractLocalStorage("lock-shortcuts", false, "boolean"),
     lockGestures: extractLocalStorage("lock-gestures", false, "boolean"),
     normalSkipStep: extractLocalStorage("skip-step", 10, "number"),
@@ -46,7 +51,6 @@ const initialState = {
     playToggleClick: extractLocalStorage("play-toggle-click", false, "boolean"),
     fullScreenOnDoubleClick: extractLocalStorage("full-screen-on-double-click", true, "boolean"),
     showHoverThumbnail: extractLocalStorage("show-hover-thumbnail", true, "boolean"),
-    //TODO: add these settings
     allowAnimations: extractLocalStorage("allow-animations", true, "boolean"),
     borderShadows: extractLocalStorage("border-shadows", true, "boolean"),
     darkLayer: extractLocalStorage("dark-layer", false, "boolean"),

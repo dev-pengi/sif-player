@@ -6,6 +6,7 @@ import { useAppSelector } from "../../hooks";
 import { throttle } from "lodash";
 import { useDispatch } from "react-redux";
 import { playerActions } from "../../store";
+import { DarkLayer } from "../addons";
 
 const VideoPlayer: FC = () => {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const VideoPlayer: FC = () => {
   const handlePauseVideo = useCallback(() => {
     dispatch(playerActions.pause());
   }, []);
-  
+
   return (
     <>
       {videoSrc && (
@@ -50,6 +51,7 @@ const VideoPlayer: FC = () => {
           autoPlay
         ></video>
       )}
+      <DarkLayer />
       <MainController />
     </>
   );

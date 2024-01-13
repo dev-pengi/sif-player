@@ -1,9 +1,8 @@
 import { FC } from "react";
-import { Separator, SettingCol } from "..";
+import { Separator, SettingCol, SettingSwitch } from "..";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../../../../hooks";
 import { settingsActions } from "../../../../../store";
-import Switch from "react-switch";
 
 const Accessability: FC = () => {
   const dispatch = useDispatch();
@@ -36,32 +35,18 @@ const Accessability: FC = () => {
         title="Lock Shortcuts"
         description="disable shortcuts when the player is on lock mode"
       >
-        <Switch
+        <SettingSwitch
           onChange={handleLockShortcutsToggle}
           checked={lockShortcuts}
-          uncheckedIcon={false}
-          checkedIcon={false}
-          onColor={primaryColor}
-          height={23}
-          width={46}
-          handleDiameter={18}
-          className="react-switch"
         />
       </SettingCol>
       <SettingCol
         title="Lock Gestures"
         description="disable gestures when the player is on lock mode (click, double click, etc)"
       >
-        <Switch
+        <SettingSwitch
           onChange={handleLockGesturesToggle}
           checked={lockGestures}
-          uncheckedIcon={false}
-          checkedIcon={false}
-          onColor={primaryColor}
-          height={23}
-          width={46}
-          handleDiameter={18}
-          className="react-switch"
         />
       </SettingCol>
       {!lockGestures && (
@@ -71,33 +56,19 @@ const Accessability: FC = () => {
             title="Click To Play/Pause"
             description="click anywhere on the screen to toggle the video play/pause"
           >
-            <Switch
+            <SettingSwitch
               onChange={handleTogglePlayToggleClick}
               checked={playToggleClick}
-              uncheckedIcon={false}
-              checkedIcon={false}
-              onColor={primaryColor}
-              height={23}
-              width={46}
-              handleDiameter={18}
-              className="react-switch"
             />
           </SettingCol>
           <SettingCol
             title="Full screen on double click"
             description="toggle full screen mode when double clicking on the screen"
           >
-            <Switch
-              onChange={handleToggleFullScreenOnDoubleClick}
-              checked={fullScreenOnDoubleClick}
-              uncheckedIcon={false}
-              checkedIcon={false}
-              onColor={primaryColor}
-              height={23}
-              width={46}
-              handleDiameter={18}
-              className="react-switch"
-            />
+          <SettingSwitch
+            onChange={handleToggleFullScreenOnDoubleClick}
+            checked={fullScreenOnDoubleClick}
+          />
           </SettingCol>
         </>
       )}

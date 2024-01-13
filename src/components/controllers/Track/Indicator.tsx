@@ -11,7 +11,7 @@ interface IndicatorProps {
 const Indicator: FC<IndicatorProps> = ({
   indicatorPercentage,
   backgroundColor,
-  animate = true,
+  animate = false,
   hidden = false,
 }) => {
   return (

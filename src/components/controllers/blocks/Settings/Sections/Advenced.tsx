@@ -1,11 +1,13 @@
 import { FC } from "react";
-import { useAppSelector } from "../../../../../hooks";
-import Switch from "react-switch";
-import Select from "react-select";
-import { Separator, SettingCol } from "..";
-import { settingsActions } from "../../../../../store";
 import { useDispatch } from "react-redux";
 import Slider from "rc-slider";
+
+import { Separator, SettingCol, SettingSelect, SettingSwitch } from "..";
+import { useAppSelector } from "../../../../../hooks";
+import { settingsActions } from "../../../../../store";
+import { settings } from "../../../../../constants";
+import { findLabel } from "../../../../../utils";
+
 
 const Advanced: FC = () => {
   const dispatch = useDispatch();
@@ -38,6 +40,21 @@ const Advanced: FC = () => {
   const handleToggleSleepMode = () => {
     dispatch(settingsActions.toggleSleepMode());
   };
+  const handleUpdateSleepDelay = (value: number) => {
+    dispatch(settingsActions.updateSleepModeDelay(value));
+  };
+  const handleUpdateSleepBehavior = (value: number) => {
+    dispatch(settingsActions.updateSleepModeBehavior(value));
+  };
+  const handleToggleBreakMode = () => {
+    dispatch(settingsActions.toggleAskForBreak());
+  };
+  const handleUpdateBreakDelay = (value: number) => {
+    dispatch(settingsActions.updateBreakDelay(value));
+  };
+  const handleUpdateBreakDuration = (value: number) => {
+    dispatch(settingsActions.updateBreakDuration(value));
+  };
 
   return (
     <>
@@ -45,16 +62,9 @@ const Advanced: FC = () => {
         title="Use animations"
         description="Enabling this setting animates controls, buttons, and modals, providing a more interactive experience. It's recommended to keep this enabled for a better user experience, unless you're experiencing performance issues"
       >
-        <Switch
+        <SettingSwitch
           onChange={handleToggleAllowAnimations}
           checked={allowAnimations}
-          uncheckedIcon={false}
-          checkedIcon={false}
-          onColor={primaryColor}
-          height={23}
-          width={46}
-          handleDiameter={18}
-          className="react-switch"
         />
       </SettingCol>
       <Separator />
@@ -62,33 +72,16 @@ const Advanced: FC = () => {
         title="Use border shadows"
         description="sets shadows on the top and bottom of the video player, in order to make the controls clear and visible on any background"
       >
-        <Switch
+        <SettingSwitch
           onChange={handleToggleBorderShadows}
           checked={borderShadows}
-          uncheckedIcon={false}
-          checkedIcon={false}
-          onColor={primaryColor}
-          height={23}
-          width={46}
-          handleDiameter={18}
-          className="react-switch"
         />
       </SettingCol>
       <SettingCol
         title="Use dark layer"
         description="sets a dark opacity layer on the video player, recommended for users who are sensitive to bright colors and effects"
       >
-        <Switch
-          onChange={toggleDarkLayer}
-          checked={darkLayer}
-          uncheckedIcon={false}
-          checkedIcon={false}
-          onColor={primaryColor}
-          height={23}
-          width={46}
-          handleDiameter={18}
-          className="react-switch"
-        />
+        <SettingSwitch onChange={toggleDarkLayer} checked={darkLayer} />
       </SettingCol>
       {darkLayer && (
         <SettingCol
@@ -128,19 +121,63 @@ const Advanced: FC = () => {
         title="Sleep mode"
         description="automatically stop the playback after a certain amount of time of inactivity"
       >
-        <Switch
-          onChange={handleToggleSleepMode}
-          checked={sleepMode}
-          uncheckedIcon={false}
-          checkedIcon={false}
-          onColor={primaryColor}
-          height={23}
-          width={46}
-          handleDiameter={18}
-          className="react-switch"
-        />
+        <SettingSwitch onChange={handleToggleSleepMode} checked={sleepMode} />
       </SettingCol>
-      {sleepMode && <></>}
+      {sleepMode && (
+        <>
+          <SettingCol
+            title="Sleep Delay"
+            description="the amount of time to enter sleep mode after inactivity"
+          >
+            <SettingSelect
+              value={findLabel(settings.sleepModeDelay, sleepModeDelay)}
+              list={settings.sleepModeDelay}
+              onSelect={handleUpdateSleepDelay}
+            />
+          </SettingCol>
+          <SettingCol
+            title="Sleep Action"
+            description="the action to take when the sleep mode is up"
+          >
+            <SettingSelect
+              value={findLabel(settings.sleepModeBehavior, sleepModeBehavior)}
+              list={settings.sleepModeBehavior}
+              onSelect={handleUpdateSleepBehavior}
+            />
+          </SettingCol>
+        </>
+      )}
+      <Separator />
+      <SettingCol
+        title="Ask for break"
+        description="automatically stop the player and asks you to take break or cancel it"
+      >
+        <SettingSwitch onChange={handleToggleBreakMode} checked={askForBreak} />
+      </SettingCol>
+      {askForBreak && (
+        <>
+          <SettingCol
+            title="Break Delay"
+            description="the amount of time to wait in order to ask for a break"
+          >
+            <SettingSelect
+              value={findLabel(settings.breakDelay, breakDelay)}
+              list={settings.breakDelay}
+              onSelect={handleUpdateBreakDelay}
+            />
+          </SettingCol>
+          <SettingCol
+            title="Break duration"
+            description="the amount of time to enter sleep mode after inactivity"
+          >
+            <SettingSelect
+              value={findLabel(settings.breakDuration, breakDuration)}
+              list={settings.breakDuration}
+              onSelect={handleUpdateBreakDuration}
+            />
+          </SettingCol>
+        </>
+      )}
     </>
   );
 };

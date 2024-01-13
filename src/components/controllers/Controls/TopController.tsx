@@ -5,8 +5,11 @@ import { useSelector } from "react-redux";
 import { useAppSelector } from "../../../hooks";
 
 const TopController: FC = () => {
-  const { mediaData } = useAppSelector(state => state.player);
-  const { isLocked, controllersDeps } = useAppSelector(state => state.controls);
+  const { mediaData } = useAppSelector((state) => state.player);
+  const { allowAnimations } = useAppSelector((state) => state.settings);
+  const { isLocked, controllersDeps } = useAppSelector(
+    (state) => state.controls
+  );
   const videoName = mediaData?.name ?? "Untitled Video";
 
   useEffect(() => {
@@ -24,6 +27,9 @@ const TopController: FC = () => {
           initial="hidden"
           animate="visible"
           exit="hidden"
+          transition={{
+            duration: allowAnimations ? 0.1 : 0,
+          }}
           className="relative flex z-1 w-full items-center overflow-visible px-12 h-[70px] justify-between"
         >
           <div className="relative flex items-center justify-center">

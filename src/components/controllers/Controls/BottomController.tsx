@@ -18,6 +18,7 @@ const BottomController: FC = () => {
   const { controllersDeps, isLocked } = useAppSelector(
     (state) => state.controls
   );
+  const { allowAnimations } = useAppSelector((state) => state.settings);
   const { duration, currentTime } = useAppSelector((state) => state.timer);
 
   return (
@@ -33,6 +34,9 @@ const BottomController: FC = () => {
           exit="hidden"
           onMouseEnter={() => dispatch(controlsActions.panelHover())}
           onMouseLeave={() => dispatch(controlsActions.panelUnhover())}
+          transition={{
+            duration: allowAnimations ? 0.1 : 0,
+          }}
           className="relative flex w-full items-center px-12 h-[80px] flex-col"
         >
           <TrackSlider />

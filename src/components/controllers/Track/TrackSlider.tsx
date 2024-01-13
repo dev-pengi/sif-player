@@ -7,7 +7,7 @@ import { useAppSelector } from "../../../hooks";
 import { formatTime } from "../../../utils";
 
 const TrackSlider: FC = () => {
-  const { primaryColor, showHoverThumbnail } = useAppSelector(
+  const { primaryColor, showHoverThumbnail, allowAnimations } = useAppSelector(
     (state) => state.settings
   );
   const { videoSrc } = useAppSelector((state) => state.player);
@@ -122,13 +122,16 @@ const TrackSlider: FC = () => {
       >
         {showHoverThumbnail && (
           <motion.div
-            className="mb-3 flex items-center justify-center rounded-md shadow-md bg-[#ffffff41] border-[2px] border-[#ffffff51] border-solid duration-100"
-            style={{
-              opacity: isHovering ? 1 : 0,
-              scale: isHovering ? 1 : 0.4,
+            className="mb-3 flex items-center justify-center rounded-md shadow-md bg-[#ffffff41] border-[2px] border-[#ffffff51] border-solid"
+            animate={{
               width: 180,
               height: 110,
               objectFit: "contain",
+              opacity: isHovering ? 1 : 0,
+              scale: isHovering ? 1 : 0.4,
+            }}
+            transition={{
+              duration: allowAnimations ? 0.1 : 0,
             }}
           >
             <video
@@ -146,11 +149,14 @@ const TrackSlider: FC = () => {
           </motion.div>
         )}
         <motion.div
-          style={{
+          animate={{
             opacity: isHovering ? 1 : 0,
             scale: isHovering ? 1 : 0.4,
           }}
-          className="rounded-md bg-[#ffffff41] px-2 py-1 text-xs text-white font-semibold shadow-md duration-100"
+          transition={{
+            duration: allowAnimations ? 0.1 : 0,
+          }}
+          className="rounded-md bg-[#ffffff41] px-2 py-1 text-xs text-white font-semibold shadow-md"
         >
           {formatTime(hoverTime)}
         </motion.div>
@@ -168,26 +174,20 @@ const TrackSlider: FC = () => {
         }}
         transition={{
           type: "tween",
-          duration: 0.15,
+          duration: allowAnimations ? 0.15 : 0,
         }}
         onMouseDown={handleMouseDown}
         ref={sliderRef}
       >
-        <Indicator
-          indicatorPercentage={buffered}
-          backgroundColor="#ffffff40"
-          animate={false}
-        />
+        <Indicator indicatorPercentage={buffered} backgroundColor="#ffffff40" />
         <Indicator
           indicatorPercentage={hoverPoint}
           hidden={!isHovering}
           backgroundColor="#ffffff7d"
-          animate={false}
         />
         <Indicator
           indicatorPercentage={timePercentage}
           backgroundColor={primaryColor}
-          animate={false}
         />
       </motion.div>
       <div
@@ -200,16 +200,20 @@ const TrackSlider: FC = () => {
         }}
         className="bottom-0 top-0 m-auto flex items-center justify-center absolute transform -translate-x-1/2 pointer-events-none"
       >
-        <div
+        <motion.div
           style={{
             borderRadius: "50%",
             backgroundColor: primaryColor,
+          }}
+          animate={{
             opacity: isHovering || isDragging ? 1 : 0,
             width: isHovering || isDragging ? 13 : 0,
             height: isHovering || isDragging ? 13 : 0,
           }}
-          className="rounded-full duration-100"
-        ></div>
+          transition={{
+            duration: allowAnimations ? 0.1 : 0,
+          }}
+        ></motion.div>
       </div>
     </div>
   );

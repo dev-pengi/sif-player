@@ -5,16 +5,17 @@ import {
   LockedController,
   TopController,
 } from "./Controls";
-import { AnimatePresence, motion } from "framer-motion";
+import { BorderShadows, SleepMode } from "../addons";
 import { useAppSelector, usePlayer } from "../../hooks";
 import { throttle } from "lodash";
+import { useDispatch } from "react-redux";
+import { controlsActions } from "../../store";
 
 const CONTROLLER_DEP: string = "active";
 
 const MainController: FC = () => {
-  const { isLocked, controllersDeps } = useAppSelector(
-    (state) => state.controls
-  );
+  const dispatch = useDispatch();
+  const { controllersDeps } = useAppSelector((state) => state.controls);
   const {
     handleAddControllerDependencies,
     handleRemoveControllerDependencies,
@@ -23,6 +24,7 @@ const MainController: FC = () => {
 
   const handleEvent = useCallback(
     throttle(() => {
+      dispatch(controlsActions.updateLastActivityTime());
       handleAddControllerDependencies(CONTROLLER_DEP);
       if (timerRef.current) {
         clearTimeout(timerRef.current);
@@ -60,34 +62,8 @@ const MainController: FC = () => {
       }}
       className="fixed w-screen h-screen flex flex-col z-1"
     >
-      <AnimatePresence>
-        {controllersDeps.length && !isLocked && (
-          <motion.div
-            variants={{
-              visible: { opacity: 1 },
-              hidden: { opacity: 0 },
-            }}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            className="fixed z-0 top-0 left-0 w-full h-[150px] top-shadow pointer-events-none"
-          ></motion.div>
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {controllersDeps.length && (
-          <motion.div
-            variants={{
-              visible: { opacity: 1 },
-              hidden: { opacity: 0 },
-            }}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            className="fixed z-0 bottom-0 left-0 w-full h-[150px] bottom-shadow pointer-events-none"
-          ></motion.div>
-        )}
-      </AnimatePresence>
+      <BorderShadows />
+      <SleepMode />
       <TopController />
       <CenterController />
       <BottomController />
