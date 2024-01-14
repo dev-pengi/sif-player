@@ -133,6 +133,7 @@ const TrackSlider: FC = () => {
               objectFit: "contain",
               opacity: isHovering ? 1 : 0,
               scale: isHovering ? 1 : 0.4,
+              transformOrigin: "bottom",
             }}
             transition={{
               duration: allowAnimations ? 0.1 : 0,
