@@ -15,27 +15,32 @@ const CONTROLLER_DEP: string = "active";
 
 const MainController: FC = () => {
   const dispatch = useDispatch();
-  const { controllersDeps } = useAppSelector((state) => state.controls);
+  const { controllersDeps, lastActivityTime } = useAppSelector(
+    (state) => state.controls
+  );
   const { sleepMode } = useAppSelector((state) => state.settings);
   const {
     handleAddControllerDependencies,
     handleRemoveControllerDependencies,
   } = usePlayer();
-  const timerRef = useRef<any>(null);
 
   const handleEvent = useCallback(
     throttle(() => {
       dispatch(controlsActions.updateLastActivityTime());
-      handleAddControllerDependencies(CONTROLLER_DEP);
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-      timerRef.current = setTimeout(() => {
-        handleRemoveControllerDependencies(CONTROLLER_DEP);
-      }, 2000);
     }, 200),
     [controllersDeps]
   );
+
+  useEffect(() => {
+    handleAddControllerDependencies(CONTROLLER_DEP);
+    const timer = setTimeout(() => {
+      handleRemoveControllerDependencies(CONTROLLER_DEP);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [lastActivityTime]);
 
   useEffect(() => {
     window.addEventListener("mousemove", handleEvent);
@@ -50,9 +55,6 @@ const MainController: FC = () => {
       window.removeEventListener("keyup", handleEvent);
       window.removeEventListener("touchstart", handleEvent);
       window.removeEventListener("touchend", handleEvent);
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
     };
   }, [controllersDeps]);
 

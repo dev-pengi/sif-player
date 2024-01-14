@@ -31,12 +31,10 @@ const usePlayer = () => {
   };
 
   const handleAddControllerDependencies = (dependency: string) => {
-    if (controllersDeps.includes(dependency)) return;
     dispatch(controlsActions.addControllerDependency(dependency));
   };
 
   const handleRemoveControllerDependencies = (dependency: string) => {
-    if (!controllersDeps.includes(dependency)) return;
     dispatch(controlsActions.removeControllerDependency(dependency));
   };
 
