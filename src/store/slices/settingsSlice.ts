@@ -25,13 +25,7 @@ const defaultSettings = {
     darkLayerOpacity: 0.2,
     sleepMode: false,
     sleepModeDelay: 30, // in minutes
-    sleepModeBehavior: "pause", // pause, quit video, close tab/app
-    //TODO: add these settings
-    askForBreak: false,
-    breakDelay: 30, // in minutes
-    breakDuration: 5, // in minutes
-    //! not for persistence
-    isBreak: false
+    sleepModeBehavior: "pause", // pause, quit video
 }
 
 const colorCheck = (color: string) => {
@@ -62,12 +56,6 @@ const initialState = {
     sleepMode: extractLocalStorage("sleep-mode", false, "boolean"),
     sleepModeDelay: extractLocalStorage("sleep-mode-delay", 30, "number"),
     sleepModeBehavior: extractLocalStorage("sleep-mode-behavior", "pause", "string"),
-    askForBreak: extractLocalStorage("ask-for-break", false, "boolean"),
-    breakDelay: extractLocalStorage("break-delay", 30, "number"),
-    breakDuration: extractLocalStorage("break-duration", 5, "number"),
-    //! not for persistence
-    isBreak: false
-
 }
 
 const settingsSlice = createSlice({
@@ -286,32 +274,6 @@ const settingsSlice = createSlice({
         updateSleepModeBehavior(state, action) {
             localStorage.setItem("sleep-mode-behavior", action.payload);
             state.sleepModeBehavior = action.payload
-        },
-        enableAskForBreak(state) {
-            localStorage.setItem("ask-for-break", "true");
-            state.askForBreak = true
-        },
-        disableAskForBreak(state) {
-            localStorage.setItem("ask-for-break", "false");
-            state.askForBreak = false
-        },
-        toggleAskForBreak(state) {
-            localStorage.setItem("ask-for-break", String(!state.askForBreak));
-            state.askForBreak = !state.askForBreak
-        },
-        updateBreakDelay(state, action) {
-            localStorage.setItem("break-delay", String(action.payload));
-            state.breakDelay = action.payload
-        },
-        updateBreakDuration(state, action) {
-            localStorage.setItem("break-duration", String(action.payload));
-            state.breakDuration = action.payload
-        },
-        enterBreak(state) {
-            state.isBreak = true
-        },
-        quitBreak(state) {
-            state.isBreak = false
         },
         reset() {
             return initialState;

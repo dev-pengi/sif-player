@@ -1,5 +1,6 @@
 import { FC, useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { throttle } from "lodash";
 import Slider from "rc-slider";
 
 import { Separator, SettingCol, SettingSelect, SettingSwitch } from "..";
@@ -7,12 +8,10 @@ import { useAppSelector } from "../../../../../hooks";
 import { settingsActions } from "../../../../../store";
 import { settings } from "../../../../../constants";
 import { findLabel } from "../../../../../utils";
-import { throttle } from "lodash";
 
 const Advanced: FC = () => {
   const dispatch = useDispatch();
   const {
-    primaryColor,
     allowAnimations,
     borderShadows,
     darkLayer,
@@ -20,9 +19,6 @@ const Advanced: FC = () => {
     sleepMode,
     sleepModeDelay,
     sleepModeBehavior,
-    askForBreak,
-    breakDelay,
-    breakDuration,
   } = useAppSelector((state) => state.settings);
 
   const handleToggleAllowAnimations = () => {
@@ -48,15 +44,6 @@ const Advanced: FC = () => {
   };
   const handleUpdateSleepBehavior = (value: number) => {
     dispatch(settingsActions.updateSleepModeBehavior(value));
-  };
-  const handleToggleBreakMode = () => {
-    dispatch(settingsActions.toggleAskForBreak());
-  };
-  const handleUpdateBreakDelay = (value: number) => {
-    dispatch(settingsActions.updateBreakDelay(value));
-  };
-  const handleUpdateBreakDuration = (value: number) => {
-    dispatch(settingsActions.updateBreakDuration(value));
   };
 
   return (
@@ -146,37 +133,6 @@ const Advanced: FC = () => {
               value={findLabel(settings.sleepModeBehavior, sleepModeBehavior)}
               list={settings.sleepModeBehavior}
               onSelect={handleUpdateSleepBehavior}
-            />
-          </SettingCol>
-        </>
-      )}
-      <Separator />
-      <SettingCol
-        title="Ask for break"
-        description="automatically stop the player and asks you to take break or cancel it"
-      >
-        <SettingSwitch onChange={handleToggleBreakMode} checked={askForBreak} />
-      </SettingCol>
-      {askForBreak && (
-        <>
-          <SettingCol
-            title="Break Delay"
-            description="the amount of time to wait in order to ask for a break"
-          >
-            <SettingSelect
-              value={findLabel(settings.breakDelay, breakDelay)}
-              list={settings.breakDelay}
-              onSelect={handleUpdateBreakDelay}
-            />
-          </SettingCol>
-          <SettingCol
-            title="Break duration"
-            description="the amount of time to enter sleep mode after inactivity"
-          >
-            <SettingSelect
-              value={findLabel(settings.breakDuration, breakDuration)}
-              list={settings.breakDuration}
-              onSelect={handleUpdateBreakDuration}
             />
           </SettingCol>
         </>
