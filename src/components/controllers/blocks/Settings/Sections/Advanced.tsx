@@ -37,7 +37,7 @@ const Advanced: FC = () => {
   const handleDarkLayerOpacityChange = useCallback(
     throttle((value) => {
       dispatch(settingsActions.updateDarkLayerOpacity(value));
-    }, 150),
+    }, 30),
     []
   );
   const handleToggleSleepMode = () => {
