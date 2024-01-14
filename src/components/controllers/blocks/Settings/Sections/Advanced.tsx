@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import Slider from "rc-slider";
 
@@ -7,6 +7,7 @@ import { useAppSelector } from "../../../../../hooks";
 import { settingsActions } from "../../../../../store";
 import { settings } from "../../../../../constants";
 import { findLabel } from "../../../../../utils";
+import { throttle } from "lodash";
 
 const Advanced: FC = () => {
   const dispatch = useDispatch();
@@ -33,9 +34,12 @@ const Advanced: FC = () => {
   const toggleDarkLayer = () => {
     dispatch(settingsActions.toggleDarkLayer());
   };
-  const handleDarkLayerOpacityChange = (value: number) => {
-    dispatch(settingsActions.updateDarkLayerOpacity(value));
-  };
+  const handleDarkLayerOpacityChange = useCallback(
+    throttle((value) => {
+      dispatch(settingsActions.updateDarkLayerOpacity(value));
+    }, 150),
+    []
+  );
   const handleToggleSleepMode = () => {
     dispatch(settingsActions.toggleSleepMode());
   };
