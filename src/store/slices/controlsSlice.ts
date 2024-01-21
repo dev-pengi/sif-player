@@ -1,4 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { FC } from "react";
+
+interface ActionToast {
+    status: boolean,
+    content: string | null
+}
 
 const initialState = {
     isFullscreen: false,
@@ -7,7 +13,11 @@ const initialState = {
     lastActivityTime: 0,
     controllersDeps: [
         'active'
-    ]
+    ],
+    actionToast: {
+        status: false,
+        content: null
+    } as ActionToast
 }
 
 const controlsSlice = createSlice({
@@ -54,6 +64,17 @@ const controlsSlice = createSlice({
         updateLastActivityTime(state) {
             const Time = Date.now()
             state.lastActivityTime = Time
+        },
+        fireActionToast(state, action) {
+            if (!action.payload) {
+                return
+            }
+            state.actionToast.status = true
+            state.actionToast.content = action.payload
+        },
+        resetActionToast(state) {
+            state.actionToast.status = false
+            state.actionToast.content = null
         },
         reset(state) {
             return initialState;
