@@ -73,7 +73,13 @@ const useShortcuts = () => {
   });
 
   // play/pause with space bar
-  useConditionalHotkeys("space, pause,enter", handleTogglePlay, true);
+  useConditionalHotkeys(
+    "space, pause,enter",
+    () => {
+      handleTogglePlay();
+    },
+    true
+  );
 
   // toggle fullscreen with f
   useConditionalHotkeys("f", handleToggleScreen, true);
@@ -89,7 +95,13 @@ const useShortcuts = () => {
   );
 
   // mute/unmute with m
-  useConditionalHotkeys("m", handleToggleMute, true);
+  useConditionalHotkeys(
+    "m",
+    () => {
+      handleToggleMute();
+    },
+    true
+  );
 
   // seek to start/end with home/end
   useConditionalHotkeys(

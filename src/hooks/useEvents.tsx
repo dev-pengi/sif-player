@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
-import {
-  usePlayerContext,
-} from "../contexts";
-import { usePlayer, useStore } from ".";
+import { usePlayerContext } from "../contexts";
+import { usePlayer, useStore, useToast } from ".";
 import { useDispatch } from "react-redux";
 import { controlsActions, playerActions, timerActions } from "../store";
 import { useAppSelector } from ".";
 
 const useEvents = () => {
   const dispatch = useDispatch();
+  const toast = useToast();
+
   const [isBackgroundPause, setIsBackgroundPause] = useState(false);
 
   const { videoRef } = usePlayerContext();
   const { isPlaying, isPiP } = useAppSelector((state) => state.player);
-
-  const { duration, currentTime } = useAppSelector(
-    (state) => state.timer
+  const { playInBackground, isLoop } = useAppSelector(
+    (state) => state.settings
   );
+  const { volume, isMuted } = useAppSelector((state) => state.volume);
+  const { duration, currentTime } = useAppSelector((state) => state.timer);
 
-  const { playInBackground } = useAppSelector((state) => state.settings);
   const { handlePause, handlePlay } = usePlayer();
   const { handleStoreData } = useStore();
 
@@ -122,6 +122,18 @@ const useEvents = () => {
       window.removeEventListener("focus", handleFocus);
     };
   }, [playInBackground, isBackgroundPause, isPlaying]);
+
+  useEffect(() => {
+    toast.showToast(`Volume: ${volume}%`);
+  }, [volume]);
+
+  useEffect(() => {
+    toast.showToast(`Loop: ${isLoop ? "on" : "off"}`);
+  }, [isLoop]);
+
+  useEffect(() => {
+    toast.showToast(isPlaying ? "Playing" : "Paused");
+  }, [isPlaying]);
 };
 
 export default useEvents;
