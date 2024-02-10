@@ -96,7 +96,7 @@ const PlaylistControls: FC = () => {
               </div>
             </Popover.Trigger>
             <Popover.Content>
-              <div className="overflow-auto p-2 w-full min-scrollbar max-h-[min(85vh,500px)] max-w-[min(85vw,600px)] flex flex-col gap-1">
+              <div className="overflow-auto p-2 min-scrollbar max-h-[min(85vh,500px)] w-[min(85vw,600px)] flex flex-col gap-1">
                 {playlistInfo !== null ? (
                   playlistInfo.map((item, index: number) => (
                     <div
@@ -126,7 +126,7 @@ const PlaylistControls: FC = () => {
                       <div className="max-w-[calc(100%-180px)]">
                         <h3
                           title={item.name}
-                          className="text-[14px] w-full break-words font-bold opacity-80 line-clamp-1"
+                          className="text-[14px] bg-green-3 w-max max-w-[100%] break-words font-bold opacity-80 truncate"
                         >
                           {item.name}
                         </h3>

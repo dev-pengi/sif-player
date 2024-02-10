@@ -14,7 +14,7 @@ import { Dir } from "../types";
 const useExplorer = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { currentDir, dirs, isSearching } = useAppSelector(
+  const { currentDir, dirs, isSearching, sortType } = useAppSelector(
     (state) => state.explorer
   );
 
@@ -50,7 +50,7 @@ const useExplorer = () => {
       }
     }
 
-    newDirs = sortFiles(newDirs);
+    newDirs = sortFiles(newDirs, sortType);
 
     const chain: string[] = [];
     let isFinished = false;

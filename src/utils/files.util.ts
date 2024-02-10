@@ -86,15 +86,14 @@ const extractVideos = (dirs: any[], extractPath = false, isSearching = false) =>
     return videos;
 }
 
-const sortFiles = (files: Dir[], sortType: SortType = 'newest', foldersFirst = true) => {
+const sortFiles = (files: Dir[], sortType: SortType = 'name', foldersFirst = true) => {
     const sortedFiles = files.sort((a, b) => {
         if (a.dir && !b.dir) return foldersFirst ? -1 : 1
         if (!a.dir && b.dir) return foldersFirst ? 1 : -1
-        if (sortType === 'newest') {return b.creationDate - a.creationDate}
+        if (sortType === 'newest') { return b.creationDate - a.creationDate }
         if (sortType === 'oldest') return a.creationDate - b.creationDate
         if (sortType === 'name') return a.name.localeCompare(b.name)
         if (sortType === 'size') return 0
-        
     })
 
     return sortedFiles;

@@ -9,7 +9,7 @@ const initialState = {
     currentDir: extractLocalStorage("last-dir", os.homedir(), "string"),
     currentDirData: null,
     keyPressed: '',
-    sortType: "newest" as SortType,
+    sortType: "name" as SortType,
     selectedDirs: [],
     dirs: [] as Dir[],
     dirsChain: [],
