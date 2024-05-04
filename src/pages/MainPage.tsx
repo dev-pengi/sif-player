@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { VideoPicker } from "../components";
-import { LinkIcon } from "../assets";
+import { LinkIcon, WindowsIcon } from "../assets";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ActivityIndicator } from "../components/spins";
@@ -22,7 +22,7 @@ const MainPage: FC = () => {
   const handleUrlSubmit = (e: any) => {
     e.preventDefault();
     if (!url?.trim()?.length) return setIsInvalidUrl(true);
-    navigate(`/player?src=${url}&type=url`);
+    navigate(`/app/player?src=${url}&type=url`);
   };
 
   useClean();
@@ -53,7 +53,7 @@ const MainPage: FC = () => {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       </nav>
-      <div className="flex h-full justify-center items-center">
+      <div className="flex h-full justify-center items-center flex-col">
         <motion.div
           layout
           style={{
@@ -118,6 +118,33 @@ const MainPage: FC = () => {
             </>
           )}
         </motion.div>
+
+        <p className="text-center font-semibold mt-12">
+          <span className="block">for faster and better user experience</span>
+          <span className="block">
+            we recommend you to use our{" "}
+            <a
+              href="/"
+              style={{
+                color: primaryColor,
+                textDecoration: "underline",
+              }}
+            >
+              new desktop version
+            </a>
+          </span>
+        </p>
+        <a
+          style={{
+            color: primaryColor,
+          }}
+          href="https://github.com/dev-pengi/sif-player/releases/latest/download/sif-player.exe"
+          target="_blank"
+          className="py-2 px-9 mt-6 text-[16px] border-[2px] border-current bg-current hover:opacity-90 duration-200 border-solid rounded-[4px] flex items-center justify-center gap-3"
+        >
+          <WindowsIcon />
+          <p className="text-white">Download for windows!</p>
+        </a>
       </div>
     </div>
   );

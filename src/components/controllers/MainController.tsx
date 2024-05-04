@@ -5,7 +5,7 @@ import {
   LockedController,
   TopController,
 } from "./Controls";
-import { ActionToast, BorderShadows, SleepMode } from "../addons";
+import { BorderShadows, SleepMode } from "../addons";
 import { useAppSelector, usePlayer } from "../../hooks";
 import { throttle } from "lodash";
 import { useDispatch } from "react-redux";
@@ -66,7 +66,6 @@ const MainController: FC = () => {
       className="fixed w-screen h-screen flex flex-col z-1"
     >
       <BorderShadows />
-      <ActionToast />
       {sleepMode && <SleepMode />}
       <TopController />
       <CenterController />

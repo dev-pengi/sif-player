@@ -33,7 +33,7 @@ const colorCheck = (color: string) => {
 }
 
 const initialState = {
-    primaryColor: extractLocalStorage("primary-color", "#ff00fb", "string", colorCheck),
+    primaryColor: extractLocalStorage("primary-color", "#3461eb", "string", colorCheck),
     lockShortcuts: extractLocalStorage("lock-shortcuts", false, "boolean"),
     lockGestures: extractLocalStorage("lock-gestures", false, "boolean"),
     normalSkipStep: extractLocalStorage("skip-step", 10, "number"),

@@ -27,13 +27,13 @@ const VideoPicker: FC<VideoPickerProps> = ({ handleLoadStart }) => {
         const blob = new Blob([event.target.result], { type: "video/mp4" });
         const blobUrl = URL.createObjectURL(blob);
         const extractedID = extractUUIDFromBlobUrl(blobUrl);
-        navigate(`/player?src=${extractedID}&type=local`);
+        navigate(`/app/player?src=${extractedID}&type=local`);
       };
 
       reader.readAsArrayBuffer(videoFile);
       handleLoadStart();
     } else {
-      navigate("/");
+      navigate("/app");
     }
   }, [videoFile]);
 

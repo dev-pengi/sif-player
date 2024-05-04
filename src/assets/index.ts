@@ -14,5 +14,6 @@ import LockIcon from "./LockIcon";
 import UnlockIcon from "./UnlockIcon";
 import CloseIcon from "./CloseIcon";
 import DownIcon from './DownIcon'
+import WindowsIcon from './WindowsIcon'
 
-export { PlayIcon, PauseIcon, MaximizeIcon, MinimizeIcon, MaxSoundIcon, MinSoundIcon, MuteSoundIcon, BackIcon, PlaybackSpeedIcon, CheckIcon, LinkIcon, MenuIcon, LockIcon, UnlockIcon, CloseIcon, DownIcon };
+export { PlayIcon, PauseIcon, MaximizeIcon, MinimizeIcon, MaxSoundIcon, MinSoundIcon, MuteSoundIcon, BackIcon, PlaybackSpeedIcon, CheckIcon, LinkIcon, MenuIcon, LockIcon, UnlockIcon, CloseIcon, DownIcon, WindowsIcon }
