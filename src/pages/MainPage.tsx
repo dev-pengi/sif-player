@@ -122,16 +122,7 @@ const MainPage: FC = () => {
         <p className="text-center font-semibold mt-12">
           <span className="block">for faster and better user experience</span>
           <span className="block">
-            we recommend you to use our{" "}
-            <a
-              href="/"
-              style={{
-                color: primaryColor,
-                textDecoration: "underline",
-              }}
-            >
-              new desktop version
-            </a>
+            we recommend you to use our new desktop version
           </span>
         </p>
         <a
