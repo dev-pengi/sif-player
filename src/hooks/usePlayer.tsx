@@ -20,7 +20,7 @@ const usePlayer = () => {
   };
 
   const handleBack = () => {
-    navigate("/app");
+    navigate("/");
   };
 
   const handlePlaybackSpeedUpdate = (speed: number) => {

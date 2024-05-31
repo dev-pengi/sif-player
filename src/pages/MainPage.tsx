@@ -22,7 +22,7 @@ const MainPage: FC = () => {
   const handleUrlSubmit = (e: any) => {
     e.preventDefault();
     if (!url?.trim()?.length) return setIsInvalidUrl(true);
-    navigate(`/app/player?src=${url}&type=url`);
+    navigate(`/player?src=${url}&type=url`);
   };
 
   useClean();

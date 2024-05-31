@@ -20,8 +20,8 @@ function App() {
         `}
       </style>
       <Routes>
-        <Route path="/app" element={<MainPage />} />
-        <Route path="/app/player" element={<PlayerPage />} />
+        <Route path="/" element={<MainPage />} />
+        <Route path="/player" element={<PlayerPage />} />
       </Routes>
     </Theme>
   );
